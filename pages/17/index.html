@@ -1,2 +1,739 @@
-<!-- Страница 17 — контент ещё не наполнен -->
-<div class="page-placeholder">Страница 17 / 30</div>
+<!-- Страница 17 -->
+<style>
+  .stat12-wrap { width: 100%; max-width: 1500px; padding: 0 50px; }
+  .stat12-kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(230, 230, 240, 0.5); margin-bottom: 10px; }
+  .stat12-title { font-size: 26px; font-weight: 600; color: rgba(255, 255, 255, 0.95); margin-bottom: 8px; }
+  .stat12-sub { font-size: 13px; color: rgba(230, 230, 240, 0.5); margin-bottom: 24px; }
+
+  .stat12-legend { display: flex; flex-wrap: wrap; gap: 16px 20px; margin-bottom: 28px; }
+  .stat12-legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(230, 230, 240, 0.6); }
+  .stat12-legend-swatch { width: 12px; height: 12px; flex: none; }
+
+  .stat12-corner-tag {
+    position: fixed;
+    top: 60px;
+    right: 40px;
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.9);
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .stat12-row { display: flex; align-items: center; gap: 18px; padding: 9px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.07); transition: opacity 0.15s; text-decoration: none; }
+  .stat12-row-label { width: 120px; flex: none; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: rgba(255, 255, 255, 0.9); text-transform: uppercase; }
+  .stat12-row-bars { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+  .stat12-bar-line { display: flex; align-items: center; gap: 10px; }
+  .stat12-year-tag { width: 40px; flex: none; font-size: 10px; color: rgba(230, 230, 240, 0.4); font-variant-numeric: tabular-nums; }
+  .stat12-bar { flex: 1; display: flex; height: 22px; overflow: hidden; }
+  .stat12-bar:has(.stat12-seg:hover) { overflow: visible; }
+  .stat12-seg { position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap; }
+  .stat12-seg:hover { overflow: visible; z-index: 3; }
+  .stat12-seg-label { font-size: 10px; font-weight: 600; letter-spacing: 0.01em; padding: 0 5px; }
+  .stat12-seg-label b { font-weight: 700; }
+  .stat12-row-sum { width: 70px; flex: none; text-align: right; font-size: 11px; color: rgba(230, 230, 240, 0.5); font-variant-numeric: tabular-nums; }
+
+  .stat12-seg-tip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 6px;
+    padding: 3px 8px;
+    background: rgba(0, 0, 0, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.95);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+    z-index: 10;
+  }
+  .stat12-seg:hover .stat12-seg-tip { opacity: 1; }
+
+  .stat11-modal { display: none; position: fixed; inset: 0; z-index: 100; align-items: center; justify-content: center; }
+  .stat11-modal:target { display: flex; }
+  .stat11-modal-backdrop { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.75); }
+  .stat11-modal-panel {
+    position: relative;
+    width: min(1200px, 92vw);
+    background: #080808;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    padding: 56px 64px 44px;
+  }
+  .stat11-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 26px;
+    line-height: 1;
+    color: rgba(230, 230, 240, 0.5);
+    text-decoration: none;
+  }
+  .stat11-modal-close:hover { color: rgba(255, 255, 255, 0.9); }
+  .stat11-modal-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+  }
+  .stat11-modal-kind {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: rgba(230, 230, 240, 0.5);
+    margin-left: 10px;
+  }
+
+  .stat12-modal-panel .stat11-modal-title { margin-bottom: 28px; }
+  .stat12-modal-bars { display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; }
+  .stat12-modal-bars .stat12-bar { height: 44px; }
+  .stat12-modal-bars .stat12-seg-label { font-size: 14px; }
+  .stat12-modal-bars .stat12-seg-tip { font-size: 13px; padding: 5px 10px; }
+  .stat12-modal-bars .stat12-year-tag { width: 70px; font-size: 14px; }
+  .stat12-modal-bars .stat12-row-sum { width: 110px; font-size: 16px; }
+
+  .stat12-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 15px; }
+  .stat12-table th { text-align: right; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(230, 230, 240, 0.5); padding: 0 0 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.18); }
+  .stat12-table th:first-child, .stat12-table td.stat12-table-cat { text-align: left; }
+  .stat12-table td { text-align: right; padding: 10px 0; color: rgba(255, 255, 255, 0.9); border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+  .stat12-table-delta.up { color: rgba(255, 255, 255, 0.85); font-weight: 700; }
+  .stat12-table-delta.down { color: rgba(255, 120, 120, 0.85); font-weight: 700; }
+  .stat12-table-new { color: rgba(230, 230, 240, 0.5); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+</style>
+
+<div class="stat12-wrap accent-group">
+  <div class="stat12-corner-tag">CLASS</div>
+  <div class="stat12-kicker">Сравнение по годам · CLASS</div>
+  <div class="stat12-title">Распределение по юрлицам</div>
+  <div class="stat12-sub">2024/25 → 2025/26 · без учёта проката · клик по строке — подробности</div>
+
+  <div class="stat12-legend">
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.75);"></span>ООО</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.35);"></span>АНО ВО</div>
+  </div>
+
+    <a href="#p17m1" class="accent-item stat12-row">
+      <div class="stat12-row-label">Одежда</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 40.583%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>41%</b></span><span class="stat12-seg-tip">ООО 41%</span></div>
+              <div class="stat12-seg" style="width: 59.417%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>59%</b></span><span class="stat12-seg-tip">АНО ВО 59%</span></div>
+            </div>
+            <span class="stat12-row-sum">3 347 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 40.013%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>40%</b></span><span class="stat12-seg-tip">ООО 40%</span></div>
+              <div class="stat12-seg" style="width: 59.987%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>60%</b></span><span class="stat12-seg-tip">АНО ВО 60%</span></div>
+            </div>
+            <span class="stat12-row-sum">3 409 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p17m2" class="accent-item stat12-row">
+      <div class="stat12-row-label">Текстиль</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 78.689%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>79%</b></span><span class="stat12-seg-tip">ООО 79%</span></div>
+              <div class="stat12-seg" style="width: 21.311%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>21%</b></span><span class="stat12-seg-tip">АНО ВО 21%</span></div>
+            </div>
+            <span class="stat12-row-sum">122 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 63.912%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>64%</b></span><span class="stat12-seg-tip">ООО 64%</span></div>
+              <div class="stat12-seg" style="width: 36.088%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>36%</b></span><span class="stat12-seg-tip">АНО ВО 36%</span></div>
+            </div>
+            <span class="stat12-row-sum">224 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p17m3" class="accent-item stat12-row">
+      <div class="stat12-row-label">Печать</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 62.724%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>63%</b></span><span class="stat12-seg-tip">ООО 63%</span></div>
+              <div class="stat12-seg" style="width: 37.276%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>37%</b></span><span class="stat12-seg-tip">АНО ВО 37%</span></div>
+            </div>
+            <span class="stat12-row-sum">419 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 49.451%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>49%</b></span><span class="stat12-seg-tip">ООО 49%</span></div>
+              <div class="stat12-seg" style="width: 50.549%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>51%</b></span><span class="stat12-seg-tip">АНО ВО 51%</span></div>
+            </div>
+            <span class="stat12-row-sum">592 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p17m4" class="accent-item stat12-row">
+      <div class="stat12-row-label">3D</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 15.926%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>16%</b></span><span class="stat12-seg-tip">ООО 16%</span></div>
+              <div class="stat12-seg" style="width: 84.074%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>84%</b></span><span class="stat12-seg-tip">АНО ВО 84%</span></div>
+            </div>
+            <span class="stat12-row-sum">254 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 70.915%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>71%</b></span><span class="stat12-seg-tip">ООО 71%</span></div>
+              <div class="stat12-seg" style="width: 29.085%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>29%</b></span><span class="stat12-seg-tip">АНО ВО 29%</span></div>
+            </div>
+            <span class="stat12-row-sum">295 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p17m5" class="accent-item stat12-row">
+      <div class="stat12-row-label">Ювелирная</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 100.000%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>100%</b></span><span class="stat12-seg-tip">ООО 100%</span></div>
+            </div>
+            <span class="stat12-row-sum">240 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 100.000%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>100%</b></span><span class="stat12-seg-tip">ООО 100%</span></div>
+            </div>
+            <span class="stat12-row-sum">286 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p17m6" class="accent-item stat12-row">
+      <div class="stat12-row-label">Керамика</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 84.401%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>84%</b></span><span class="stat12-seg-tip">ООО 84%</span></div>
+              <div class="stat12-seg" style="width: 15.599%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>16%</b></span><span class="stat12-seg-tip">АНО ВО 16%</span></div>
+            </div>
+            <span class="stat12-row-sum">414 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 74.625%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>75%</b></span><span class="stat12-seg-tip">ООО 75%</span></div>
+              <div class="stat12-seg" style="width: 25.375%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>25%</b></span><span class="stat12-seg-tip">АНО ВО 25%</span></div>
+            </div>
+            <span class="stat12-row-sum">700 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p17m7" class="accent-item stat12-row">
+      <div class="stat12-row-label">Артплей</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 87.277%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>87%</b></span><span class="stat12-seg-tip">ООО 87%</span></div>
+              <div class="stat12-seg" style="width: 12.723%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>13%</b></span><span class="stat12-seg-tip">АНО ВО 13%</span></div>
+            </div>
+            <span class="stat12-row-sum">3 050 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 79.789%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>80%</b></span><span class="stat12-seg-tip">ООО 80%</span></div>
+              <div class="stat12-seg" style="width: 20.211%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>20%</b></span><span class="stat12-seg-tip">АНО ВО 20%</span></div>
+            </div>
+            <span class="stat12-row-sum">3 201 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p17m8" class="accent-item stat12-row">
+      <div class="stat12-row-label">Фабрика</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              
+            </div>
+            <span class="stat12-row-sum">0 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 15.832%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>16%</b></span><span class="stat12-seg-tip">ООО 16%</span></div>
+              <div class="stat12-seg" style="width: 84.168%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>84%</b></span><span class="stat12-seg-tip">АНО ВО 84%</span></div>
+            </div>
+            <span class="stat12-row-sum">748 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p17m9" class="accent-item stat12-row">
+      <div class="stat12-row-label">Тёмная комн.</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 52.670%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>53%</b></span><span class="stat12-seg-tip">ООО 53%</span></div>
+              <div class="stat12-seg" style="width: 47.330%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>47%</b></span><span class="stat12-seg-tip">АНО ВО 47%</span></div>
+            </div>
+            <span class="stat12-row-sum">341 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 45.295%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>45%</b></span><span class="stat12-seg-tip">ООО 45%</span></div>
+              <div class="stat12-seg" style="width: 54.705%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>55%</b></span><span class="stat12-seg-tip">АНО ВО 55%</span></div>
+            </div>
+            <span class="stat12-row-sum">183 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p17m10" class="accent-item stat12-row">
+      <div class="stat12-row-label">Принт-офис</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 45.038%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>45%</b></span><span class="stat12-seg-tip">ООО 45%</span></div>
+              <div class="stat12-seg" style="width: 54.962%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>55%</b></span><span class="stat12-seg-tip">АНО ВО 55%</span></div>
+            </div>
+            <span class="stat12-row-sum">131 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 53.889%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>54%</b></span><span class="stat12-seg-tip">ООО 54%</span></div>
+              <div class="stat12-seg" style="width: 46.111%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>46%</b></span><span class="stat12-seg-tip">АНО ВО 46%</span></div>
+            </div>
+            <span class="stat12-row-sum">90 ч</span>
+          </div>
+      </div>
+    </a>
+</div>
+
+  <div class="stat11-modal" id="p17m1">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Одежда <span class="stat11-modal-kind">CLASS</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 40.583%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>41%</b></span><span class="stat12-seg-tip">ООО 41%</span></div>
+              <div class="stat12-seg" style="width: 59.417%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>59%</b></span><span class="stat12-seg-tip">АНО ВО 59%</span></div>
+            </div>
+            <span class="stat12-row-sum">3 347 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 40.013%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>40%</b></span><span class="stat12-seg-tip">ООО 40%</span></div>
+              <div class="stat12-seg" style="width: 59.987%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>60%</b></span><span class="stat12-seg-tip">АНО ВО 60%</span></div>
+            </div>
+            <span class="stat12-row-sum">3 409 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Юр.лицо</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">ООО</td>
+            <td>1 358 ч</td>
+            <td>1 364 ч</td>
+            <td><span class="stat12-table-delta up">▲ 0%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">АНО ВО</td>
+            <td>1 988 ч</td>
+            <td>2 045 ч</td>
+            <td><span class="stat12-table-delta up">▲ 3%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p17m2">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Текстиль <span class="stat11-modal-kind">CLASS</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 78.689%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>79%</b></span><span class="stat12-seg-tip">ООО 79%</span></div>
+              <div class="stat12-seg" style="width: 21.311%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>21%</b></span><span class="stat12-seg-tip">АНО ВО 21%</span></div>
+            </div>
+            <span class="stat12-row-sum">122 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 63.912%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>64%</b></span><span class="stat12-seg-tip">ООО 64%</span></div>
+              <div class="stat12-seg" style="width: 36.088%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>36%</b></span><span class="stat12-seg-tip">АНО ВО 36%</span></div>
+            </div>
+            <span class="stat12-row-sum">224 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Юр.лицо</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">ООО</td>
+            <td>96 ч</td>
+            <td>143 ч</td>
+            <td><span class="stat12-table-delta up">▲ 49%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">АНО ВО</td>
+            <td>26 ч</td>
+            <td>81 ч</td>
+            <td><span class="stat12-table-delta up">▲ 211%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p17m3">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Печать <span class="stat11-modal-kind">CLASS</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 62.724%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>63%</b></span><span class="stat12-seg-tip">ООО 63%</span></div>
+              <div class="stat12-seg" style="width: 37.276%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>37%</b></span><span class="stat12-seg-tip">АНО ВО 37%</span></div>
+            </div>
+            <span class="stat12-row-sum">419 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 49.451%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>49%</b></span><span class="stat12-seg-tip">ООО 49%</span></div>
+              <div class="stat12-seg" style="width: 50.549%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>51%</b></span><span class="stat12-seg-tip">АНО ВО 51%</span></div>
+            </div>
+            <span class="stat12-row-sum">592 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Юр.лицо</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">ООО</td>
+            <td>263 ч</td>
+            <td>293 ч</td>
+            <td><span class="stat12-table-delta up">▲ 11%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">АНО ВО</td>
+            <td>156 ч</td>
+            <td>300 ч</td>
+            <td><span class="stat12-table-delta up">▲ 92%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p17m4">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">3D <span class="stat11-modal-kind">CLASS</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 15.926%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>16%</b></span><span class="stat12-seg-tip">ООО 16%</span></div>
+              <div class="stat12-seg" style="width: 84.074%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>84%</b></span><span class="stat12-seg-tip">АНО ВО 84%</span></div>
+            </div>
+            <span class="stat12-row-sum">254 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 70.915%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>71%</b></span><span class="stat12-seg-tip">ООО 71%</span></div>
+              <div class="stat12-seg" style="width: 29.085%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>29%</b></span><span class="stat12-seg-tip">АНО ВО 29%</span></div>
+            </div>
+            <span class="stat12-row-sum">295 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Юр.лицо</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">ООО</td>
+            <td>40 ч</td>
+            <td>209 ч</td>
+            <td><span class="stat12-table-delta up">▲ 417%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">АНО ВО</td>
+            <td>214 ч</td>
+            <td>86 ч</td>
+            <td><span class="stat12-table-delta down">▼ 60%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p17m5">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Ювелирная <span class="stat11-modal-kind">CLASS</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 100.000%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>100%</b></span><span class="stat12-seg-tip">ООО 100%</span></div>
+            </div>
+            <span class="stat12-row-sum">240 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 100.000%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>100%</b></span><span class="stat12-seg-tip">ООО 100%</span></div>
+            </div>
+            <span class="stat12-row-sum">286 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Юр.лицо</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">ООО</td>
+            <td>240 ч</td>
+            <td>286 ч</td>
+            <td><span class="stat12-table-delta up">▲ 19%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p17m6">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Керамика <span class="stat11-modal-kind">CLASS</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 84.401%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>84%</b></span><span class="stat12-seg-tip">ООО 84%</span></div>
+              <div class="stat12-seg" style="width: 15.599%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>16%</b></span><span class="stat12-seg-tip">АНО ВО 16%</span></div>
+            </div>
+            <span class="stat12-row-sum">414 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 74.625%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>75%</b></span><span class="stat12-seg-tip">ООО 75%</span></div>
+              <div class="stat12-seg" style="width: 25.375%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>25%</b></span><span class="stat12-seg-tip">АНО ВО 25%</span></div>
+            </div>
+            <span class="stat12-row-sum">700 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Юр.лицо</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">ООО</td>
+            <td>349 ч</td>
+            <td>522 ч</td>
+            <td><span class="stat12-table-delta up">▲ 50%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">АНО ВО</td>
+            <td>64 ч</td>
+            <td>178 ч</td>
+            <td><span class="stat12-table-delta up">▲ 175%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p17m7">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Артплей <span class="stat11-modal-kind">CLASS</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 87.277%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>87%</b></span><span class="stat12-seg-tip">ООО 87%</span></div>
+              <div class="stat12-seg" style="width: 12.723%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>13%</b></span><span class="stat12-seg-tip">АНО ВО 13%</span></div>
+            </div>
+            <span class="stat12-row-sum">3 050 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 79.789%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>80%</b></span><span class="stat12-seg-tip">ООО 80%</span></div>
+              <div class="stat12-seg" style="width: 20.211%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>20%</b></span><span class="stat12-seg-tip">АНО ВО 20%</span></div>
+            </div>
+            <span class="stat12-row-sum">3 201 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Юр.лицо</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">ООО</td>
+            <td>2 662 ч</td>
+            <td>2 554 ч</td>
+            <td><span class="stat12-table-delta down">▼ 4%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">АНО ВО</td>
+            <td>388 ч</td>
+            <td>647 ч</td>
+            <td><span class="stat12-table-delta up">▲ 67%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p17m8">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Фабрика <span class="stat11-modal-kind">CLASS</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              
+            </div>
+            <span class="stat12-row-sum">0 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 15.832%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>16%</b></span><span class="stat12-seg-tip">ООО 16%</span></div>
+              <div class="stat12-seg" style="width: 84.168%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>84%</b></span><span class="stat12-seg-tip">АНО ВО 84%</span></div>
+            </div>
+            <span class="stat12-row-sum">748 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Юр.лицо</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">ООО</td>
+            <td>0 ч</td>
+            <td>118 ч</td>
+            <td><span class="stat12-table-new">новое</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">АНО ВО</td>
+            <td>0 ч</td>
+            <td>630 ч</td>
+            <td><span class="stat12-table-new">новое</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p17m9">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Тёмная комн. <span class="stat11-modal-kind">CLASS</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 52.670%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>53%</b></span><span class="stat12-seg-tip">ООО 53%</span></div>
+              <div class="stat12-seg" style="width: 47.330%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>47%</b></span><span class="stat12-seg-tip">АНО ВО 47%</span></div>
+            </div>
+            <span class="stat12-row-sum">341 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 45.295%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>45%</b></span><span class="stat12-seg-tip">ООО 45%</span></div>
+              <div class="stat12-seg" style="width: 54.705%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>55%</b></span><span class="stat12-seg-tip">АНО ВО 55%</span></div>
+            </div>
+            <span class="stat12-row-sum">183 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Юр.лицо</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">ООО</td>
+            <td>180 ч</td>
+            <td>83 ч</td>
+            <td><span class="stat12-table-delta down">▼ 54%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">АНО ВО</td>
+            <td>161 ч</td>
+            <td>100 ч</td>
+            <td><span class="stat12-table-delta down">▼ 38%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p17m10">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Принт-офис <span class="stat11-modal-kind">CLASS</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 45.038%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>45%</b></span><span class="stat12-seg-tip">ООО 45%</span></div>
+              <div class="stat12-seg" style="width: 54.962%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>55%</b></span><span class="stat12-seg-tip">АНО ВО 55%</span></div>
+            </div>
+            <span class="stat12-row-sum">131 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 53.889%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>54%</b></span><span class="stat12-seg-tip">ООО 54%</span></div>
+              <div class="stat12-seg" style="width: 46.111%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>46%</b></span><span class="stat12-seg-tip">АНО ВО 46%</span></div>
+            </div>
+            <span class="stat12-row-sum">90 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Юр.лицо</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">ООО</td>
+            <td>59 ч</td>
+            <td>48 ч</td>
+            <td><span class="stat12-table-delta down">▼ 18%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">АНО ВО</td>
+            <td>72 ч</td>
+            <td>42 ч</td>
+            <td><span class="stat12-table-delta down">▼ 42%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

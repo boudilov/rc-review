@@ -1,2 +1,1086 @@
-<!-- Страница 14 — контент ещё не наполнен -->
-<div class="page-placeholder">Страница 14 / 30</div>
+<!-- Страница 14 -->
+<style>
+  .stat12-wrap { width: 100%; max-width: 1500px; padding: 0 50px; }
+  .stat12-kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(230, 230, 240, 0.5); margin-bottom: 10px; }
+  .stat12-title { font-size: 26px; font-weight: 600; color: rgba(255, 255, 255, 0.95); margin-bottom: 8px; }
+  .stat12-sub { font-size: 13px; color: rgba(230, 230, 240, 0.5); margin-bottom: 24px; }
+
+  .stat12-legend { display: flex; flex-wrap: wrap; gap: 16px 20px; margin-bottom: 28px; }
+  .stat12-legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(230, 230, 240, 0.6); }
+  .stat12-legend-swatch { width: 12px; height: 12px; flex: none; }
+
+  .stat12-corner-tag {
+    position: fixed;
+    top: 60px;
+    right: 40px;
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.9);
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .stat12-row { display: flex; align-items: center; gap: 18px; padding: 9px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.07); transition: opacity 0.15s; text-decoration: none; }
+  .stat12-row-label { width: 120px; flex: none; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: rgba(255, 255, 255, 0.9); text-transform: uppercase; }
+  .stat12-row-bars { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+  .stat12-bar-line { display: flex; align-items: center; gap: 10px; }
+  .stat12-year-tag { width: 40px; flex: none; font-size: 10px; color: rgba(230, 230, 240, 0.4); font-variant-numeric: tabular-nums; }
+  .stat12-bar { flex: 1; display: flex; height: 22px; overflow: hidden; }
+  .stat12-bar:has(.stat12-seg:hover) { overflow: visible; }
+  .stat12-seg { position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap; }
+  .stat12-seg:hover { overflow: visible; z-index: 3; }
+  .stat12-seg-label { font-size: 10px; font-weight: 600; letter-spacing: 0.01em; padding: 0 5px; }
+  .stat12-seg-label b { font-weight: 700; }
+  .stat12-row-sum { width: 70px; flex: none; text-align: right; font-size: 11px; color: rgba(230, 230, 240, 0.5); font-variant-numeric: tabular-nums; }
+
+  .stat12-seg-tip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 6px;
+    padding: 3px 8px;
+    background: rgba(0, 0, 0, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.95);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+    z-index: 10;
+  }
+  .stat12-seg:hover .stat12-seg-tip { opacity: 1; }
+
+  .stat11-modal { display: none; position: fixed; inset: 0; z-index: 100; align-items: center; justify-content: center; }
+  .stat11-modal:target { display: flex; }
+  .stat11-modal-backdrop { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.75); }
+  .stat11-modal-panel {
+    position: relative;
+    width: min(1200px, 92vw);
+    background: #080808;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    padding: 56px 64px 44px;
+  }
+  .stat11-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 26px;
+    line-height: 1;
+    color: rgba(230, 230, 240, 0.5);
+    text-decoration: none;
+  }
+  .stat11-modal-close:hover { color: rgba(255, 255, 255, 0.9); }
+  .stat11-modal-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+  }
+  .stat11-modal-kind {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: rgba(230, 230, 240, 0.5);
+    margin-left: 10px;
+  }
+
+  .stat12-modal-panel .stat11-modal-title { margin-bottom: 28px; }
+  .stat12-modal-bars { display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; }
+  .stat12-modal-bars .stat12-bar { height: 44px; }
+  .stat12-modal-bars .stat12-seg-label { font-size: 14px; }
+  .stat12-modal-bars .stat12-seg-tip { font-size: 13px; padding: 5px 10px; }
+  .stat12-modal-bars .stat12-year-tag { width: 70px; font-size: 14px; }
+  .stat12-modal-bars .stat12-row-sum { width: 110px; font-size: 16px; }
+
+  .stat12-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 15px; }
+  .stat12-table th { text-align: right; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(230, 230, 240, 0.5); padding: 0 0 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.18); }
+  .stat12-table th:first-child, .stat12-table td.stat12-table-cat { text-align: left; }
+  .stat12-table td { text-align: right; padding: 10px 0; color: rgba(255, 255, 255, 0.9); border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+  .stat12-table-delta.up { color: rgba(255, 255, 255, 0.85); font-weight: 700; }
+  .stat12-table-delta.down { color: rgba(255, 120, 120, 0.85); font-weight: 700; }
+  .stat12-table-new { color: rgba(230, 230, 240, 0.5); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+</style>
+
+<div class="stat12-wrap accent-group">
+  <div class="stat12-corner-tag">SELF</div>
+  <div class="stat12-kicker">Сравнение по годам · SELF</div>
+  <div class="stat12-title">Распределение по школам</div>
+  <div class="stat12-sub">2024/25 → 2025/26 · без учёта проката · клик по строке — подробности</div>
+
+  <div class="stat12-legend">
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.9);"></span>БВШД</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.74);"></span>МШК</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.58);"></span>МАРШ</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.44);"></span>МШСИ</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.3);"></span>Школа подростков</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.18);"></span>МШМ</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.1);"></span>Scream School</div>
+  </div>
+
+    <a href="#p14m1" class="accent-item stat12-row">
+      <div class="stat12-row-label">Одежда</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 96.720%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>97%</b></span><span class="stat12-seg-tip">БВШД 97%</span></div>
+              <div class="stat12-seg" style="width: 0.396%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 0%</span></div>
+              <div class="stat12-seg" style="width: 2.809%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШСИ 3%</span></div>
+              <div class="stat12-seg" style="width: 0.075%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 0%</span></div>
+            </div>
+            <span class="stat12-row-sum">1 741 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 97.638%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>98%</b></span><span class="stat12-seg-tip">БВШД 98%</span></div>
+              <div class="stat12-seg" style="width: 1.027%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 1%</span></div>
+              <div class="stat12-seg" style="width: 0.784%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШСИ 1%</span></div>
+              <div class="stat12-seg" style="width: 0.297%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 0%</span></div>
+              <div class="stat12-seg" style="width: 0.254%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Scream School 0%</span></div>
+            </div>
+            <span class="stat12-row-sum">1 889 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p14m2" class="accent-item stat12-row">
+      <div class="stat12-row-label">Текстиль</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 82.586%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>83%</b></span><span class="stat12-seg-tip">БВШД 83%</span></div>
+              <div class="stat12-seg" style="width: 17.414%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>17%</b></span><span class="stat12-seg-tip">МШСИ 17%</span></div>
+            </div>
+            <span class="stat12-row-sum">486 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 78.531%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>79%</b></span><span class="stat12-seg-tip">БВШД 79%</span></div>
+              <div class="stat12-seg" style="width: 0.343%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 0%</span></div>
+              <div class="stat12-seg" style="width: 0.148%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 0%</span></div>
+              <div class="stat12-seg" style="width: 20.978%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>21%</b></span><span class="stat12-seg-tip">МШСИ 21%</span></div>
+            </div>
+            <span class="stat12-row-sum">1 284 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p14m3" class="accent-item stat12-row">
+      <div class="stat12-row-label">Печать</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 60.584%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>61%</b></span><span class="stat12-seg-tip">БВШД 61%</span></div>
+              <div class="stat12-seg" style="width: 6.598%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-label">МШК <b>7%</b></span><span class="stat12-seg-tip">МШК 7%</span></div>
+              <div class="stat12-seg" style="width: 7.565%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-label">МАРШ <b>8%</b></span><span class="stat12-seg-tip">МАРШ 8%</span></div>
+              <div class="stat12-seg" style="width: 23.416%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>23%</b></span><span class="stat12-seg-tip">МШСИ 23%</span></div>
+              <div class="stat12-seg" style="width: 1.710%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 2%</span></div>
+              <div class="stat12-seg" style="width: 0.127%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Scream School 0%</span></div>
+            </div>
+            <span class="stat12-row-sum">5 212 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 72.811%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>73%</b></span><span class="stat12-seg-tip">БВШД 73%</span></div>
+              <div class="stat12-seg" style="width: 4.583%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-label">МШК <b>5%</b></span><span class="stat12-seg-tip">МШК 5%</span></div>
+              <div class="stat12-seg" style="width: 4.167%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 4%</span></div>
+              <div class="stat12-seg" style="width: 17.028%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>17%</b></span><span class="stat12-seg-tip">МШСИ 17%</span></div>
+              <div class="stat12-seg" style="width: 1.411%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 1%</span></div>
+            </div>
+            <span class="stat12-row-sum">2 954 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p14m4" class="accent-item stat12-row">
+      <div class="stat12-row-label">3D</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 46.500%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>47%</b></span><span class="stat12-seg-tip">БВШД 47%</span></div>
+              <div class="stat12-seg" style="width: 1.496%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 1%</span></div>
+              <div class="stat12-seg" style="width: 41.176%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-label">МАРШ <b>41%</b></span><span class="stat12-seg-tip">МАРШ 41%</span></div>
+              <div class="stat12-seg" style="width: 10.586%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>11%</b></span><span class="stat12-seg-tip">МШСИ 11%</span></div>
+              <div class="stat12-seg" style="width: 0.235%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 0%</span></div>
+            </div>
+            <span class="stat12-row-sum">7 480 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 51.756%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>52%</b></span><span class="stat12-seg-tip">БВШД 52%</span></div>
+              <div class="stat12-seg" style="width: 1.757%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 2%</span></div>
+              <div class="stat12-seg" style="width: 35.284%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-label">МАРШ <b>35%</b></span><span class="stat12-seg-tip">МАРШ 35%</span></div>
+              <div class="stat12-seg" style="width: 10.829%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>11%</b></span><span class="stat12-seg-tip">МШСИ 11%</span></div>
+              <div class="stat12-seg" style="width: 0.277%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 0%</span></div>
+              <div class="stat12-seg" style="width: 0.097%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Scream School 0%</span></div>
+            </div>
+            <span class="stat12-row-sum">7 864 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p14m5" class="accent-item stat12-row">
+      <div class="stat12-row-label">Ювелирная</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 78.789%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>79%</b></span><span class="stat12-seg-tip">БВШД 79%</span></div>
+              <div class="stat12-seg" style="width: 2.048%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 2%</span></div>
+              <div class="stat12-seg" style="width: 1.344%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 1%</span></div>
+              <div class="stat12-seg" style="width: 15.015%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>15%</b></span><span class="stat12-seg-tip">МШСИ 15%</span></div>
+              <div class="stat12-seg" style="width: 2.803%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 3%</span></div>
+            </div>
+            <span class="stat12-row-sum">1 562 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 84.664%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>85%</b></span><span class="stat12-seg-tip">БВШД 85%</span></div>
+              <div class="stat12-seg" style="width: 1.693%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 2%</span></div>
+              <div class="stat12-seg" style="width: 2.804%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 3%</span></div>
+              <div class="stat12-seg" style="width: 9.932%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>10%</b></span><span class="stat12-seg-tip">МШСИ 10%</span></div>
+              <div class="stat12-seg" style="width: 0.907%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 1%</span></div>
+            </div>
+            <span class="stat12-row-sum">1 665 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p14m6" class="accent-item stat12-row">
+      <div class="stat12-row-label">Керамика</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 70.142%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>70%</b></span><span class="stat12-seg-tip">БВШД 70%</span></div>
+              <div class="stat12-seg" style="width: 3.024%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 3%</span></div>
+              <div class="stat12-seg" style="width: 8.722%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-label">МАРШ <b>9%</b></span><span class="stat12-seg-tip">МАРШ 9%</span></div>
+              <div class="stat12-seg" style="width: 17.311%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>17%</b></span><span class="stat12-seg-tip">МШСИ 17%</span></div>
+              <div class="stat12-seg" style="width: 0.659%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 1%</span></div>
+              <div class="stat12-seg" style="width: 0.141%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Scream School 0%</span></div>
+            </div>
+            <span class="stat12-row-sum">5 687 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 61.453%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>61%</b></span><span class="stat12-seg-tip">БВШД 61%</span></div>
+              <div class="stat12-seg" style="width: 1.813%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 2%</span></div>
+              <div class="stat12-seg" style="width: 14.313%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-label">МАРШ <b>14%</b></span><span class="stat12-seg-tip">МАРШ 14%</span></div>
+              <div class="stat12-seg" style="width: 21.711%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>22%</b></span><span class="stat12-seg-tip">МШСИ 22%</span></div>
+              <div class="stat12-seg" style="width: 0.712%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 1%</span></div>
+            </div>
+            <span class="stat12-row-sum">3 724 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p14m7" class="accent-item stat12-row">
+      <div class="stat12-row-label">Артплей</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 25.428%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>25%</b></span><span class="stat12-seg-tip">БВШД 25%</span></div>
+              <div class="stat12-seg" style="width: 62.108%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-label">МШК <b>62%</b></span><span class="stat12-seg-tip">МШК 62%</span></div>
+              <div class="stat12-seg" style="width: 4.433%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 4%</span></div>
+              <div class="stat12-seg" style="width: 5.465%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>5%</b></span><span class="stat12-seg-tip">МШСИ 5%</span></div>
+              <div class="stat12-seg" style="width: 1.302%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 1%</span></div>
+              <div class="stat12-seg" style="width: 1.264%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Scream School 1%</span></div>
+            </div>
+            <span class="stat12-row-sum">7 794 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 22.626%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>23%</b></span><span class="stat12-seg-tip">БВШД 23%</span></div>
+              <div class="stat12-seg" style="width: 66.789%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-label">МШК <b>67%</b></span><span class="stat12-seg-tip">МШК 67%</span></div>
+              <div class="stat12-seg" style="width: 4.916%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 5%</span></div>
+              <div class="stat12-seg" style="width: 3.796%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШСИ 4%</span></div>
+              <div class="stat12-seg" style="width: 1.808%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 2%</span></div>
+              <div class="stat12-seg" style="width: 0.065%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Scream School 0%</span></div>
+            </div>
+            <span class="stat12-row-sum">6 968 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p14m8" class="accent-item stat12-row">
+      <div class="stat12-row-label">Фабрика</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              
+            </div>
+            <span class="stat12-row-sum">0 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 15.141%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>15%</b></span><span class="stat12-seg-tip">БВШД 15%</span></div>
+              <div class="stat12-seg" style="width: 83.905%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-label">МШК <b>84%</b></span><span class="stat12-seg-tip">МШК 84%</span></div>
+              <div class="stat12-seg" style="width: 0.260%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 0%</span></div>
+              <div class="stat12-seg" style="width: 0.347%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШСИ 0%</span></div>
+              <div class="stat12-seg" style="width: 0.347%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 0%</span></div>
+            </div>
+            <span class="stat12-row-sum">1 152 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p14m9" class="accent-item stat12-row">
+      <div class="stat12-row-label">Тёмная комн.</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 50.134%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>50%</b></span><span class="stat12-seg-tip">БВШД 50%</span></div>
+              <div class="stat12-seg" style="width: 6.261%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-label">МШК <b>6%</b></span><span class="stat12-seg-tip">МШК 6%</span></div>
+              <div class="stat12-seg" style="width: 10.659%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-label">МАРШ <b>11%</b></span><span class="stat12-seg-tip">МАРШ 11%</span></div>
+              <div class="stat12-seg" style="width: 32.256%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>32%</b></span><span class="stat12-seg-tip">МШСИ 32%</span></div>
+              <div class="stat12-seg" style="width: 0.670%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 1%</span></div>
+            </div>
+            <span class="stat12-row-sum">2 046 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 56.962%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>57%</b></span><span class="stat12-seg-tip">БВШД 57%</span></div>
+              <div class="stat12-seg" style="width: 15.225%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-label">МШК <b>15%</b></span><span class="stat12-seg-tip">МШК 15%</span></div>
+              <div class="stat12-seg" style="width: 9.450%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-label">МАРШ <b>9%</b></span><span class="stat12-seg-tip">МАРШ 9%</span></div>
+              <div class="stat12-seg" style="width: 16.762%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>17%</b></span><span class="stat12-seg-tip">МШСИ 17%</span></div>
+              <div class="stat12-seg" style="width: 1.363%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 1%</span></div>
+              <div class="stat12-seg" style="width: 0.237%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Scream School 0%</span></div>
+            </div>
+            <span class="stat12-row-sum">800 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p14m10" class="accent-item stat12-row">
+      <div class="stat12-row-label">Принт-офис</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 69.973%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>70%</b></span><span class="stat12-seg-tip">БВШД 70%</span></div>
+              <div class="stat12-seg" style="width: 3.145%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 3%</span></div>
+              <div class="stat12-seg" style="width: 6.207%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-label">МАРШ <b>6%</b></span><span class="stat12-seg-tip">МАРШ 6%</span></div>
+              <div class="stat12-seg" style="width: 19.836%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>20%</b></span><span class="stat12-seg-tip">МШСИ 20%</span></div>
+              <div class="stat12-seg" style="width: 0.818%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 1%</span></div>
+            </div>
+            <span class="stat12-row-sum">2 384 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 76.815%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>77%</b></span><span class="stat12-seg-tip">БВШД 77%</span></div>
+              <div class="stat12-seg" style="width: 3.337%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 3%</span></div>
+              <div class="stat12-seg" style="width: 8.428%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-label">МАРШ <b>8%</b></span><span class="stat12-seg-tip">МАРШ 8%</span></div>
+              <div class="stat12-seg" style="width: 10.870%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>11%</b></span><span class="stat12-seg-tip">МШСИ 11%</span></div>
+              <div class="stat12-seg" style="width: 0.550%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 1%</span></div>
+            </div>
+            <span class="stat12-row-sum">1 454 ч</span>
+          </div>
+      </div>
+    </a>
+</div>
+
+  <div class="stat11-modal" id="p14m1">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Одежда <span class="stat11-modal-kind">SELF</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 96.720%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>97%</b></span><span class="stat12-seg-tip">БВШД 97%</span></div>
+              <div class="stat12-seg" style="width: 0.396%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 0%</span></div>
+              <div class="stat12-seg" style="width: 2.809%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШСИ 3%</span></div>
+              <div class="stat12-seg" style="width: 0.075%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 0%</span></div>
+            </div>
+            <span class="stat12-row-sum">1 741 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 97.638%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>98%</b></span><span class="stat12-seg-tip">БВШД 98%</span></div>
+              <div class="stat12-seg" style="width: 1.027%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 1%</span></div>
+              <div class="stat12-seg" style="width: 0.784%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШСИ 1%</span></div>
+              <div class="stat12-seg" style="width: 0.297%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 0%</span></div>
+              <div class="stat12-seg" style="width: 0.254%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Scream School 0%</span></div>
+            </div>
+            <span class="stat12-row-sum">1 889 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Школа</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">БВШД</td>
+            <td>1 684 ч</td>
+            <td>1 844 ч</td>
+            <td><span class="stat12-table-delta up">▲ 10%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШК</td>
+            <td>7 ч</td>
+            <td>0 ч</td>
+            <td><span class="stat12-table-delta down">▼ 100%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МАРШ</td>
+            <td>0 ч</td>
+            <td>19 ч</td>
+            <td><span class="stat12-table-new">новое</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШСИ</td>
+            <td>49 ч</td>
+            <td>15 ч</td>
+            <td><span class="stat12-table-delta down">▼ 70%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШМ</td>
+            <td>1 ч</td>
+            <td>6 ч</td>
+            <td><span class="stat12-table-delta up">▲ 331%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Scream School</td>
+            <td>0 ч</td>
+            <td>5 ч</td>
+            <td><span class="stat12-table-new">новое</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p14m2">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Текстиль <span class="stat11-modal-kind">SELF</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 82.586%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>83%</b></span><span class="stat12-seg-tip">БВШД 83%</span></div>
+              <div class="stat12-seg" style="width: 17.414%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>17%</b></span><span class="stat12-seg-tip">МШСИ 17%</span></div>
+            </div>
+            <span class="stat12-row-sum">486 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 78.531%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>79%</b></span><span class="stat12-seg-tip">БВШД 79%</span></div>
+              <div class="stat12-seg" style="width: 0.343%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 0%</span></div>
+              <div class="stat12-seg" style="width: 0.148%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 0%</span></div>
+              <div class="stat12-seg" style="width: 20.978%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>21%</b></span><span class="stat12-seg-tip">МШСИ 21%</span></div>
+            </div>
+            <span class="stat12-row-sum">1 284 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Школа</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">БВШД</td>
+            <td>402 ч</td>
+            <td>1 008 ч</td>
+            <td><span class="stat12-table-delta up">▲ 151%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШК</td>
+            <td>0 ч</td>
+            <td>4 ч</td>
+            <td><span class="stat12-table-new">новое</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МАРШ</td>
+            <td>0 ч</td>
+            <td>2 ч</td>
+            <td><span class="stat12-table-new">новое</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШСИ</td>
+            <td>85 ч</td>
+            <td>269 ч</td>
+            <td><span class="stat12-table-delta up">▲ 218%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p14m3">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Печать <span class="stat11-modal-kind">SELF</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 60.584%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>61%</b></span><span class="stat12-seg-tip">БВШД 61%</span></div>
+              <div class="stat12-seg" style="width: 6.598%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 7%</span></div>
+              <div class="stat12-seg" style="width: 7.565%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 8%</span></div>
+              <div class="stat12-seg" style="width: 23.416%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>23%</b></span><span class="stat12-seg-tip">МШСИ 23%</span></div>
+              <div class="stat12-seg" style="width: 1.710%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 2%</span></div>
+              <div class="stat12-seg" style="width: 0.127%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Scream School 0%</span></div>
+            </div>
+            <span class="stat12-row-sum">5 212 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 72.811%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>73%</b></span><span class="stat12-seg-tip">БВШД 73%</span></div>
+              <div class="stat12-seg" style="width: 4.583%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 5%</span></div>
+              <div class="stat12-seg" style="width: 4.167%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 4%</span></div>
+              <div class="stat12-seg" style="width: 17.028%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>17%</b></span><span class="stat12-seg-tip">МШСИ 17%</span></div>
+              <div class="stat12-seg" style="width: 1.411%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 1%</span></div>
+            </div>
+            <span class="stat12-row-sum">2 954 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Школа</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">БВШД</td>
+            <td>3 158 ч</td>
+            <td>2 151 ч</td>
+            <td><span class="stat12-table-delta down">▼ 32%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШК</td>
+            <td>344 ч</td>
+            <td>135 ч</td>
+            <td><span class="stat12-table-delta down">▼ 61%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МАРШ</td>
+            <td>394 ч</td>
+            <td>123 ч</td>
+            <td><span class="stat12-table-delta down">▼ 69%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШСИ</td>
+            <td>1 220 ч</td>
+            <td>503 ч</td>
+            <td><span class="stat12-table-delta down">▼ 59%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШМ</td>
+            <td>89 ч</td>
+            <td>42 ч</td>
+            <td><span class="stat12-table-delta down">▼ 53%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Scream School</td>
+            <td>7 ч</td>
+            <td>0 ч</td>
+            <td><span class="stat12-table-delta down">▼ 100%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p14m4">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">3D <span class="stat11-modal-kind">SELF</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 46.500%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>47%</b></span><span class="stat12-seg-tip">БВШД 47%</span></div>
+              <div class="stat12-seg" style="width: 1.496%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 1%</span></div>
+              <div class="stat12-seg" style="width: 41.176%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-label">МАРШ <b>41%</b></span><span class="stat12-seg-tip">МАРШ 41%</span></div>
+              <div class="stat12-seg" style="width: 10.586%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>11%</b></span><span class="stat12-seg-tip">МШСИ 11%</span></div>
+              <div class="stat12-seg" style="width: 0.235%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 0%</span></div>
+            </div>
+            <span class="stat12-row-sum">7 480 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 51.756%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>52%</b></span><span class="stat12-seg-tip">БВШД 52%</span></div>
+              <div class="stat12-seg" style="width: 1.757%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 2%</span></div>
+              <div class="stat12-seg" style="width: 35.284%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-label">МАРШ <b>35%</b></span><span class="stat12-seg-tip">МАРШ 35%</span></div>
+              <div class="stat12-seg" style="width: 10.829%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>11%</b></span><span class="stat12-seg-tip">МШСИ 11%</span></div>
+              <div class="stat12-seg" style="width: 0.277%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 0%</span></div>
+              <div class="stat12-seg" style="width: 0.097%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Scream School 0%</span></div>
+            </div>
+            <span class="stat12-row-sum">7 864 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Школа</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">БВШД</td>
+            <td>3 478 ч</td>
+            <td>4 070 ч</td>
+            <td><span class="stat12-table-delta up">▲ 17%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШК</td>
+            <td>112 ч</td>
+            <td>138 ч</td>
+            <td><span class="stat12-table-delta up">▲ 24%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МАРШ</td>
+            <td>3 080 ч</td>
+            <td>2 775 ч</td>
+            <td><span class="stat12-table-delta down">▼ 10%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШСИ</td>
+            <td>792 ч</td>
+            <td>852 ч</td>
+            <td><span class="stat12-table-delta up">▲ 8%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШМ</td>
+            <td>18 ч</td>
+            <td>22 ч</td>
+            <td><span class="stat12-table-delta up">▲ 24%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Scream School</td>
+            <td>0 ч</td>
+            <td>8 ч</td>
+            <td><span class="stat12-table-delta up">▲ 1420%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p14m5">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Ювелирная <span class="stat11-modal-kind">SELF</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 78.789%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>79%</b></span><span class="stat12-seg-tip">БВШД 79%</span></div>
+              <div class="stat12-seg" style="width: 2.048%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 2%</span></div>
+              <div class="stat12-seg" style="width: 1.344%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 1%</span></div>
+              <div class="stat12-seg" style="width: 15.015%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>15%</b></span><span class="stat12-seg-tip">МШСИ 15%</span></div>
+              <div class="stat12-seg" style="width: 2.803%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 3%</span></div>
+            </div>
+            <span class="stat12-row-sum">1 562 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 84.664%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>85%</b></span><span class="stat12-seg-tip">БВШД 85%</span></div>
+              <div class="stat12-seg" style="width: 1.693%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 2%</span></div>
+              <div class="stat12-seg" style="width: 2.804%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 3%</span></div>
+              <div class="stat12-seg" style="width: 9.932%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>10%</b></span><span class="stat12-seg-tip">МШСИ 10%</span></div>
+              <div class="stat12-seg" style="width: 0.907%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 1%</span></div>
+            </div>
+            <span class="stat12-row-sum">1 665 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Школа</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">БВШД</td>
+            <td>1 231 ч</td>
+            <td>1 410 ч</td>
+            <td><span class="stat12-table-delta up">▲ 15%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШК</td>
+            <td>32 ч</td>
+            <td>28 ч</td>
+            <td><span class="stat12-table-delta down">▼ 12%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МАРШ</td>
+            <td>21 ч</td>
+            <td>47 ч</td>
+            <td><span class="stat12-table-delta up">▲ 122%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШСИ</td>
+            <td>235 ч</td>
+            <td>165 ч</td>
+            <td><span class="stat12-table-delta down">▼ 29%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШМ</td>
+            <td>44 ч</td>
+            <td>15 ч</td>
+            <td><span class="stat12-table-delta down">▼ 66%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p14m6">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Керамика <span class="stat11-modal-kind">SELF</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 70.142%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>70%</b></span><span class="stat12-seg-tip">БВШД 70%</span></div>
+              <div class="stat12-seg" style="width: 3.024%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 3%</span></div>
+              <div class="stat12-seg" style="width: 8.722%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-label">МАРШ <b>9%</b></span><span class="stat12-seg-tip">МАРШ 9%</span></div>
+              <div class="stat12-seg" style="width: 17.311%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>17%</b></span><span class="stat12-seg-tip">МШСИ 17%</span></div>
+              <div class="stat12-seg" style="width: 0.659%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 1%</span></div>
+              <div class="stat12-seg" style="width: 0.141%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Scream School 0%</span></div>
+            </div>
+            <span class="stat12-row-sum">5 687 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 61.453%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>61%</b></span><span class="stat12-seg-tip">БВШД 61%</span></div>
+              <div class="stat12-seg" style="width: 1.813%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 2%</span></div>
+              <div class="stat12-seg" style="width: 14.313%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-label">МАРШ <b>14%</b></span><span class="stat12-seg-tip">МАРШ 14%</span></div>
+              <div class="stat12-seg" style="width: 21.711%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>22%</b></span><span class="stat12-seg-tip">МШСИ 22%</span></div>
+              <div class="stat12-seg" style="width: 0.712%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 1%</span></div>
+            </div>
+            <span class="stat12-row-sum">3 724 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Школа</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">БВШД</td>
+            <td>3 989 ч</td>
+            <td>2 288 ч</td>
+            <td><span class="stat12-table-delta down">▼ 43%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШК</td>
+            <td>172 ч</td>
+            <td>68 ч</td>
+            <td><span class="stat12-table-delta down">▼ 61%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МАРШ</td>
+            <td>496 ч</td>
+            <td>533 ч</td>
+            <td><span class="stat12-table-delta up">▲ 7%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШСИ</td>
+            <td>984 ч</td>
+            <td>808 ч</td>
+            <td><span class="stat12-table-delta down">▼ 18%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШМ</td>
+            <td>38 ч</td>
+            <td>26 ч</td>
+            <td><span class="stat12-table-delta down">▼ 29%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Scream School</td>
+            <td>8 ч</td>
+            <td>0 ч</td>
+            <td><span class="stat12-table-delta down">▼ 100%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p14m7">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Артплей <span class="stat11-modal-kind">SELF</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 25.428%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>25%</b></span><span class="stat12-seg-tip">БВШД 25%</span></div>
+              <div class="stat12-seg" style="width: 62.108%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-label">МШК <b>62%</b></span><span class="stat12-seg-tip">МШК 62%</span></div>
+              <div class="stat12-seg" style="width: 4.433%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 4%</span></div>
+              <div class="stat12-seg" style="width: 5.465%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШСИ 5%</span></div>
+              <div class="stat12-seg" style="width: 1.302%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 1%</span></div>
+              <div class="stat12-seg" style="width: 1.264%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Scream School 1%</span></div>
+            </div>
+            <span class="stat12-row-sum">7 794 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 22.626%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>23%</b></span><span class="stat12-seg-tip">БВШД 23%</span></div>
+              <div class="stat12-seg" style="width: 66.789%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-label">МШК <b>67%</b></span><span class="stat12-seg-tip">МШК 67%</span></div>
+              <div class="stat12-seg" style="width: 4.916%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 5%</span></div>
+              <div class="stat12-seg" style="width: 3.796%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШСИ 4%</span></div>
+              <div class="stat12-seg" style="width: 1.808%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 2%</span></div>
+              <div class="stat12-seg" style="width: 0.065%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Scream School 0%</span></div>
+            </div>
+            <span class="stat12-row-sum">6 968 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Школа</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">БВШД</td>
+            <td>1 982 ч</td>
+            <td>1 576 ч</td>
+            <td><span class="stat12-table-delta down">▼ 20%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШК</td>
+            <td>4 841 ч</td>
+            <td>4 654 ч</td>
+            <td><span class="stat12-table-delta down">▼ 4%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МАРШ</td>
+            <td>346 ч</td>
+            <td>342 ч</td>
+            <td><span class="stat12-table-delta down">▼ 1%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШСИ</td>
+            <td>426 ч</td>
+            <td>264 ч</td>
+            <td><span class="stat12-table-delta down">▼ 38%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШМ</td>
+            <td>102 ч</td>
+            <td>126 ч</td>
+            <td><span class="stat12-table-delta up">▲ 24%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Scream School</td>
+            <td>98 ч</td>
+            <td>4 ч</td>
+            <td><span class="stat12-table-delta down">▼ 95%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p14m8">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Фабрика <span class="stat11-modal-kind">SELF</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              
+            </div>
+            <span class="stat12-row-sum">0 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 15.141%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>15%</b></span><span class="stat12-seg-tip">БВШД 15%</span></div>
+              <div class="stat12-seg" style="width: 83.905%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-label">МШК <b>84%</b></span><span class="stat12-seg-tip">МШК 84%</span></div>
+              <div class="stat12-seg" style="width: 0.260%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 0%</span></div>
+              <div class="stat12-seg" style="width: 0.347%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШСИ 0%</span></div>
+              <div class="stat12-seg" style="width: 0.347%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 0%</span></div>
+            </div>
+            <span class="stat12-row-sum">1 152 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Школа</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">БВШД</td>
+            <td>0 ч</td>
+            <td>174 ч</td>
+            <td><span class="stat12-table-new">новое</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШК</td>
+            <td>0 ч</td>
+            <td>967 ч</td>
+            <td><span class="stat12-table-new">новое</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МАРШ</td>
+            <td>0 ч</td>
+            <td>3 ч</td>
+            <td><span class="stat12-table-new">новое</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШСИ</td>
+            <td>0 ч</td>
+            <td>4 ч</td>
+            <td><span class="stat12-table-new">новое</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШМ</td>
+            <td>0 ч</td>
+            <td>4 ч</td>
+            <td><span class="stat12-table-new">новое</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p14m9">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Тёмная комн. <span class="stat11-modal-kind">SELF</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 50.134%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>50%</b></span><span class="stat12-seg-tip">БВШД 50%</span></div>
+              <div class="stat12-seg" style="width: 6.261%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 6%</span></div>
+              <div class="stat12-seg" style="width: 10.659%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-label">МАРШ <b>11%</b></span><span class="stat12-seg-tip">МАРШ 11%</span></div>
+              <div class="stat12-seg" style="width: 32.256%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>32%</b></span><span class="stat12-seg-tip">МШСИ 32%</span></div>
+              <div class="stat12-seg" style="width: 0.670%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 1%</span></div>
+            </div>
+            <span class="stat12-row-sum">2 046 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 56.962%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>57%</b></span><span class="stat12-seg-tip">БВШД 57%</span></div>
+              <div class="stat12-seg" style="width: 15.225%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-label">МШК <b>15%</b></span><span class="stat12-seg-tip">МШК 15%</span></div>
+              <div class="stat12-seg" style="width: 9.450%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-label">МАРШ <b>9%</b></span><span class="stat12-seg-tip">МАРШ 9%</span></div>
+              <div class="stat12-seg" style="width: 16.762%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>17%</b></span><span class="stat12-seg-tip">МШСИ 17%</span></div>
+              <div class="stat12-seg" style="width: 1.363%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 1%</span></div>
+              <div class="stat12-seg" style="width: 0.237%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Scream School 0%</span></div>
+            </div>
+            <span class="stat12-row-sum">800 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Школа</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">БВШД</td>
+            <td>1 026 ч</td>
+            <td>456 ч</td>
+            <td><span class="stat12-table-delta down">▼ 56%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШК</td>
+            <td>128 ч</td>
+            <td>122 ч</td>
+            <td><span class="stat12-table-delta down">▼ 5%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МАРШ</td>
+            <td>218 ч</td>
+            <td>76 ч</td>
+            <td><span class="stat12-table-delta down">▼ 65%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШСИ</td>
+            <td>660 ч</td>
+            <td>134 ч</td>
+            <td><span class="stat12-table-delta down">▼ 80%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШМ</td>
+            <td>14 ч</td>
+            <td>11 ч</td>
+            <td><span class="stat12-table-delta down">▼ 20%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Scream School</td>
+            <td>0 ч</td>
+            <td>2 ч</td>
+            <td><span class="stat12-table-delta up">▲ 375%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p14m10">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Принт-офис <span class="stat11-modal-kind">SELF</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 69.973%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>70%</b></span><span class="stat12-seg-tip">БВШД 70%</span></div>
+              <div class="stat12-seg" style="width: 3.145%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 3%</span></div>
+              <div class="stat12-seg" style="width: 6.207%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 6%</span></div>
+              <div class="stat12-seg" style="width: 19.836%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>20%</b></span><span class="stat12-seg-tip">МШСИ 20%</span></div>
+              <div class="stat12-seg" style="width: 0.818%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 1%</span></div>
+            </div>
+            <span class="stat12-row-sum">2 384 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 76.815%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>77%</b></span><span class="stat12-seg-tip">БВШД 77%</span></div>
+              <div class="stat12-seg" style="width: 3.337%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-tip">МШК 3%</span></div>
+              <div class="stat12-seg" style="width: 8.428%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 8%</span></div>
+              <div class="stat12-seg" style="width: 10.870%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">МШСИ <b>11%</b></span><span class="stat12-seg-tip">МШСИ 11%</span></div>
+              <div class="stat12-seg" style="width: 0.550%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 1%</span></div>
+            </div>
+            <span class="stat12-row-sum">1 454 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Школа</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">БВШД</td>
+            <td>1 668 ч</td>
+            <td>1 116 ч</td>
+            <td><span class="stat12-table-delta down">▼ 33%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШК</td>
+            <td>75 ч</td>
+            <td>48 ч</td>
+            <td><span class="stat12-table-delta down">▼ 35%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МАРШ</td>
+            <td>148 ч</td>
+            <td>122 ч</td>
+            <td><span class="stat12-table-delta down">▼ 17%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШСИ</td>
+            <td>473 ч</td>
+            <td>158 ч</td>
+            <td><span class="stat12-table-delta down">▼ 67%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">МШМ</td>
+            <td>20 ч</td>
+            <td>8 ч</td>
+            <td><span class="stat12-table-delta down">▼ 59%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Scream School</td>
+            <td>0 ч</td>
+            <td>0 ч</td>
+            <td><span class="stat12-table-delta down">▼ 100%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
