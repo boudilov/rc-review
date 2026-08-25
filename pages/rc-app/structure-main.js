@@ -51,6 +51,8 @@ async function boot() {
 document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowRight") window.parent?.rcNavigate?.(1);
   if (e.key === "ArrowLeft") window.parent?.rcNavigate?.(-1);
+  if (e.key === "ArrowUp") viz?.expandDiagram();
+  if (e.key === "ArrowDown") viz?.collapseDiagram();
 });
 
 boot();

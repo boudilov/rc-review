@@ -1,2 +1,149 @@
-<!-- Страница 10 — контент ещё не наполнен -->
-<div class="page-placeholder">Страница 10 / 30</div>
+<!-- Страница 10 -->
+<style>
+  .stat10-wrap { width: 100%; max-width: 1500px; padding: 0 50px; }
+  .stat10-kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(230, 230, 240, 0.5); margin-bottom: 10px; }
+  .stat10-title { font-size: 26px; font-weight: 600; color: rgba(255, 255, 255, 0.95); margin-bottom: 8px; }
+  .stat10-sub { font-size: 13px; color: rgba(230, 230, 240, 0.5); margin-bottom: 32px; }
+  .stat10-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  .stat10-table th { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(230, 230, 240, 0.5); text-align: center; padding: 0 10px 10px; }
+  .stat10-table th.stat10-name-h { text-align: left; padding-left: 0; }
+  .stat10-table th.stat10-group { font-size: 11px; letter-spacing: 0.2em; color: rgba(230, 230, 240, 0.75); padding-bottom: 6px; }
+  .stat10-table thead tr:first-child th { border-bottom: none; }
+  .stat10-table thead tr:last-child th { border-bottom: 1px solid rgba(255, 255, 255, 0.18); }
+  .stat10-table td { padding: 6px; text-align: center; font-size: 15px; color: rgba(255, 255, 255, 0.92); }
+  .stat10-table tr { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+  .stat10-name { text-align: left !important; padding: 10px 16px 10px 0 !important; font-size: 15px; font-weight: 500; color: rgba(255, 255, 255, 0.9); white-space: nowrap; }
+  .stat10-tile { padding: 10px 4px; min-width: 64px; }
+  .stat10-divider { border-left: 1px solid rgba(255, 255, 255, 0.12); }
+  .stat10-delta { font-size: 13px; font-weight: 700; white-space: nowrap; }
+  .stat10-delta.down { color: rgba(255, 120, 120, 0.85); }
+  .stat10-delta.up { color: rgba(255, 255, 255, 0.85); }
+  .stat10-delta.new { color: rgba(230, 230, 240, 0.5); font-weight: 600; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+</style>
+
+<div class="stat10-wrap">
+  <div class="stat10-kicker">Сравнение по годам</div>
+  <div class="stat10-title">Часы CLASS и SELF по мастерским</div>
+  <div class="stat10-sub">2024/25 → 2025/26 учебный год · без учёта проката · яркость плитки = часы (своя шкала для CLASS и для SELF)</div>
+
+  <table class="stat10-table">
+    <thead>
+      <tr>
+        <th class="stat10-name-h" rowspan="2">Мастерская</th>
+        <th class="stat10-group" colspan="3">CLASS</th>
+        <th class="stat10-group stat10-divider" colspan="3">SELF</th>
+      </tr>
+      <tr>
+        <th>24/25</th>
+        <th>25/26</th>
+        <th>Δ</th>
+        <th class="stat10-divider">24/25</th>
+        <th>25/26</th>
+        <th>Δ</th>
+      </tr>
+    </thead>
+    <tbody class="accent-group">
+
+      <tr class="accent-item">
+        <td class="stat10-name">Печатная мастерская</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.181);">419</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.222);">593</td>
+        <td class="stat10-delta down">▼ 41%</td>
+        <td class="stat10-tile stat10-divider" style="background: rgba(255,255,255,0.624); color: #0a0a0a;">5 212</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.388);">2 955</td>
+        <td class="stat10-delta down">▼ 43%</td>
+      </tr>
+
+      <tr class="accent-item">
+        <td class="stat10-name">Мастерская керамики</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.180);">415</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.248);">700</td>
+        <td class="stat10-delta up">▲ 69%</td>
+        <td class="stat10-tile stat10-divider" style="background: rgba(255,255,255,0.674); color: #0a0a0a;">5 696</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.468);">3 724</td>
+        <td class="stat10-delta down">▼ 35%</td>
+      </tr>
+
+      <tr class="accent-item">
+        <td class="stat10-name">Тёмная комната</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.162);">341</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.124);">183</td>
+        <td class="stat10-delta down">▼ 46%</td>
+        <td class="stat10-tile stat10-divider" style="background: rgba(255,255,255,0.294);">2 050</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.163);">800</td>
+        <td class="stat10-delta down">▼ 61%</td>
+      </tr>
+
+      <tr class="accent-item">
+        <td class="stat10-name">Принт-офис</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.112);">131</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.102);">90</td>
+        <td class="stat10-delta down">▼ 31%</td>
+        <td class="stat10-tile stat10-divider" style="background: rgba(255,255,255,0.329);">2 385</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.232);">1 454</td>
+        <td class="stat10-delta down">▼ 39%</td>
+      </tr>
+
+      <tr class="accent-item">
+        <td class="stat10-name">Фотостудия Артплей</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.814); color: #0a0a0a;">3 050</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.850); color: #0a0a0a;">3 201</td>
+        <td class="stat10-delta up">▲ 5%</td>
+        <td class="stat10-tile stat10-divider" style="background: rgba(255,255,255,0.894); color: #0a0a0a;">7 804</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.807); color: #0a0a0a;">6 968</td>
+        <td class="stat10-delta down">▼ 11%</td>
+      </tr>
+
+      <tr class="accent-item">
+        <td class="stat10-name">Ювелирная мастерская</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.138);">240</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.149);">286</td>
+        <td class="stat10-delta up">▲ 19%</td>
+        <td class="stat10-tile stat10-divider" style="background: rgba(255,255,255,0.243);">1 565</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.254);">1 665</td>
+        <td class="stat10-delta up">▲ 6%</td>
+      </tr>
+
+      <tr class="accent-item">
+        <td class="stat10-name">Мастерская одежды</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.885); color: #0a0a0a;">3 347</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.900); color: #0a0a0a;">3 409</td>
+        <td class="stat10-delta up">▲ 2%</td>
+        <td class="stat10-tile stat10-divider" style="background: rgba(255,255,255,0.262);">1 741</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.277);">1 889</td>
+        <td class="stat10-delta up">▲ 8%</td>
+      </tr>
+
+      <tr class="accent-item">
+        <td class="stat10-name">3D Мастерская</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.141);">254</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.151);">295</td>
+        <td class="stat10-delta up">▲ 16%</td>
+        <td class="stat10-tile stat10-divider" style="background: rgba(255,255,255,0.862); color: #0a0a0a;">7 500</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.900); color: #0a0a0a;">7 864</td>
+        <td class="stat10-delta up">▲ 5%</td>
+      </tr>
+
+      <tr class="accent-item">
+        <td class="stat10-name">Мастерская текстиля</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.109);">122</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.134);">224</td>
+        <td class="stat10-delta up">▲ 83%</td>
+        <td class="stat10-tile stat10-divider" style="background: rgba(255,255,255,0.131);">486</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.214);">1 284</td>
+        <td class="stat10-delta up">▲ 164%</td>
+      </tr>
+
+      <tr class="accent-item">
+        <td class="stat10-name">Фотостудия Фабрика</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.080);">0</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.260);">749</td>
+        <td class="stat10-delta new">новое</td>
+        <td class="stat10-tile stat10-divider" style="background: rgba(255,255,255,0.080);">0</td>
+        <td class="stat10-tile" style="background: rgba(255,255,255,0.200);">1 153</td>
+        <td class="stat10-delta new">новое</td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
