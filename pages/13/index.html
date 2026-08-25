@@ -1,2 +1,877 @@
-<!-- Страница 13 — контент ещё не наполнен -->
-<div class="page-placeholder">Страница 13 / 30</div>
+<!-- Страница 13 -->
+<style>
+  .stat12-wrap { width: 100%; max-width: 1500px; padding: 0 50px; }
+  .stat12-kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(230, 230, 240, 0.5); margin-bottom: 10px; }
+  .stat12-title { font-size: 26px; font-weight: 600; color: rgba(255, 255, 255, 0.95); margin-bottom: 8px; }
+  .stat12-sub { font-size: 13px; color: rgba(230, 230, 240, 0.5); margin-bottom: 28px; }
+
+  .stat12-legend { display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 32px; }
+  .stat12-legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(230, 230, 240, 0.6); }
+  .stat12-legend-swatch { width: 12px; height: 12px; flex: none; }
+
+  .stat12-row { display: flex; align-items: center; gap: 18px; padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.07); transition: opacity 0.15s; text-decoration: none; }
+  .stat12-row-label { width: 120px; flex: none; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: rgba(255, 255, 255, 0.9); text-transform: uppercase; }
+  .stat12-row-bars { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+  .stat12-bar-line { display: flex; align-items: center; gap: 10px; }
+  .stat12-year-tag { width: 40px; flex: none; font-size: 10px; color: rgba(230, 230, 240, 0.4); font-variant-numeric: tabular-nums; }
+  .stat12-bar { flex: 1; display: flex; height: 24px; overflow: hidden; }
+  .stat12-seg { display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap; }
+  .stat12-seg-label { font-size: 10px; font-weight: 600; letter-spacing: 0.01em; padding: 0 5px; }
+  .stat12-seg-label b { font-weight: 700; }
+  .stat12-row-sum { width: 70px; flex: none; text-align: right; font-size: 11px; color: rgba(230, 230, 240, 0.5); font-variant-numeric: tabular-nums; }
+
+  .stat11-modal { display: none; position: fixed; inset: 0; z-index: 100; align-items: center; justify-content: center; }
+  .stat11-modal:target { display: flex; }
+  .stat11-modal-backdrop { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.75); }
+  .stat11-modal-panel {
+    position: relative;
+    width: min(1200px, 92vw);
+    background: #080808;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    padding: 56px 64px 44px;
+  }
+  .stat11-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 26px;
+    line-height: 1;
+    color: rgba(230, 230, 240, 0.5);
+    text-decoration: none;
+  }
+  .stat11-modal-close:hover { color: rgba(255, 255, 255, 0.9); }
+  .stat11-modal-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+  }
+  .stat11-modal-kind {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: rgba(230, 230, 240, 0.5);
+    margin-left: 10px;
+  }
+
+  .stat12-modal-panel .stat11-modal-title { margin-bottom: 28px; }
+  .stat12-modal-bars { display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; }
+  .stat12-modal-bars .stat12-bar { height: 44px; }
+  .stat12-modal-bars .stat12-seg-label { font-size: 14px; }
+  .stat12-modal-bars .stat12-year-tag { width: 70px; font-size: 14px; }
+  .stat12-modal-bars .stat12-row-sum { width: 110px; font-size: 16px; }
+
+  .stat12-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 15px; }
+  .stat12-table th { text-align: right; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(230, 230, 240, 0.5); padding: 0 0 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.18); }
+  .stat12-table th:first-child, .stat12-table td.stat12-table-cat { text-align: left; }
+  .stat12-table td { text-align: right; padding: 10px 0; color: rgba(255, 255, 255, 0.9); border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+  .stat12-table-delta.up { color: rgba(255, 255, 255, 0.85); font-weight: 700; }
+  .stat12-table-delta.down { color: rgba(255, 120, 120, 0.85); font-weight: 700; }
+  .stat12-table-new { color: rgba(230, 230, 240, 0.5); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+</style>
+
+<div class="stat12-wrap accent-group">
+  <div class="stat12-kicker">Сравнение по годам · CLASS</div>
+  <div class="stat12-title">Распределение по направлениям образования</div>
+  <div class="stat12-sub">2024/25 → 2025/26 · без учёта проката · клик по строке — подробности</div>
+
+  <div class="stat12-legend">
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.85);"></span>ДПО</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.68);"></span>Бакалавриат</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.51);"></span>Доп. образование</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.34);"></span>Подгот. курсы</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.2);"></span>Магистратура</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.1);"></span>Специалитет</div>
+  </div>
+
+    <a href="#p13m1" class="accent-item stat12-row">
+      <div class="stat12-row-label">Одежда</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 26.689%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>27%</b></span></div>
+              <div class="stat12-seg" style="width: 59.417%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>59%</b></span></div>
+              <div class="stat12-seg" style="width: 1.434%; background: rgba(255,255,255,0.51); color: #0a0a0a;"></div>
+              <div class="stat12-seg" style="width: 12.460%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">Подгот. курсы <b>12%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">3 347 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 28.103%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>28%</b></span></div>
+              <div class="stat12-seg" style="width: 59.987%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>60%</b></span></div>
+              <div class="stat12-seg" style="width: 1.203%; background: rgba(255,255,255,0.51); color: #0a0a0a;"></div>
+              <div class="stat12-seg" style="width: 10.707%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">Подгот. курсы <b>11%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">3 409 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p13m2" class="accent-item stat12-row">
+      <div class="stat12-row-label">Текстиль</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 21.311%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>21%</b></span></div>
+              <div class="stat12-seg" style="width: 78.689%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>79%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">122 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 2.680%; background: rgba(255,255,255,0.85); color: #0a0a0a;"></div>
+              <div class="stat12-seg" style="width: 36.088%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>36%</b></span></div>
+              <div class="stat12-seg" style="width: 61.233%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>61%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">224 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p13m3" class="accent-item stat12-row">
+      <div class="stat12-row-label">Печать</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 19.843%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>20%</b></span></div>
+              <div class="stat12-seg" style="width: 3.220%; background: rgba(255,255,255,0.68); color: #0a0a0a;"></div>
+              <div class="stat12-seg" style="width: 70.546%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>71%</b></span></div>
+              <div class="stat12-seg" style="width: 6.392%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"></div>
+            </div>
+            <span class="stat12-row-sum">419 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 22.954%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>23%</b></span></div>
+              <div class="stat12-seg" style="width: 15.190%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>15%</b></span></div>
+              <div class="stat12-seg" style="width: 58.819%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>59%</b></span></div>
+              <div class="stat12-seg" style="width: 3.038%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"></div>
+            </div>
+            <span class="stat12-row-sum">592 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p13m4" class="accent-item stat12-row">
+      <div class="stat12-row-label">3D</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 14.157%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>14%</b></span></div>
+              <div class="stat12-seg" style="width: 84.074%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>84%</b></span></div>
+              <div class="stat12-seg" style="width: 1.770%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"></div>
+            </div>
+            <span class="stat12-row-sum">254 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 56.610%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>57%</b></span></div>
+              <div class="stat12-seg" style="width: 29.085%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>29%</b></span></div>
+              <div class="stat12-seg" style="width: 12.271%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>12%</b></span></div>
+              <div class="stat12-seg" style="width: 2.034%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"></div>
+            </div>
+            <span class="stat12-row-sum">295 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p13m5" class="accent-item stat12-row">
+      <div class="stat12-row-label">Ювелирная</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 100.000%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>100%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">240 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 88.462%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>88%</b></span></div>
+              <div class="stat12-seg" style="width: 11.538%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>12%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">286 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p13m6" class="accent-item stat12-row">
+      <div class="stat12-row-label">Керамика</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 11.729%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>12%</b></span></div>
+              <div class="stat12-seg" style="width: 10.399%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>10%</b></span></div>
+              <div class="stat12-seg" style="width: 76.542%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>77%</b></span></div>
+              <div class="stat12-seg" style="width: 1.330%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"></div>
+            </div>
+            <span class="stat12-row-sum">414 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 16.297%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>16%</b></span></div>
+              <div class="stat12-seg" style="width: 4.289%; background: rgba(255,255,255,0.68); color: #0a0a0a;"></div>
+              <div class="stat12-seg" style="width: 78.842%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>79%</b></span></div>
+              <div class="stat12-seg" style="width: 0.572%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"></div>
+            </div>
+            <span class="stat12-row-sum">700 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p13m7" class="accent-item stat12-row">
+      <div class="stat12-row-label">Артплей</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 39.070%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>39%</b></span></div>
+              <div class="stat12-seg" style="width: 6.657%; background: rgba(255,255,255,0.68); color: #0a0a0a;"></div>
+              <div class="stat12-seg" style="width: 34.800%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>35%</b></span></div>
+              <div class="stat12-seg" style="width: 19.473%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">Подгот. курсы <b>19%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">3 049 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 45.291%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>45%</b></span></div>
+              <div class="stat12-seg" style="width: 13.605%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>14%</b></span></div>
+              <div class="stat12-seg" style="width: 21.240%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>21%</b></span></div>
+              <div class="stat12-seg" style="width: 18.865%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">Подгот. курсы <b>19%</b></span></div>
+              <div class="stat12-seg" style="width: 1.000%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85);"></div>
+            </div>
+            <span class="stat12-row-sum">3 201 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p13m8" class="accent-item stat12-row">
+      <div class="stat12-row-label">Фабрика</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              
+            </div>
+            <span class="stat12-row-sum">0 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 10.220%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>10%</b></span></div>
+              <div class="stat12-seg" style="width: 84.168%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>84%</b></span></div>
+              <div class="stat12-seg" style="width: 5.611%; background: rgba(255,255,255,0.51); color: #0a0a0a;"></div>
+            </div>
+            <span class="stat12-row-sum">748 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p13m9" class="accent-item stat12-row">
+      <div class="stat12-row-label">Тёмная комн.</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 16.608%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>17%</b></span></div>
+              <div class="stat12-seg" style="width: 3.668%; background: rgba(255,255,255,0.68); color: #0a0a0a;"></div>
+              <div class="stat12-seg" style="width: 74.149%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>74%</b></span></div>
+              <div class="stat12-seg" style="width: 5.575%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"></div>
+            </div>
+            <span class="stat12-row-sum">341 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 14.231%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>14%</b></span></div>
+              <div class="stat12-seg" style="width: 9.579%; background: rgba(255,255,255,0.68); color: #0a0a0a;"></div>
+              <div class="stat12-seg" style="width: 72.469%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>72%</b></span></div>
+              <div class="stat12-seg" style="width: 3.722%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"></div>
+            </div>
+            <span class="stat12-row-sum">183 ч</span>
+          </div>
+      </div>
+    </a>
+    <a href="#p13m10" class="accent-item stat12-row">
+      <div class="stat12-row-label">Принт-офис</div>
+      <div class="stat12-row-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">24/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 16.031%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>16%</b></span></div>
+              <div class="stat12-seg" style="width: 54.962%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>55%</b></span></div>
+              <div class="stat12-seg" style="width: 14.122%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>14%</b></span></div>
+              <div class="stat12-seg" style="width: 14.885%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">Подгот. курсы <b>15%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">131 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">25/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 27.778%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>28%</b></span></div>
+              <div class="stat12-seg" style="width: 46.111%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>46%</b></span></div>
+              <div class="stat12-seg" style="width: 5.000%; background: rgba(255,255,255,0.51); color: #0a0a0a;"></div>
+              <div class="stat12-seg" style="width: 21.111%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">Подгот. курсы <b>21%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">90 ч</span>
+          </div>
+      </div>
+    </a>
+</div>
+
+  <div class="stat11-modal" id="p13m1">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Одежда <span class="stat11-modal-kind">CLASS</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 26.689%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>27%</b></span></div>
+              <div class="stat12-seg" style="width: 59.417%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>59%</b></span></div>
+              <div class="stat12-seg" style="width: 1.434%; background: rgba(255,255,255,0.51); color: #0a0a0a;"></div>
+              <div class="stat12-seg" style="width: 12.460%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">Подгот. курсы <b>12%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">3 347 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 28.103%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>28%</b></span></div>
+              <div class="stat12-seg" style="width: 59.987%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>60%</b></span></div>
+              <div class="stat12-seg" style="width: 1.203%; background: rgba(255,255,255,0.51); color: #0a0a0a;"></div>
+              <div class="stat12-seg" style="width: 10.707%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">Подгот. курсы <b>11%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">3 409 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Направление</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">ДПО</td>
+            <td>893 ч</td>
+            <td>958 ч</td>
+            <td><span class="stat12-table-delta up">▲ 7%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Бакалавриат</td>
+            <td>1 988 ч</td>
+            <td>2 045 ч</td>
+            <td><span class="stat12-table-delta up">▲ 3%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Доп. образование</td>
+            <td>48 ч</td>
+            <td>41 ч</td>
+            <td><span class="stat12-table-delta down">▼ 15%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Подгот. курсы</td>
+            <td>417 ч</td>
+            <td>365 ч</td>
+            <td><span class="stat12-table-delta down">▼ 12%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p13m2">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Текстиль <span class="stat11-modal-kind">CLASS</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 21.311%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>21%</b></span></div>
+              <div class="stat12-seg" style="width: 78.689%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>79%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">122 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 2.680%; background: rgba(255,255,255,0.85); color: #0a0a0a;"></div>
+              <div class="stat12-seg" style="width: 36.088%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>36%</b></span></div>
+              <div class="stat12-seg" style="width: 61.233%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>61%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">224 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Направление</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">ДПО</td>
+            <td>0 ч</td>
+            <td>6 ч</td>
+            <td><span class="stat12-table-new">новое</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Бакалавриат</td>
+            <td>26 ч</td>
+            <td>81 ч</td>
+            <td><span class="stat12-table-delta up">▲ 211%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Доп. образование</td>
+            <td>96 ч</td>
+            <td>137 ч</td>
+            <td><span class="stat12-table-delta up">▲ 43%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p13m3">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Печать <span class="stat11-modal-kind">CLASS</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 19.843%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>20%</b></span></div>
+              <div class="stat12-seg" style="width: 3.220%; background: rgba(255,255,255,0.68); color: #0a0a0a;"></div>
+              <div class="stat12-seg" style="width: 70.546%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>71%</b></span></div>
+              <div class="stat12-seg" style="width: 6.392%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">Подгот. курсы <b>6%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">419 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 22.954%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>23%</b></span></div>
+              <div class="stat12-seg" style="width: 15.190%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>15%</b></span></div>
+              <div class="stat12-seg" style="width: 58.819%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>59%</b></span></div>
+              <div class="stat12-seg" style="width: 3.038%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"></div>
+            </div>
+            <span class="stat12-row-sum">592 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Направление</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">ДПО</td>
+            <td>83 ч</td>
+            <td>136 ч</td>
+            <td><span class="stat12-table-delta up">▲ 63%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Бакалавриат</td>
+            <td>14 ч</td>
+            <td>90 ч</td>
+            <td><span class="stat12-table-delta up">▲ 567%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Доп. образование</td>
+            <td>296 ч</td>
+            <td>348 ч</td>
+            <td><span class="stat12-table-delta up">▲ 18%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Подгот. курсы</td>
+            <td>27 ч</td>
+            <td>18 ч</td>
+            <td><span class="stat12-table-delta down">▼ 33%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p13m4">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">3D <span class="stat11-modal-kind">CLASS</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 14.157%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>14%</b></span></div>
+              <div class="stat12-seg" style="width: 84.074%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>84%</b></span></div>
+              <div class="stat12-seg" style="width: 1.770%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"></div>
+            </div>
+            <span class="stat12-row-sum">254 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 56.610%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>57%</b></span></div>
+              <div class="stat12-seg" style="width: 29.085%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>29%</b></span></div>
+              <div class="stat12-seg" style="width: 12.271%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>12%</b></span></div>
+              <div class="stat12-seg" style="width: 2.034%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"></div>
+            </div>
+            <span class="stat12-row-sum">295 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Направление</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">ДПО</td>
+            <td>36 ч</td>
+            <td>167 ч</td>
+            <td><span class="stat12-table-delta up">▲ 364%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Бакалавриат</td>
+            <td>214 ч</td>
+            <td>86 ч</td>
+            <td><span class="stat12-table-delta down">▼ 60%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Доп. образование</td>
+            <td>0 ч</td>
+            <td>36 ч</td>
+            <td><span class="stat12-table-new">новое</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Подгот. курсы</td>
+            <td>4 ч</td>
+            <td>6 ч</td>
+            <td><span class="stat12-table-delta up">▲ 33%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p13m5">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Ювелирная <span class="stat11-modal-kind">CLASS</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 100.000%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>100%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">240 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 88.462%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>88%</b></span></div>
+              <div class="stat12-seg" style="width: 11.538%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>12%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">286 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Направление</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">ДПО</td>
+            <td>240 ч</td>
+            <td>253 ч</td>
+            <td><span class="stat12-table-delta up">▲ 6%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Доп. образование</td>
+            <td>0 ч</td>
+            <td>33 ч</td>
+            <td><span class="stat12-table-new">новое</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p13m6">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Керамика <span class="stat11-modal-kind">CLASS</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 11.729%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>12%</b></span></div>
+              <div class="stat12-seg" style="width: 10.399%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>10%</b></span></div>
+              <div class="stat12-seg" style="width: 76.542%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>77%</b></span></div>
+              <div class="stat12-seg" style="width: 1.330%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"></div>
+            </div>
+            <span class="stat12-row-sum">414 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 16.297%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>16%</b></span></div>
+              <div class="stat12-seg" style="width: 4.289%; background: rgba(255,255,255,0.68); color: #0a0a0a;"></div>
+              <div class="stat12-seg" style="width: 78.842%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>79%</b></span></div>
+              <div class="stat12-seg" style="width: 0.572%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"></div>
+            </div>
+            <span class="stat12-row-sum">700 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Направление</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">ДПО</td>
+            <td>48 ч</td>
+            <td>114 ч</td>
+            <td><span class="stat12-table-delta up">▲ 135%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Бакалавриат</td>
+            <td>43 ч</td>
+            <td>30 ч</td>
+            <td><span class="stat12-table-delta down">▼ 30%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Доп. образование</td>
+            <td>316 ч</td>
+            <td>552 ч</td>
+            <td><span class="stat12-table-delta up">▲ 74%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Подгот. курсы</td>
+            <td>6 ч</td>
+            <td>4 ч</td>
+            <td><span class="stat12-table-delta down">▼ 27%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p13m7">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Артплей <span class="stat11-modal-kind">CLASS</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 39.070%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>39%</b></span></div>
+              <div class="stat12-seg" style="width: 6.657%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>7%</b></span></div>
+              <div class="stat12-seg" style="width: 34.800%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>35%</b></span></div>
+              <div class="stat12-seg" style="width: 19.473%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">Подгот. курсы <b>19%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">3 049 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 45.291%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>45%</b></span></div>
+              <div class="stat12-seg" style="width: 13.605%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>14%</b></span></div>
+              <div class="stat12-seg" style="width: 21.240%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>21%</b></span></div>
+              <div class="stat12-seg" style="width: 18.865%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">Подгот. курсы <b>19%</b></span></div>
+              <div class="stat12-seg" style="width: 1.000%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85);"></div>
+            </div>
+            <span class="stat12-row-sum">3 201 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Направление</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">ДПО</td>
+            <td>1 191 ч</td>
+            <td>1 450 ч</td>
+            <td><span class="stat12-table-delta up">▲ 22%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Бакалавриат</td>
+            <td>203 ч</td>
+            <td>436 ч</td>
+            <td><span class="stat12-table-delta up">▲ 115%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Доп. образование</td>
+            <td>1 061 ч</td>
+            <td>680 ч</td>
+            <td><span class="stat12-table-delta down">▼ 36%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Подгот. курсы</td>
+            <td>594 ч</td>
+            <td>604 ч</td>
+            <td><span class="stat12-table-delta up">▲ 2%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Специалитет</td>
+            <td>0 ч</td>
+            <td>32 ч</td>
+            <td><span class="stat12-table-new">новое</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p13m8">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Фабрика <span class="stat11-modal-kind">CLASS</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              
+            </div>
+            <span class="stat12-row-sum">0 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 10.220%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>10%</b></span></div>
+              <div class="stat12-seg" style="width: 84.168%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>84%</b></span></div>
+              <div class="stat12-seg" style="width: 5.611%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>6%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">748 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Направление</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">ДПО</td>
+            <td>0 ч</td>
+            <td>76 ч</td>
+            <td><span class="stat12-table-new">новое</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Бакалавриат</td>
+            <td>0 ч</td>
+            <td>630 ч</td>
+            <td><span class="stat12-table-new">новое</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Доп. образование</td>
+            <td>0 ч</td>
+            <td>42 ч</td>
+            <td><span class="stat12-table-new">новое</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p13m9">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Тёмная комн. <span class="stat11-modal-kind">CLASS</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 16.608%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>17%</b></span></div>
+              <div class="stat12-seg" style="width: 3.668%; background: rgba(255,255,255,0.68); color: #0a0a0a;"></div>
+              <div class="stat12-seg" style="width: 74.149%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>74%</b></span></div>
+              <div class="stat12-seg" style="width: 5.575%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">Подгот. курсы <b>6%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">341 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 14.231%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>14%</b></span></div>
+              <div class="stat12-seg" style="width: 9.579%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>10%</b></span></div>
+              <div class="stat12-seg" style="width: 72.469%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>72%</b></span></div>
+              <div class="stat12-seg" style="width: 3.722%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"></div>
+            </div>
+            <span class="stat12-row-sum">183 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Направление</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">ДПО</td>
+            <td>57 ч</td>
+            <td>26 ч</td>
+            <td><span class="stat12-table-delta down">▼ 54%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Бакалавриат</td>
+            <td>12 ч</td>
+            <td>18 ч</td>
+            <td><span class="stat12-table-delta up">▲ 40%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Доп. образование</td>
+            <td>253 ч</td>
+            <td>132 ч</td>
+            <td><span class="stat12-table-delta down">▼ 48%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Подгот. курсы</td>
+            <td>19 ч</td>
+            <td>7 ч</td>
+            <td><span class="stat12-table-delta down">▼ 64%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="stat11-modal" id="p13m10">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat12-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Принт-офис <span class="stat11-modal-kind">CLASS</span></div>
+      <div class="stat12-modal-bars">
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2024/25</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 16.031%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>16%</b></span></div>
+              <div class="stat12-seg" style="width: 54.962%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>55%</b></span></div>
+              <div class="stat12-seg" style="width: 14.122%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>14%</b></span></div>
+              <div class="stat12-seg" style="width: 14.885%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">Подгот. курсы <b>15%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">131 ч</span>
+          </div>
+          <div class="stat12-bar-line">
+            <span class="stat12-year-tag">2025/26</span>
+            <div class="stat12-bar">
+              <div class="stat12-seg" style="width: 27.778%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>28%</b></span></div>
+              <div class="stat12-seg" style="width: 46.111%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>46%</b></span></div>
+              <div class="stat12-seg" style="width: 5.000%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-label">Доп. образование <b>5%</b></span></div>
+              <div class="stat12-seg" style="width: 21.111%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">Подгот. курсы <b>21%</b></span></div>
+            </div>
+            <span class="stat12-row-sum">90 ч</span>
+          </div>
+      </div>
+      <table class="stat12-table">
+        <thead><tr><th>Направление</th><th>24/25</th><th>25/26</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stat12-table-cat">ДПО</td>
+            <td>21 ч</td>
+            <td>25 ч</td>
+            <td><span class="stat12-table-delta up">▲ 19%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Бакалавриат</td>
+            <td>72 ч</td>
+            <td>42 ч</td>
+            <td><span class="stat12-table-delta down">▼ 42%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Доп. образование</td>
+            <td>18 ч</td>
+            <td>4 ч</td>
+            <td><span class="stat12-table-delta down">▼ 76%</span></td>
+          </tr>
+          <tr>
+            <td class="stat12-table-cat">Подгот. курсы</td>
+            <td>20 ч</td>
+            <td>19 ч</td>
+            <td><span class="stat12-table-delta down">▼ 3%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
