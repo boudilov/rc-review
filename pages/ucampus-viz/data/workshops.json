@@ -1,0 +1,16 @@
+[
+  { "id": 1,  "name": "Фотостудия_Артплей",         "websocket_id": "", "short_name": "STU_ART", "size": 4, "position": 1 },
+  { "id": 2,  "name": "Фотостудия_Фабрика",          "websocket_id": "", "short_name": "STU_FAB", "size": 2, "position": 2 },
+  { "id": 3,  "name": "Прокат_ООО",                  "websocket_id": "", "short_name": "REN_OOO", "size": 5, "position": 3 },
+  { "id": 4,  "name": "Прокат_МШК_АНО",              "websocket_id": "", "short_name": "REN_ANO", "size": 2, "position": 4 },
+  { "id": 5,  "name": "Принт_Офис",                  "websocket_id": "", "short_name": "PRI_OFF", "size": 3, "position": 5 },
+  { "id": 6,  "name": "Даркрум",                     "websocket_id": "", "short_name": "DAR_ROM", "size": 1, "position": 6 },
+  { "id": 7,  "name": "Галерея",                     "websocket_id": "", "short_name": "UCN_GLR", "size": 1, "position": 7 },
+  { "id": 8,  "name": "3D_мастерская",                "websocket_id": "", "short_name": "3DS_WSH", "size": 3, "position": 8 },
+  { "id": 9,  "name": "Ювелирная_мастерская",         "websocket_id": "", "short_name": "JWL_WSH", "size": 2, "position": 9 },
+  { "id": 10, "name": "Керамическая_мастерская",      "websocket_id": "", "short_name": "CER_WSH", "size": 3, "position": 10 },
+  { "id": 11, "name": "Фешн_мастерская",              "websocket_id": "", "short_name": "FSH_WSH", "size": 4, "position": 11 },
+  { "id": 12, "name": "Текстильная_мастерская",       "websocket_id": "", "short_name": "TXT_WSH", "size": 1, "position": 12 },
+  { "id": 13, "name": "Печатная_мастерская",          "websocket_id": "", "short_name": "PRM_WSH", "size": 3, "position": 13 },
+  { "id": 14, "name": "Библиотека",                   "websocket_id": "", "short_name": "LBR_LRC", "size": 1, "position": 14 }
+]

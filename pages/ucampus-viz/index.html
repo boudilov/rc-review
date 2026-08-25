@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UCampus · Step 1</title>
+<style>
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    background: #080808; /* ~97% черный */
+    overflow: hidden;
+  }
+  #stage { position: fixed; inset: 0; display: block; }
+
+  #hud-title {
+    position: fixed; top: 16px; left: 18px;
+    color: rgba(230,230,240,0.55);
+    font: 600 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    letter-spacing: 0.18em;
+    pointer-events: none;
+    user-select: none;
+    z-index: 5;
+  }
+
+  #stats-panel {
+    position: fixed; top: 16px; right: 18px;
+    display: flex; flex-wrap: wrap; justify-content: flex-end;
+    align-items: baseline; gap: 6px 16px;
+    max-width: 60vw;
+    color: rgba(230,230,240,0.55);
+    font: 600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    z-index: 5;
+    -webkit-user-select: none; user-select: none;
+    pointer-events: none;
+  }
+  #stats-panel b {
+    color: #fff; font-weight: 600; margin-left: 5px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  #info-btn {
+    position: fixed; left: 16px; bottom: 16px;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    border: 1px solid rgba(220,220,230,0.35);
+    background: rgba(255,255,255,0.05);
+    color: rgba(230,230,240,0.8);
+    font: italic 600 13px Georgia, serif;
+    cursor: pointer;
+    z-index: 5;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  #info-btn:hover { background: rgba(255,255,255,0.12); border-color: rgba(220,220,230,0.6); }
+
+  #info-modal { position: fixed; inset: 0; z-index: 10; display: none; }
+  #info-modal.open { display: block; }
+  #info-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
+  #info-modal-panel {
+    position: relative; margin: 12vh auto 0; width: min(360px, 86vw);
+    background: rgba(18,18,22,0.95);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 16px 18px 18px;
+    color: rgba(230,230,240,0.9);
+    font: 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  }
+  #info-modal-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 12px; font-weight: 600; letter-spacing: 0.04em;
+  }
+  #info-modal-close {
+    background: none; border: none; color: inherit; font-size: 18px;
+    cursor: pointer; line-height: 1; padding: 0 4px;
+  }
+  #info-modal-table { width: 100%; border-collapse: collapse; }
+  #info-modal-table td { padding: 7px 4px; border-top: 1px solid rgba(255,255,255,0.08); }
+  #info-modal-table td:first-child { width: 46px; font-weight: 600; color: #fff; }
+  #info-modal-table tr:first-child td { border-top: none; }
+
+  #settings-panel {
+    position: fixed; right: 16px; bottom: 16px;
+    width: 220px;
+    background: rgba(0,0,0,0.55);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 0;
+    padding: 14px 16px 15px;
+    color: rgba(230,230,240,0.7);
+    font: 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    letter-spacing: 0.02em;
+    z-index: 5;
+    -webkit-user-select: none; user-select: none;
+  }
+  #settings-panel .settings-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 9px;
+    border-bottom: 1px solid rgba(255,255,255,0.18);
+  }
+  #settings-panel h2 {
+    margin: 0; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.22em; color: rgba(230,230,240,0.5);
+    text-transform: uppercase;
+  }
+  #reset-btn {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.35);
+    color: rgba(230,230,240,0.7);
+    font: 600 9px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 3px 7px;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  #reset-btn:hover { border-color: #fff; color: #fff; }
+  .settings-toggle {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px; padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.14);
+    color: rgba(255,255,255,0.9);
+  }
+  .settings-row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 6px; margin-bottom: 7px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .settings-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .settings-row label { flex: 1; color: rgba(230,230,240,0.55); }
+  .settings-inputs { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+  .settings-inputs span { color: rgba(230,230,240,0.3); }
+  #settings-panel input[type="number"] {
+    width: 44px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.28);
+    border-radius: 0;
+    color: #fff;
+    font: inherit;
+    padding: 1px 1px 2px;
+    text-align: right;
+    -moz-appearance: textfield;
+  }
+  #settings-panel input[type="number"]:focus { border-bottom-color: #fff; outline: none; }
+  #settings-panel input[type="number"]:disabled { opacity: 0.35; }
+  #settings-panel input[type="number"]::-webkit-inner-spin-button,
+  #settings-panel input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none; margin: 0;
+  }
+  /* минималистичный чб-переключатель без скруглений и цвета */
+  .switch { position: relative; display: inline-block; width: 30px; height: 14px; flex-shrink: 0; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider {
+    position: absolute; inset: 0; cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.35);
+    transition: border-color 0.15s;
+  }
+  .switch .slider::before {
+    content: ""; position: absolute; width: 6px; height: 6px; left: 3px; top: 3px;
+    background: rgba(255,255,255,0.4);
+    transition: transform 0.15s, background 0.15s;
+  }
+  .switch input:checked + .slider { border-color: rgba(255,255,255,0.8); }
+  .switch input:checked + .slider::before { background: #fff; transform: translateX(16px); }
+</style>
+</head>
+<body>
+<canvas id="stage"></canvas>
+
+<div id="hud-title">UCAMPUS LIVE</div>
+
+<div id="stats-panel">
+  <span>На сцене<b id="stat-active">0</b></span>
+  <span>Подтверждено<b id="stat-created">0</b></span>
+  <span>Отменено<b id="stat-cancelled">0</b></span>
+  <span>Заблокировано<b id="stat-blocked">0</b></span>
+  <span>Ушли<b id="stat-exited">0</b></span>
+</div>
+
+<button id="info-btn" title="Горячие клавиши (I)" aria-label="Горячие клавиши">i</button>
+
+<div id="info-modal">
+  <div id="info-modal-backdrop"></div>
+  <div id="info-modal-panel">
+    <div id="info-modal-header">
+      <span>Горячие клавиши</span>
+      <button id="info-modal-close" aria-label="Закрыть">&times;</button>
+    </div>
+    <table id="info-modal-table">
+      <tr><td>L</td><td>показать/скрыть названия мастерских</td></tr>
+      <tr><td>O</td><td>показать/скрыть линии орбит</td></tr>
+      <tr><td>U</td><td>показать/скрыть id пользователей</td></tr>
+      <tr><td>R</td><td>включить/выключить вращение фона</td></tr>
+      <tr><td>M</td><td>показать/скрыть "звёзды" мастерских</td></tr>
+      <tr><td>I</td><td>показать/скрыть это окно</td></tr>
+    </table>
+  </div>
+</div>
+
+<div id="settings-panel">
+  <div class="settings-header">
+    <h2>Эмуляция</h2>
+    <button id="reset-btn" title="Сбросить эмуляцию и отрисовку">Reset</button>
+  </div>
+  <div class="settings-toggle">
+    <span>Пользователи</span>
+    <label class="switch">
+      <input type="checkbox" id="set-emulation">
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="settings-toggle">
+    <span>Звук</span>
+    <label class="switch">
+      <input type="checkbox" id="set-sound">
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="settings-row">
+    <label for="set-spawn-min">Появление, мс</label>
+    <div class="settings-inputs">
+      <input type="number" id="set-spawn-min" min="0" step="100">
+      <span>–</span>
+      <input type="number" id="set-spawn-max" min="0" step="100">
+    </div>
+  </div>
+  <div class="settings-row">
+    <label for="set-decision-min">На контуре, мс</label>
+    <div class="settings-inputs">
+      <input type="number" id="set-decision-min" min="0" step="500">
+      <span>–</span>
+      <input type="number" id="set-decision-max" min="0" step="500">
+    </div>
+  </div>
+  <div class="settings-row">
+    <label for="set-booking-chance">Откроют бронь, %</label>
+    <div class="settings-inputs">
+      <input type="number" id="set-booking-chance" min="0" max="100" step="1">
+    </div>
+  </div>
+  <div class="settings-row">
+    <label for="set-atworkshop-min">У мастерской, мс</label>
+    <div class="settings-inputs">
+      <input type="number" id="set-atworkshop-min" min="0" step="500">
+      <span>–</span>
+      <input type="number" id="set-atworkshop-max" min="0" step="500">
+    </div>
+  </div>
+  <div class="settings-row">
+    <label for="set-created-chance">Подтвердят, %</label>
+    <div class="settings-inputs">
+      <input type="number" id="set-created-chance" min="0" max="100" step="1">
+    </div>
+  </div>
+  <div class="settings-row">
+    <label for="set-blocked-chance">Заблокируют, %</label>
+    <div class="settings-inputs">
+      <input type="number" id="set-blocked-chance" min="0" max="100" step="1">
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  const canvas = document.getElementById('stage');
+  const ctx = canvas.getContext('2d');
+
+  let W, H, cx, cy;
+  function resize(){
+    W = canvas.width = window.innerWidth * devicePixelRatio;
+    H = canvas.height = window.innerHeight * devicePixelRatio;
+    canvas.style.width = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+    cx = window.innerWidth/2;
+    cy = window.innerHeight/2;
+  }
+  window.addEventListener('resize', resize);
+
+  // ---------- Звёздное поле ----------
+  let stars = [];
+  function makeStars(){
+    stars = [];
+    // радиус разлёта звёзд чуть больше диагонали экрана, чтобы вращение
+    // не оставляло пустых углов
+    const maxR = Math.hypot(window.innerWidth, window.innerHeight) / 1.6;
+    const count = Math.floor((window.innerWidth * window.innerHeight) / 3800);
+    for (let i = 0; i < count; i++){
+      const angle = Math.random() * Math.PI * 2;
+      const radius = Math.random() * maxR;
+      stars.push({
+        angle,
+        radius,
+        r: Math.random() * 1.3 + 0.25,
+        a: Math.random() * 0.55 + 0.15
+      });
+    }
+  }
+
+  function handleResize(){ resize(); makeStars(); }
+  window.addEventListener('resize', handleResize);
+  handleResize();
+
+  // ---------- Вращение фона ----------
+  const ROTATION_SPEED = 0.000025; // радиан/мс — медленное вращение всей сцены
+  let rotation = 0;
+  let lastTime = performance.now();
+
+  // ---------- Полноэкранная белая вспышка (кнопка Reset) ----------
+  const SCREEN_FLASH_MS = 250;
+  let screenFlashStart = -Infinity;
+
+  // ---------- Мастерские (загружаются из data/workshops.json) ----------
+  // Резервный список на случай, если fetch не удался (например, файл
+  // открыт напрямую как file:// и браузер блокирует локальный fetch).
+  const FALLBACK_WORKSHOPS = [
+    { id: 1, name: 'Фотостудия №1', size: 3, position: 1 },
+    { id: 2, name: 'Фотостудия №2', size: 3, position: 2 },
+    { id: 3, name: 'Прокат №1', size: 3, position: 3 },
+    { id: 4, name: 'Прокат №2', size: 3, position: 4 },
+    { id: 5, name: 'Галерея', size: 3, position: 5 },
+    { id: 6, name: 'Принт-офис', size: 3, position: 6 },
+    { id: 7, name: 'Даркрум', size: 3, position: 7 },
+    { id: 8, name: 'Фешн-мастерская', size: 3, position: 8 },
+    { id: 9, name: '3D-мастерская', size: 3, position: 9 },
+    { id: 10, name: 'Столярная мастерская', size: 3, position: 10 },
+    { id: 11, name: 'Керамическая мастерская', size: 3, position: 11 },
+    { id: 12, name: 'Швейная мастерская', size: 3, position: 12 },
+    { id: 13, name: 'Студия звукозаписи', size: 3, position: 13 }
+  ];
+
+  // видимый радиус точки мастерской по полю size (1..5)
+  function dotRadiusFor(size){
+    const s = Number(size) || 1;
+    return 2.5 + s * 1.3;
+  }
+
+  let workshops = [];
+  let workshopDefs = FALLBACK_WORKSHOPS;
+
+  function layoutWorkshops(){
+    const minR = Math.min(window.innerWidth, window.innerHeight) * 0.14;
+    const maxR = Math.min(window.innerWidth, window.innerHeight) * 0.42;
+    const sorted = [...workshopDefs].sort((a, b) => a.position - b.position);
+    const n = Math.max(sorted.length - 1, 1);
+    const step = (maxR - minR) / n;
+    // случайный разброс орбит вокруг "идеального" шага, чтобы расстояния
+    // между соседними орбитами не были одинаковыми
+    const JITTER = step * 0.6;
+    workshops = sorted.map((w, i) => {
+      const dir = Math.random() < 0.5 ? 1 : -1;
+      const jitter = (Math.random() - 0.5) * JITTER;
+      return {
+        id: w.id,
+        name: w.name,
+        shortName: w.short_name || '',
+        dotR: dotRadiusFor(w.size),
+        // порядок орбит определяется полем position: меньше position — ближе к центру,
+        // плюс небольшой случайный сдвиг радиуса
+        radius: Math.min(maxR, Math.max(minR, minR + step * i + jitter)),
+        angle: Math.random() * Math.PI * 2,
+        // случайная угловая скорость, разное направление у разных мастерских
+        speed: dir * (0.00002 + Math.random() * 0.00006)
+      };
+    });
+  }
+
+  function handleResizeWorkshops(){ layoutWorkshops(); }
+  window.addEventListener('resize', handleResizeWorkshops);
+  layoutWorkshops();
+
+  fetch('data/workshops.json')
+    .then(res => res.json())
+    .then(data => {
+      if (Array.isArray(data) && data.length){
+        workshopDefs = data;
+        layoutWorkshops();
+      }
+    })
+    .catch(() => {
+      console.warn('Не удалось загрузить data/workshops.json, используется резервный список мастерских.');
+    });
+
+  // ---------- Настройки эмуляции (панель справа внизу) ----------
+  const SETTINGS = {
+    emulationEnabled: false,
+    spawnMin: 200, spawnMax: 400,          // мс между появлениями новых пользователей
+    decisionMin: 400, decisionMax: 10000,  // сколько пользователь "думает" на внешнем контуре
+    bookingChance: 0,                      // % шанс открыть бронь вместо ухода с сайта
+    atWorkshopMin: 3000, atWorkshopMax: 15000, // сколько пользователь проводит у мастерской
+    createdChance: 0,                      // % бронь подтвердят
+    blockedChance: 0                       // % бронь заблокируют (остальное — отмена)
+  };
+
+  // ---------- Статистика (панель справа вверху) ----------
+  const STATS = { created: 0, cancelled: 0, blocked: 0, exited: 0 };
+  const statsEls = {
+    active: document.getElementById('stat-active'),
+    created: document.getElementById('stat-created'),
+    cancelled: document.getElementById('stat-cancelled'),
+    blocked: document.getElementById('stat-blocked'),
+    exited: document.getElementById('stat-exited')
+  };
+  function updateStatsPanel(){
+    statsEls.active.textContent = users.length;
+    statsEls.created.textContent = STATS.created;
+    statsEls.cancelled.textContent = STATS.cancelled;
+    statsEls.blocked.textContent = STATS.blocked;
+    statsEls.exited.textContent = STATS.exited;
+  }
+
+  // ---------- Эмбиент-звук: фоновый гул, реагирующий на активность сцены ----------
+  // Никаких дискретных "бип" на каждое событие — только непрерывный дрон
+  // (несколько слегка расстроенных синусоид через lowpass-фильтр), у
+  // которого яркость/резонанс плавно следуют за населённостью сцены и
+  // частотой событий бронирования. AudioContext создаётся лениво, по
+  // первому включению тумблера — так соблюдается autoplay-политика браузера.
+  let audioCtx = null;
+  let soundEnabled = false;
+  let masterGain = null;
+  let filterNode = null;
+  let activityGain = null;
+  let recentActivity = []; // временные метки недавних событий (appeared/booking.*/exit)
+
+  function noteActivity(now){
+    recentActivity.push(now);
+    const cutoff = now - 6000;
+    while (recentActivity.length && recentActivity[0] < cutoff) recentActivity.shift();
+  }
+
+  function initAudio(){
+    if (audioCtx) return;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    masterGain = audioCtx.createGain();
+    masterGain.gain.value = 0;
+    masterGain.connect(audioCtx.destination);
+
+    activityGain = audioCtx.createGain();
+    activityGain.gain.value = 0.7;
+    activityGain.connect(masterGain);
+
+    filterNode = audioCtx.createBiquadFilter();
+    filterNode.type = 'lowpass';
+    filterNode.frequency.value = 220;
+    filterNode.Q.value = 0.6;
+    filterNode.connect(activityGain);
+
+    const baseFreq = 65; // низкий гул кампуса
+    [-6, 0, 7].forEach(cents => {
+      const osc = audioCtx.createOscillator();
+      osc.type = 'triangle'; // богаче обертонами, чем чистая синусоида — лучше слышно на тихой громкости
+      osc.frequency.value = baseFreq;
+      osc.detune.value = cents;
+      const g = audioCtx.createGain();
+      g.gain.value = 0.33;
+      osc.connect(g);
+      g.connect(filterNode);
+      osc.start();
+    });
+
+    // медленный LFO "дыхания" фильтра, чтобы дрон не звучал статично
+    const lfo = audioCtx.createOscillator();
+    lfo.type = 'sine';
+    lfo.frequency.value = 0.055;
+    const lfoDepth = audioCtx.createGain();
+    lfoDepth.gain.value = 55;
+    lfo.connect(lfoDepth);
+    lfoDepth.connect(filterNode.frequency);
+    lfo.start();
+  }
+
+  function setSoundEnabled(on){
+    soundEnabled = on;
+    if (on){
+      initAudio();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+      masterGain.gain.linearRampToValueAtTime(0.35, audioCtx.currentTime + 1.2);
+    } else if (audioCtx){
+      masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+      masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.8);
+    }
+  }
+
+  // подстраховка: некоторые браузеры не до конца разблокируют AudioContext
+  // по событию change на чекбоксе — досыпаем resume() на любое следующее
+  // взаимодействие со страницей, если звук должен быть включён
+  window.addEventListener('pointerdown', () => {
+    if (soundEnabled && audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+  }, { passive: true });
+
+  // лёгкий щелчок в момент успешно завершённой брони (центральная вспышка) —
+  // короткий отфильтрованный шум, как тик счётчика Гейгера, а не тональный "чирик"
+  function playBookingChime(){
+    if (!soundEnabled || !audioCtx) return;
+    const t = audioCtx.currentTime;
+    const dur = 0.03; // очень короткий импульс
+
+    const bufferSize = Math.max(1, Math.ceil(audioCtx.sampleRate * dur));
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+
+    const bp = audioCtx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = 3200 + Math.random() * 1600; // лёгкий разброс тона щелчка
+    bp.Q.value = 4;
+
+    const g = audioCtx.createGain();
+    g.gain.setValueAtTime(0.5, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+
+    noise.connect(bp);
+    bp.connect(g);
+    g.connect(masterGain);
+    noise.start(t);
+    noise.stop(t + dur + 0.01);
+  }
+
+  function updateAudio(now){
+    if (!soundEnabled || !audioCtx) return;
+    const t = audioCtx.currentTime;
+    // населённость сцены раскрывает фильтр (ярче звук — больше народа)
+    const targetFreq = Math.min(1400, 220 + users.length * 12);
+    filterNode.frequency.setTargetAtTime(targetFreq, t, 0.8);
+    // частота недавних событий бронирования — лёгкий подъём громкости/резонанса
+    const rate = recentActivity.length / 6; // событий в секунду за окно 6с
+    const level = Math.min(1, rate * 2);
+    activityGain.gain.setTargetAtTime(0.7 + level * 0.3, t, 0.8);
+    filterNode.Q.setTargetAtTime(0.6 + level * 1.2, t, 0.8);
+  }
+
+  (function bindSettingsPanel(){
+    const bind = (id, key, isInt) => {
+      const el = document.getElementById(id);
+      el.value = SETTINGS[key];
+      el.addEventListener('input', () => {
+        const v = isInt ? parseInt(el.value, 10) : parseFloat(el.value);
+        if (!isNaN(v) && v >= 0) SETTINGS[key] = v;
+      });
+    };
+    document.getElementById('set-emulation').addEventListener('change', (e) => {
+      SETTINGS.emulationEnabled = e.target.checked;
+    });
+    document.getElementById('set-sound').addEventListener('change', (e) => {
+      setSoundEnabled(e.target.checked);
+    });
+    bind('set-spawn-min', 'spawnMin', true);
+    bind('set-spawn-max', 'spawnMax', true);
+    bind('set-decision-min', 'decisionMin', true);
+    bind('set-decision-max', 'decisionMax', true);
+    bind('set-booking-chance', 'bookingChance', true);
+    bind('set-atworkshop-min', 'atWorkshopMin', true);
+    bind('set-atworkshop-max', 'atWorkshopMax', true);
+    bind('set-created-chance', 'createdChance', true);
+    bind('set-blocked-chance', 'blockedChance', true);
+    document.getElementById('reset-btn').addEventListener('click', resetEmulation);
+  })();
+
+  // ---------- Пользователи (эмуляция) ----------
+  // Полная событийная модель пока эмулируется локально (без WebSocket):
+  // user.appeared        — появление на внешнем контуре
+  // user.booking.init    — перелёт на орбиту случайной мастерской (открыт диалог брони)
+  // user.booking.created — бронь подтверждена: вспышка и улёт в центр
+  // user.booking.cancelled / user.booking.blocked — возврат на внешний контур
+  // user.exit            — уход с сайта (затухание)
+  // Когда подключится реальный бэкенд, эти же переходы будут вызываться
+  // по приходу соответствующих событий вместо случайных таймеров.
+
+  let users = [];
+  let nextUserId = 0;
+  let userSpawnTimer = 0;
+  let nextSpawnIn = 0;
+
+  function scheduleNextUserSpawn(){
+    nextSpawnIn = SETTINGS.spawnMin + Math.random() * Math.max(0, SETTINGS.spawnMax - SETTINGS.spawnMin);
+  }
+  scheduleNextUserSpawn();
+
+  function userRadiusBounds(){
+    // максимальный радиус орбит мастерских (см. layoutWorkshops) + отступ
+    const maxWorkshopR = Math.min(window.innerWidth, window.innerHeight) * 0.42;
+    const minR = maxWorkshopR + 30;
+    const maxR = Math.min(window.innerWidth, window.innerHeight) * 0.49;
+    return { minR, maxR: Math.max(maxR, minR + 10) };
+  }
+
+  const USER_FADE_IN = 500;   // мс
+  const USER_FADE_OUT = 700;  // мс
+  const USER_FLASH_RISE_MS = 20;   // почти мгновенное разгорание вспышки
+  const USER_FLASH_DECAY_MS = 700; // медленное затухание вспышки
+  const USER_FLASH_MS = USER_FLASH_RISE_MS + USER_FLASH_DECAY_MS; // полная длительность
+
+  function spawnUser(){
+    const { minR, maxR } = userRadiusBounds();
+    const dir = Math.random() < 0.5 ? 1 : -1;
+    const now = performance.now();
+    noteActivity(now);
+    users.push({
+      id: 'id' + String(nextUserId++).padStart(4, '0'),
+      state: 'outer', // outer | toWorkshop | atWorkshop | toOuter | leaving
+      angle: Math.random() * Math.PI * 2,
+      radius: minR + Math.random() * (maxR - minR),
+      speed: dir * (0.00003 + Math.random() * 0.00010),
+      born: now,
+      opacity: 0,
+      trail: [],
+      decisionAt: now + SETTINGS.decisionMin + Math.random() * Math.max(0, SETTINGS.decisionMax - SETTINGS.decisionMin),
+      atWorkshopUntil: 0,
+      workshop: null,
+      localAngle: 0,        // угол на маленькой орбите вокруг мастерской (atWorkshop)
+      localRadius: 0,       // текущий радиус этой маленькой орбиты
+      localRadiusTarget: 0, // радиус, к которому плавно стягиваемся после стыковки
+      localSpeed: 0,        // угловая скорость маленькой орбиты
+      flight: null,
+      leaveAt: 0,
+      flashStart: 0,
+      flashUntil: 0,
+      flashColor: null,
+      flashSize: 10,
+      flashTriggered: false,
+      flashFixed: false, // если true — вспышка рисуется неподвижно в центре сцены, а не у точки пользователя
+      flashRayOffset: 0  // поворот лучей блика (только для flashFixed)
+    });
+  }
+
+  // кратчайшая угловая интерполяция (чтобы перелёт не делал лишний оборот)
+  function angleLerp(a, b, t){
+    const twoPi = Math.PI * 2;
+    let diff = ((b - a + Math.PI) % twoPi + twoPi) % twoPi - Math.PI;
+    return a + diff * t;
+  }
+  function easeInOutQuad(t){
+    return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  }
+
+  function startFlight(u, toR, toA, dur, nextState){
+    u.flight = { fromR: u.radius, fromA: u.angle, toR, toA, start: performance.now(), dur };
+    u.state = nextState;
+  }
+
+  // user.booking.init — открыт диалог бронирования случайной мастерской
+  function startBookingInit(u, now){
+    const w = workshops[Math.floor(Math.random() * workshops.length)];
+    u.workshop = w;
+    startFlight(u, w.radius, w.angle + (Math.random() - 0.5) * 0.3, 700 + Math.random() * 300, 'toWorkshop');
+  }
+
+  // возврат на внешний контур после отмены/блокировки брони
+  function flyBackToOuter(u, now){
+    const { minR, maxR } = userRadiusBounds();
+    startFlight(u, minR + Math.random() * (maxR - minR), u.angle, 550, 'toOuter');
+  }
+
+  // user.booking.created — самое важное событие: пользователь пролетает
+  // прямо через центр (не останавливаясь и не замедляясь) и летит дальше,
+  // на внешний контур с другой стороны. Вспышка срабатывает на лету в
+  // момент прохождения центра — см. cartesian-ветку в updateUsers.
+  function startBookingCreated(u, now){
+    const { minR, maxR } = userRadiusBounds();
+    const fromX = cx + Math.cos(u.angle) * u.radius;
+    const fromY = cy + Math.sin(u.angle) * u.radius;
+    // угол на противоположной стороне — прямая между старой и новой точкой
+    // проходит точно через центр сцены
+    const toAngle = u.angle + Math.PI + (Math.random() - 0.5) * 0.3;
+    const toRadius = minR + Math.random() * (maxR - minR);
+    const toX = cx + Math.cos(toAngle) * toRadius;
+    const toY = cy + Math.sin(toAngle) * toRadius;
+    const dist = Math.hypot(toX - fromX, toY - fromY);
+    // из-за случайного угла разлёта прямая не всегда проходит ровно через
+    // (0,0) — считаем момент t на отрезке, ближайший к центру, чтобы
+    // вспышка гарантированно срабатывала именно там, а не по недостижимому
+    // порогу расстояния
+    const ax = fromX - cx, ay = fromY - cy;
+    const dx = toX - fromX, dy = toY - fromY;
+    const denom = dx * dx + dy * dy;
+    const flashAtT = denom > 0 ? Math.max(0, Math.min(1, -(ax * dx + ay * dy) / denom)) : 0.5;
+    u.flight = {
+      cartesian: true,
+      fromX, fromY, toX, toY,
+      flashAtT,
+      start: now,
+      dur: Math.max(500, dist / 0.9) // примерно постоянная скорость полёта
+    };
+    u.flashTriggered = false;
+    u.state = 'toOuter'; // по завершении — та же логика возврата к обычной жизни, что и после отмены/блокировки
+    STATS.created++;
+    noteActivity(now);
+  }
+
+  // user.booking.cancelled — пользователь сам отменил бронирование
+  function startBookingCancelled(u, now){
+    flyBackToOuter(u, now);
+    STATS.cancelled++;
+    noteActivity(now);
+  }
+
+  // user.booking.blocked — мастерская недоступна для брони
+  function startBookingBlocked(u, now){
+    u.flashStart = now;
+    u.flashUntil = now + USER_FLASH_MS;
+    u.flashColor = 'rgba(255,120,120,';
+    u.flashSize = 23;
+    u.flashFixed = false;
+    flyBackToOuter(u, now);
+    STATS.blocked++;
+    noteActivity(now);
+  }
+
+  // user.exit — уход с сайта
+  function startLeaving(u, now){
+    noteActivity(now);
+    u.state = 'leaving';
+    u.leaveAt = now;
+    STATS.exited++;
+  }
+
+  function finishFlight(u, now){
+    const prevState = u.state;
+    u.flight = null;
+    if (prevState === 'toWorkshop'){
+      u.state = 'atWorkshop';
+      // задаём маленькую орбиту вокруг мастерской так, чтобы стыковка
+      // прошла без скачка — стартовый угол берём из текущей позиции
+      // пользователя относительно мастерской
+      const w = u.workshop;
+      const wx = cx + Math.cos(w.angle) * w.radius;
+      const wy = cy + Math.sin(w.angle) * w.radius;
+      const ux = cx + Math.cos(u.angle) * u.radius;
+      const uy = cy + Math.sin(u.angle) * u.radius;
+      const gapX = ux - wx, gapY = uy - wy;
+      u.localAngle = Math.atan2(gapY, gapX);
+      // стартуем строго с фактического расстояния в момент стыковки — без
+      // скачка, а к целевому "маленькому" радиусу дальше плавно стягиваемся
+      u.localRadius = Math.hypot(gapX, gapY);
+      u.localRadiusTarget = w.dotR + 8 + Math.random() * 6;
+      const dir = Math.random() < 0.5 ? 1 : -1;
+      u.localSpeed = dir * (0.0006 + Math.random() * 0.0009);
+      u.atWorkshopUntil = now + SETTINGS.atWorkshopMin + Math.random() * Math.max(0, SETTINGS.atWorkshopMax - SETTINGS.atWorkshopMin);
+    } else if (prevState === 'toOuter'){
+      u.state = 'outer';
+      const dir = Math.random() < 0.5 ? 1 : -1;
+      u.speed = dir * (0.00003 + Math.random() * 0.00010);
+      u.decisionAt = now + SETTINGS.decisionMin + Math.random() * Math.max(0, SETTINGS.decisionMax - SETTINGS.decisionMin);
+    }
+  }
+
+  function maybeTriggerNextEvent(u, now){
+    if (u.state === 'outer' && now >= u.decisionAt){
+      if (workshops.length && Math.random() * 100 < SETTINGS.bookingChance){
+        startBookingInit(u, now);
+      } else {
+        startLeaving(u, now);
+      }
+    } else if (u.state === 'atWorkshop' && now >= u.atWorkshopUntil){
+      const r = Math.random() * 100;
+      if (r < SETTINGS.createdChance) startBookingCreated(u, now);
+      else if (r < SETTINGS.createdChance + SETTINGS.blockedChance) startBookingBlocked(u, now);
+      else startBookingCancelled(u, now);
+    }
+  }
+
+  const USER_TRAIL_LEN = 10; // точек истории позиции для хвоста кометы (только во время перелётов)
+
+  function updateUsers(dt, now){
+    userSpawnTimer += dt;
+    if (userSpawnTimer >= nextSpawnIn){
+      userSpawnTimer = 0;
+      scheduleNextUserSpawn();
+      if (SETTINGS.emulationEnabled) spawnUser();
+    }
+
+    users.forEach(u => {
+      if (u.flight){
+        const t = Math.min(1, (now - u.flight.start) / u.flight.dur);
+        if (u.flight.cartesian){
+          // прямолинейный перелёт с постоянной скоростью (без замедления),
+          // проходящий точно через центр сцены
+          const x = u.flight.fromX + (u.flight.toX - u.flight.fromX) * t;
+          const y = u.flight.fromY + (u.flight.toY - u.flight.fromY) * t;
+          u.radius = Math.hypot(x - cx, y - cy);
+          u.angle = Math.atan2(y - cy, x - cx);
+          if (!u.flashTriggered && t >= u.flight.flashAtT){
+            u.flashTriggered = true;
+            u.flashStart = now;
+            u.flashUntil = now + USER_FLASH_MS;
+            u.flashColor = 'rgba(255,255,255,';
+            u.flashSize = 153;
+            u.flashFixed = true; // вспышка остаётся в центре сцены, пока пользователь летит дальше
+            u.flashRayOffset = Math.random() * Math.PI * 2; // случайный поворот лучей блика
+            playBookingChime();
+          }
+        } else {
+          const e = easeInOutQuad(t);
+          u.radius = u.flight.fromR + (u.flight.toR - u.flight.fromR) * e;
+          u.angle = angleLerp(u.flight.fromA, u.flight.toA, e);
+        }
+        if (t >= 1) finishFlight(u, now);
+      } else if (u.state === 'outer'){
+        u.angle += u.speed * dt;
+      } else if (u.state === 'atWorkshop' && u.workshop){
+        // вращение по маленькой орбите вокруг текущей (тоже движущейся) позиции мастерской
+        u.localAngle += u.localSpeed * dt;
+        u.localRadius += (u.localRadiusTarget - u.localRadius) * Math.min(1, dt / 300);
+        const w = u.workshop;
+        const wx = cx + Math.cos(w.angle) * w.radius;
+        const wy = cy + Math.sin(w.angle) * w.radius;
+        const lx = wx + Math.cos(u.localAngle) * u.localRadius;
+        const ly = wy + Math.sin(u.localAngle) * u.localRadius;
+        u.radius = Math.hypot(lx - cx, ly - cy);
+        u.angle = Math.atan2(ly - cy, lx - cx);
+      }
+
+      if (u.state === 'leaving'){
+        u.opacity = Math.max(0, Math.min(1, (u.leaveAt + USER_FADE_OUT - now) / USER_FADE_OUT));
+      } else {
+        u.opacity = Math.min(1, (now - u.born) / USER_FADE_IN);
+      }
+
+      // хвост нужен только во время перелётов между орбитами (booking.*),
+      // в стабильном вращении (outer/atWorkshop) картину не загромождаем
+      if (u.flight){
+        const x = cx + Math.cos(u.angle) * u.radius;
+        const y = cy + Math.sin(u.angle) * u.radius;
+        u.trail.push({ x, y });
+        while (u.trail.length > USER_TRAIL_LEN) u.trail.shift();
+      } else if (u.trail.length){
+        u.trail.length = 0;
+      }
+
+      maybeTriggerNextEvent(u, now);
+    });
+
+    users = users.filter(u => !(u.state === 'leaving' && u.opacity <= 0));
+  }
+
+  function drawUserTrail(u, dim){
+    const pts = u.trail;
+    if (pts.length < 2) return;
+    for (let i = 1; i < pts.length; i++){
+      const t = i / (pts.length - 1); // 0 (старое) → 1 (голова)
+      ctx.beginPath();
+      ctx.moveTo(pts[i - 1].x, pts[i - 1].y);
+      ctx.lineTo(pts[i].x, pts[i].y);
+      ctx.strokeStyle = `rgba(210,225,255,${t * t * 0.5 * u.opacity * dim})`;
+      ctx.lineWidth = Math.max(0.5, 1.6 * t);
+      ctx.stroke();
+    }
+  }
+
+  function drawUsers(){
+    const now = performance.now();
+    users.forEach(u => {
+      const x = cx + Math.cos(u.angle) * u.radius;
+      const y = cy + Math.sin(u.angle) * u.radius;
+
+      // "висит" на наведённой орбите — только пристыкованные к ней пользователи;
+      // центральная вспышка (flashFixed) — исключение, её не приглушаем никогда
+      const belongsToHoveredOrbit = u.state === 'atWorkshop' && u.workshop && u.workshop.id === hoveredOrbitId;
+      const dim = dimFactor(belongsToHoveredOrbit);
+
+      drawUserTrail(u, dim);
+
+      if (u.flashColor && now < u.flashUntil){
+        const flashDim = u.flashFixed ? 1 : dim;
+        const elapsed = now - u.flashStart;
+        // быстрое разгорание до пика; при затухании гаснет яркость, но не радиус
+        let sizeK, alphaK;
+        if (elapsed < USER_FLASH_RISE_MS){
+          sizeK = elapsed / USER_FLASH_RISE_MS;
+          alphaK = sizeK;
+        } else {
+          sizeK = 1;
+          alphaK = 1 - (elapsed - USER_FLASH_RISE_MS) / USER_FLASH_DECAY_MS;
+        }
+        sizeK = Math.max(0, Math.min(1, sizeK));
+        alphaK = Math.max(0, Math.min(1, alphaK));
+        const fx = u.flashFixed ? cx : x;
+        const fy = u.flashFixed ? cy : y;
+        ctx.beginPath();
+        ctx.arc(fx, fy, 2 + u.flashSize * sizeK, 0, Math.PI * 2);
+        ctx.fillStyle = `${u.flashColor}${0.55 * alphaK * u.opacity * flashDim})`;
+        ctx.shadowColor = `${u.flashColor}${0.9 * flashDim})`;
+        ctx.shadowBlur = (10 + u.flashSize) * flashDim;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // самое важное событие — минималистичный чб-флэр вместо чистого свечения:
+        // тонкие лучи-звезда и расширяющееся кольцо-ударная волна
+        if (u.flashFixed){
+          const spread = Math.min(1, elapsed / USER_FLASH_MS);
+          const rayAlpha = 0.4 * alphaK * u.opacity;
+          const innerR = 2 + u.flashSize * sizeK * 0.25;
+          const baseLen = u.flashSize * (0.5 + spread * 1.3);
+          const rayCount = 8;
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = `${u.flashColor}${rayAlpha})`;
+          for (let i = 0; i < rayCount; i++){
+            const a = u.flashRayOffset + (Math.PI * 2 / rayCount) * i;
+            const len = baseLen * (i % 2 === 0 ? 1 : 0.5);
+            ctx.beginPath();
+            ctx.moveTo(fx + Math.cos(a) * innerR, fy + Math.sin(a) * innerR);
+            ctx.lineTo(fx + Math.cos(a) * len, fy + Math.sin(a) * len);
+            ctx.stroke();
+          }
+
+          ctx.beginPath();
+          ctx.arc(fx, fy, 2 + u.flashSize * (0.4 + spread * 1.1), 0, Math.PI * 2);
+          ctx.strokeStyle = `${u.flashColor}${0.3 * (1 - spread) * u.opacity})`;
+          ctx.stroke();
+        }
+      }
+
+      ctx.beginPath();
+      ctx.arc(x, y, 1.8, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(210,225,255,${0.6 * u.opacity * dim})`;
+      ctx.fill();
+
+      if (SHOW_USER_IDS && u.opacity > 0.05){
+        const align = Math.cos(u.angle) > 0.15 ? 'left' : (Math.cos(u.angle) < -0.15 ? 'right' : 'center');
+        ctx.font = '10px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+        ctx.fillStyle = `rgba(210,225,255,${0.8 * u.opacity * dim})`;
+        ctx.textAlign = align;
+        ctx.textBaseline = 'middle';
+        const lOffset = 8;
+        const lx = x + Math.cos(u.angle) * lOffset;
+        const ly = y + Math.sin(u.angle) * lOffset;
+        ctx.fillText(u.id, lx, ly);
+      }
+    });
+  }
+
+  // ---------- Настройки ----------
+  let SHOW_LABELS = false; // включить/выключить подписи названий мастерских
+  let SHOW_ORBITS = true; // включить/выключить тонкие линии орбит
+  let SHOW_USER_IDS = false; // включить/выключить id пользователей
+  let ROTATE_BG = true; // включить/выключить вращение фона (звёздного поля)
+  let SHOW_WORKSHOPS = true; // включить/выключить "звёзды" мастерских
+
+  // ---------- Модальное окно с горячими клавишами ----------
+  const infoModal = document.getElementById('info-modal');
+  const infoBtn = document.getElementById('info-btn');
+  const infoClose = document.getElementById('info-modal-close');
+
+  function openInfoModal(){ infoModal.classList.add('open'); }
+  function closeInfoModal(){ infoModal.classList.remove('open'); }
+  function toggleInfoModal(){ infoModal.classList.toggle('open'); }
+
+  infoBtn.addEventListener('click', toggleInfoModal);
+  infoClose.addEventListener('click', closeInfoModal);
+  infoModal.querySelector('#info-modal-backdrop').addEventListener('click', closeInfoModal);
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'l' || e.key === 'L'){
+      SHOW_LABELS = !SHOW_LABELS;
+    }
+    if (e.key === 'o' || e.key === 'O'){
+      SHOW_ORBITS = !SHOW_ORBITS;
+    }
+    if (e.key === 'u' || e.key === 'U'){
+      SHOW_USER_IDS = !SHOW_USER_IDS;
+    }
+    if (e.key === 'r' || e.key === 'R'){
+      ROTATE_BG = !ROTATE_BG;
+    }
+    if (e.key === 'm' || e.key === 'M'){
+      SHOW_WORKSHOPS = !SHOW_WORKSHOPS;
+    }
+    if (e.key === 'i' || e.key === 'I'){
+      toggleInfoModal();
+    }
+    if (e.key === 'Escape'){
+      closeInfoModal();
+    }
+  });
+
+  // ---------- Наведение мыши: показ short_name ----------
+  let mouseX = -1, mouseY = -1;
+  canvas.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+  canvas.addEventListener('mouseleave', () => {
+    mouseX = -1;
+    mouseY = -1;
+  });
+
+  // ---------- Наведение на орбиту: приглушаем всё остальное ----------
+  // орбиты — это радиусы w.radius, у каждой мастерской свой (с случайным
+  // смещением из layoutWorkshops), поэтому "какая орбита под курсором"
+  // определяем по тому, чей радиус ближе всего к текущему расстоянию
+  // курсора от центра сцены — а не по фиксированному списку радиусов.
+  let hoveredOrbitId = null;
+  const ORBIT_HOVER_TOLERANCE = 8; // px
+
+  function updateHoveredOrbit(){
+    if (mouseX < 0 && mouseY < 0){
+      hoveredOrbitId = null;
+      return;
+    }
+    const mouseR = Math.hypot(mouseX - cx, mouseY - cy);
+    let best = null;
+    let bestDiff = ORBIT_HOVER_TOLERANCE;
+    workshops.forEach(w => {
+      const diff = Math.abs(mouseR - w.radius);
+      if (diff < bestDiff){
+        bestDiff = diff;
+        best = w.id;
+      }
+    });
+    hoveredOrbitId = best;
+  }
+
+  // множитель яркости: 1 — если наведения нет вообще или это то, что нужно
+  // выделить; DIM — если наведение есть, но это "остальное"
+  const ORBIT_DIM = 0.1;
+  function dimFactor(isHighlighted){
+    return hoveredOrbitId === null ? 1 : (isHighlighted ? 1 : ORBIT_DIM);
+  }
+
+  function drawOrbits(){
+    if (!SHOW_ORBITS) return;
+    ctx.lineWidth = 1;
+    workshops.forEach(w => {
+      const dim = dimFactor(w.id === hoveredOrbitId);
+      ctx.strokeStyle = `rgba(200,200,220,${(w.id === hoveredOrbitId ? 0.45 : 0.09) * dim})`;
+      ctx.beginPath();
+      ctx.arc(cx, cy, w.radius, 0, Math.PI * 2);
+      ctx.stroke();
+    });
+  }
+
+  function drawWorkshops(dt){
+    let hovered = null;
+
+    workshops.forEach(w => {
+      // угол обновляем всегда — даже когда "звёзды" скрыты, пользователи
+      // продолжают пристыковываться к актуальной позиции мастерской
+      w.angle += w.speed * dt;
+      if (!SHOW_WORKSHOPS) return;
+
+      const x = cx + Math.cos(w.angle) * w.radius;
+      const y = cy + Math.sin(w.angle) * w.radius;
+      const dim = dimFactor(w.id === hoveredOrbitId);
+
+      ctx.beginPath();
+      ctx.arc(x, y, w.dotR, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(235,235,240,${0.85 * dim})`;
+      ctx.shadowColor = `rgba(220,220,235,${0.6 * dim})`;
+      ctx.shadowBlur = w.dotR * 2 * dim;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      const align = Math.cos(w.angle) > 0.15 ? 'left' : (Math.cos(w.angle) < -0.15 ? 'right' : 'center');
+      ctx.font = '11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+      ctx.fillStyle = `rgba(220,220,230,${0.65 * dim})`;
+      ctx.textAlign = align;
+      ctx.textBaseline = 'middle';
+      const lOffset = w.dotR + 8;
+      const lx = x + Math.cos(w.angle) * lOffset;
+      const ly = y + Math.sin(w.angle) * lOffset;
+      if (SHOW_LABELS) ctx.fillText(w.name, lx, ly);
+
+      const hitR = w.dotR + 6;
+      if (Math.hypot(mouseX - x, mouseY - y) <= hitR){
+        hovered = { w, x, y, align };
+      }
+    });
+
+    canvas.style.cursor = hovered ? 'pointer' : 'default';
+
+    if (hovered && hovered.w.shortName){
+      const { w, x, y, align } = hovered;
+      const lOffset = w.dotR + 10;
+      const lx = x + Math.cos(w.angle) * lOffset;
+      const ly = y + Math.sin(w.angle) * lOffset;
+      ctx.font = 'bold 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+      ctx.textAlign = align;
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = 'rgba(255,255,255,0.95)';
+      ctx.shadowColor = 'rgba(0,0,0,0.9)';
+      ctx.shadowBlur = 4;
+      ctx.fillText(w.shortName, lx, ly);
+      ctx.shadowBlur = 0;
+    }
+  }
+
+  // ---------- Сброс эмуляции и отрисовки в исходное положение ----------
+  function resetEmulation(){
+    users = [];
+    nextUserId = 0;
+    userSpawnTimer = 0;
+    scheduleNextUserSpawn();
+    STATS.created = 0;
+    STATS.cancelled = 0;
+    STATS.blocked = 0;
+    STATS.exited = 0;
+    hoveredOrbitId = null;
+    rotation = 0;
+    recentActivity = [];
+    layoutWorkshops();
+    makeStars();
+    updateStatsPanel();
+    screenFlashStart = performance.now();
+  }
+
+  function draw(now){
+    const dt = now - lastTime;
+    lastTime = now;
+    if (ROTATE_BG) rotation += ROTATION_SPEED * dt;
+
+    ctx.fillStyle = '#080808';
+    ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+
+    updateHoveredOrbit();
+    const starDim = dimFactor(false); // фон всегда часть "остального"
+
+    stars.forEach(st => {
+      const a = st.angle + rotation;
+      const x = cx + Math.cos(a) * st.radius;
+      const y = cy + Math.sin(a) * st.radius;
+      ctx.beginPath();
+      ctx.arc(x, y, st.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(200,200,220,${st.a * starDim})`;
+      ctx.fill();
+    });
+
+    drawOrbits();
+    drawWorkshops(dt);
+
+    updateUsers(dt, now);
+    drawUsers();
+    updateStatsPanel();
+    updateAudio(now);
+
+    // полноэкранная белая вспышка поверх всего при сбросе (кнопка Reset)
+    const flashElapsed = now - screenFlashStart;
+    if (flashElapsed < SCREEN_FLASH_MS){
+      const flashAlpha = 1 - flashElapsed / SCREEN_FLASH_MS;
+      ctx.fillStyle = `rgba(255,255,255,${flashAlpha})`;
+      ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+    }
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+
+})();
+</script>
+</body>
+</html>

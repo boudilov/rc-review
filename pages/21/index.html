@@ -1,2 +1,111 @@
-<!-- Страница 21 — контент ещё не наполнен -->
-<div class="page-placeholder">Страница 21 / 30</div>
+<!-- Страница 21 -->
+<style>
+  .stat21-wrap { width: 100%; max-width: 1200px; padding: 0 50px; }
+  .stat21-kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(230, 230, 240, 0.5); margin-bottom: 10px; }
+  .stat21-title { font-size: 26px; font-weight: 600; color: rgba(255, 255, 255, 0.95); margin-bottom: 8px; }
+  .stat21-sub { font-size: 13px; color: rgba(230, 230, 240, 0.5); margin-bottom: 32px; }
+  .stat21-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  .stat21-table th { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(230, 230, 240, 0.5); text-align: center; padding: 0 10px 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.18); }
+  .stat21-table th.stat21-name-h { text-align: left; padding-left: 0; }
+  .stat21-table td { padding: 6px; text-align: center; font-size: 15px; color: rgba(255, 255, 255, 0.92); }
+  .stat21-table tr { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+  .stat21-name { text-align: left !important; padding: 12px 16px 12px 0 !important; font-size: 15px; font-weight: 500; color: rgba(255, 255, 255, 0.9); white-space: nowrap; }
+  .stat21-tile { padding: 12px 4px; min-width: 90px; }
+  .stat21-delta { font-size: 13px; font-weight: 700; white-space: nowrap; }
+  .stat21-delta.up { color: rgba(255, 255, 255, 0.85); }
+  .stat21-delta.down { color: rgba(255, 120, 120, 0.85); }
+  .stat21-delta.new { color: rgba(230, 230, 240, 0.5); font-weight: 600; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .stat21-note { margin-top: 28px; font-size: 12px; color: rgba(230, 230, 240, 0.4); max-width: 760px; line-height: 1.5; }
+</style>
+
+<div class="stat21-wrap">
+  <div class="stat21-kicker">Статистика · IDLE</div>
+  <div class="stat21-title">Простой мастерских</div>
+  <div class="stat21-sub">Доля открытых часов без единой брони · 2024/25 → 2025/26 уч. год · отсортировано по убыванию простоя в 2025/26</div>
+
+  <table class="stat21-table">
+    <thead>
+      <tr>
+        <th class="stat21-name-h">Мастерская</th>
+        <th>24/25</th>
+        <th>25/26</th>
+        <th>Δ</th>
+      </tr>
+    </thead>
+    <tbody class="accent-group">
+
+      <tr class="accent-item">
+        <td class="stat21-name">Мастерская текстиля</td>
+        <td class="stat21-tile" style="background: rgba(255,255,255,0.547);">56,9%</td>
+        <td class="stat21-tile" style="background: rgba(255,255,255,0.549);">57,2%</td>
+        <td class="stat21-delta down">▲ 0,3 п.п.</td>
+      </tr>
+
+      <tr class="accent-item">
+        <td class="stat21-name">Тёмная комната</td>
+        <td class="stat21-tile" style="background: rgba(255,255,255,0.428);">42,4%</td>
+        <td class="stat21-tile" style="background: rgba(255,255,255,0.415);">40,9%</td>
+        <td class="stat21-delta up">▼ 1,5 п.п.</td>
+      </tr>
+
+      <tr class="accent-item">
+        <td class="stat21-name">Ювелирная мастерская</td>
+        <td class="stat21-tile" style="background: rgba(255,255,255,0.398);">38,8%</td>
+        <td class="stat21-tile" style="background: rgba(255,255,255,0.369);">35,2%</td>
+        <td class="stat21-delta up">▼ 3,6 п.п.</td>
+      </tr>
+
+      <tr class="accent-item">
+        <td class="stat21-name">Печатная мастерская</td>
+        <td class="stat21-tile" style="background: rgba(255,255,255,0.322);">29,5%</td>
+        <td class="stat21-tile" style="background: rgba(255,255,255,0.315);">28,7%</td>
+        <td class="stat21-delta up">▼ 0,8 п.п.</td>
+      </tr>
+
+      <tr class="accent-item">
+        <td class="stat21-name">Фотостудия Фабрика</td>
+        <td class="stat21-tile">—</td>
+        <td class="stat21-tile" style="background: rgba(255,255,255,0.288);">25,4%</td>
+        <td class="stat21-delta new">новое</td>
+      </tr>
+
+      <tr class="accent-item">
+        <td class="stat21-name">Мастерская одежды</td>
+        <td class="stat21-tile" style="background: rgba(255,255,255,0.260);">21,9%</td>
+        <td class="stat21-tile" style="background: rgba(255,255,255,0.232);">18,5%</td>
+        <td class="stat21-delta up">▼ 3,4 п.п.</td>
+      </tr>
+
+      <tr class="accent-item">
+        <td class="stat21-name">Мастерская керамики</td>
+        <td class="stat21-tile" style="background: rgba(255,255,255,0.321);">29,4%</td>
+        <td class="stat21-tile" style="background: rgba(255,255,255,0.224);">17,6%</td>
+        <td class="stat21-delta up">▼ 11,8 п.п.</td>
+      </tr>
+
+      <tr class="accent-item">
+        <td class="stat21-name">3D Мастерская</td>
+        <td class="stat21-tile" style="background: rgba(255,255,255,0.239);">19,4%</td>
+        <td class="stat21-tile" style="background: rgba(255,255,255,0.180);">12,2%</td>
+        <td class="stat21-delta up">▼ 7,2 п.п.</td>
+      </tr>
+
+      <tr class="accent-item">
+        <td class="stat21-name">Принт-офис</td>
+        <td class="stat21-tile" style="background: rgba(255,255,255,0.177);">11,8%</td>
+        <td class="stat21-tile" style="background: rgba(255,255,255,0.147);">8,2%</td>
+        <td class="stat21-delta up">▼ 3,6 п.п.</td>
+      </tr>
+
+      <tr class="accent-item">
+        <td class="stat21-name">Фотостудия Артплей</td>
+        <td class="stat21-tile" style="background: rgba(255,255,255,0.130);">6,1%</td>
+        <td class="stat21-tile" style="background: rgba(255,255,255,0.128);">5,9%</td>
+        <td class="stat21-delta up">▼ 0,2 п.п.</td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <div class="stat21-note">Простой = «Свободное время» / «Доступное время» по данным IDLE за месяц (доля часов, когда мастерская была открыта, но бронирований не было). Без учёта проката техники — у него другой контур доступности и учитывается отдельно (см. страницы 18–20).</div>
+</div>

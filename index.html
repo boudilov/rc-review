@@ -287,6 +287,16 @@
   <button class="seg" data-page="28" aria-label="Страница 28"></button>
   <button class="seg" data-page="29" aria-label="Страница 29"></button>
   <button class="seg" data-page="30" aria-label="Страница 30"></button>
+  <button class="seg" data-page="31" aria-label="Страница 31"></button>
+  <button class="seg" data-page="32" aria-label="Страница 32"></button>
+  <button class="seg" data-page="33" aria-label="Страница 33"></button>
+  <button class="seg" data-page="34" aria-label="Страница 34"></button>
+  <button class="seg" data-page="35" aria-label="Страница 35"></button>
+  <button class="seg" data-page="36" aria-label="Страница 36"></button>
+  <button class="seg" data-page="37" aria-label="Страница 37"></button>
+  <button class="seg" data-page="38" aria-label="Страница 38"></button>
+  <button class="seg" data-page="39" aria-label="Страница 39"></button>
+  <button class="seg" data-page="40" aria-label="Страница 40"></button>
   <button class="icon-btn" id="helpBtn" aria-label="Горячие клавиши">i</button>
 </nav>
 
@@ -336,11 +346,21 @@
   <section class="page" data-page="28"></section>
   <section class="page" data-page="29"></section>
   <section class="page" data-page="30"></section>
+  <section class="page" data-page="31"></section>
+  <section class="page" data-page="32"></section>
+  <section class="page" data-page="33"></section>
+  <section class="page" data-page="34"></section>
+  <section class="page" data-page="35"></section>
+  <section class="page" data-page="36"></section>
+  <section class="page" data-page="37"></section>
+  <section class="page" data-page="38"></section>
+  <section class="page" data-page="39"></section>
+  <section class="page" data-page="40"></section>
 </main>
 
 <script>
 (function () {
-  var TOTAL = 30;
+  var TOTAL = 40;
   var STORAGE_KEY = 'rc-review-active-page';
 
   var segs = Array.prototype.slice.call(document.querySelectorAll('.seg'));
@@ -355,7 +375,7 @@
     modalOverlay.classList.toggle('visible', force);
   }
 
-  // ---------- Звёздное поле (титульная страница) ----------
+  // ---------- Звёздное поле (страницы 1 и 30) ----------
   var starCanvas = document.getElementById('starfield');
   var starCtx = starCanvas.getContext('2d');
   var STAR_ROTATION_SPEED = 0.000025; // радиан/мс — как в ucampus-viz
@@ -474,7 +494,7 @@
     loadPage(n);
     localStorage.setItem(STORAGE_KEY, String(n));
 
-    if (n === 1) startStarfield();
+    if (n === 1 || n === 30) startStarfield();
     else stopStarfield();
 
     if (changed) {
