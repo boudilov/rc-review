@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RC REVIEW</title>
+<style>
+  :root {
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #080808;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    overflow: hidden;
+  }
+
+  /* ---------- Toolbar ---------- */
+
+  .toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: rgba(0, 0, 0, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    z-index: 10;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .brand {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.9);
+    pointer-events: none;
+  }
+
+  .seg {
+    width: 18px;
+    height: 6px;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 0;
+    outline: none;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .seg:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .seg.active {
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  .seg.active:hover {
+    background: rgba(255, 255, 255, 0.6);
+  }
+
+  .icon-btn {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.9);
+    font: italic 600 13px Georgia, serif;
+    cursor: pointer;
+    outline: none;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .icon-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* ---------- Modal ---------- */
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+  }
+
+  .modal-overlay.visible {
+    display: flex;
+  }
+
+  .modal {
+    min-width: 280px;
+    max-width: 90vw;
+    padding: 20px 24px;
+    background: rgba(18, 18, 22, 0.95);
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .modal h2 {
+    margin: 0 0 14px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  .modal table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .modal td {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .modal tr:last-child td {
+    border-bottom: none;
+  }
+
+  .modal td:first-child {
+    padding-right: 20px;
+    font-weight: 700;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: #fff;
+    white-space: nowrap;
+  }
+
+  .modal td:last-child {
+    color: rgba(230, 230, 240, 0.7);
+  }
+
+  /* ---------- Tooltip ---------- */
+
+  .tooltip {
+    position: fixed;
+    transform: translateX(-50%);
+    top: 0;
+    left: 0;
+    padding: 3px 7px;
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 0;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 12px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 20;
+    white-space: nowrap;
+  }
+
+  .tooltip.visible {
+    opacity: 1;
+  }
+
+  /* ---------- Pages ---------- */
+
+  .pages {
+    position: fixed;
+    top: 44px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .starfield {
+    position: absolute;
+    inset: 0;
+    display: none;
+    pointer-events: none;
+  }
+
+  .page {
+    display: none;
+    position: absolute;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .page.active {
+    display: flex;
+  }
+
+  .page-placeholder {
+    color: rgba(230, 230, 240, 0.3);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .spin-slow {
+    animation: spin-slow 60s linear infinite;
+  }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+
+<nav class="toolbar" id="toolbar" aria-label="Навигация по страницам">
+  <div class="brand">RC REVIEW</div>
+  <button class="seg" data-page="1" aria-label="Страница 1"></button>
+  <button class="seg" data-page="2" aria-label="Страница 2"></button>
+  <button class="seg" data-page="3" aria-label="Страница 3"></button>
+  <button class="seg" data-page="4" aria-label="Страница 4"></button>
+  <button class="seg" data-page="5" aria-label="Страница 5"></button>
+  <button class="seg" data-page="6" aria-label="Страница 6"></button>
+  <button class="seg" data-page="7" aria-label="Страница 7"></button>
+  <button class="seg" data-page="8" aria-label="Страница 8"></button>
+  <button class="seg" data-page="9" aria-label="Страница 9"></button>
+  <button class="seg" data-page="10" aria-label="Страница 10"></button>
+  <button class="seg" data-page="11" aria-label="Страница 11"></button>
+  <button class="seg" data-page="12" aria-label="Страница 12"></button>
+  <button class="seg" data-page="13" aria-label="Страница 13"></button>
+  <button class="seg" data-page="14" aria-label="Страница 14"></button>
+  <button class="seg" data-page="15" aria-label="Страница 15"></button>
+  <button class="seg" data-page="16" aria-label="Страница 16"></button>
+  <button class="seg" data-page="17" aria-label="Страница 17"></button>
+  <button class="seg" data-page="18" aria-label="Страница 18"></button>
+  <button class="seg" data-page="19" aria-label="Страница 19"></button>
+  <button class="seg" data-page="20" aria-label="Страница 20"></button>
+  <button class="seg" data-page="21" aria-label="Страница 21"></button>
+  <button class="seg" data-page="22" aria-label="Страница 22"></button>
+  <button class="seg" data-page="23" aria-label="Страница 23"></button>
+  <button class="seg" data-page="24" aria-label="Страница 24"></button>
+  <button class="seg" data-page="25" aria-label="Страница 25"></button>
+  <button class="seg" data-page="26" aria-label="Страница 26"></button>
+  <button class="seg" data-page="27" aria-label="Страница 27"></button>
+  <button class="seg" data-page="28" aria-label="Страница 28"></button>
+  <button class="seg" data-page="29" aria-label="Страница 29"></button>
+  <button class="seg" data-page="30" aria-label="Страница 30"></button>
+  <button class="icon-btn" id="helpBtn" aria-label="Горячие клавиши">i</button>
+</nav>
+
+<div class="tooltip" id="tooltip"></div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h2>Горячие клавиши</h2>
+    <table>
+      <tr><td>&larr; / &rarr;</td><td>предыдущая / следующая страница</td></tr>
+      <tr><td>Клик по сегменту</td><td>перейти на страницу</td></tr>
+      <tr><td>I</td><td>показать/скрыть это окно</td></tr>
+      <tr><td>Esc</td><td>закрыть это окно</td></tr>
+    </table>
+  </div>
+</div>
+
+<main class="pages" id="pages">
+  <canvas class="starfield" id="starfield"></canvas>
+  <section class="page" data-page="1"></section>
+  <section class="page" data-page="2"></section>
+  <section class="page" data-page="3"></section>
+  <section class="page" data-page="4"></section>
+  <section class="page" data-page="5"></section>
+  <section class="page" data-page="6"></section>
+  <section class="page" data-page="7"></section>
+  <section class="page" data-page="8"></section>
+  <section class="page" data-page="9"></section>
+  <section class="page" data-page="10"></section>
+  <section class="page" data-page="11"></section>
+  <section class="page" data-page="12"></section>
+  <section class="page" data-page="13"></section>
+  <section class="page" data-page="14"></section>
+  <section class="page" data-page="15"></section>
+  <section class="page" data-page="16"></section>
+  <section class="page" data-page="17"></section>
+  <section class="page" data-page="18"></section>
+  <section class="page" data-page="19"></section>
+  <section class="page" data-page="20"></section>
+  <section class="page" data-page="21"></section>
+  <section class="page" data-page="22"></section>
+  <section class="page" data-page="23"></section>
+  <section class="page" data-page="24"></section>
+  <section class="page" data-page="25"></section>
+  <section class="page" data-page="26"></section>
+  <section class="page" data-page="27"></section>
+  <section class="page" data-page="28"></section>
+  <section class="page" data-page="29"></section>
+  <section class="page" data-page="30"></section>
+</main>
+
+<script>
+(function () {
+  var TOTAL = 30;
+  var STORAGE_KEY = 'rc-review-active-page';
+
+  var segs = Array.prototype.slice.call(document.querySelectorAll('.seg'));
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
+  var tooltip = document.getElementById('tooltip');
+  var helpBtn = document.getElementById('helpBtn');
+  var modalOverlay = document.getElementById('modalOverlay');
+  var pagesEl = document.getElementById('pages');
+  var loaded = {};
+
+  function toggleModal(force) {
+    modalOverlay.classList.toggle('visible', force);
+  }
+
+  // ---------- Звёздное поле (титульная страница) ----------
+  var starCanvas = document.getElementById('starfield');
+  var starCtx = starCanvas.getContext('2d');
+  var STAR_ROTATION_SPEED = 0.000025; // радиан/мс — как в ucampus-viz
+  var stars = [];
+  var starW = 0, starH = 0, starCx = 0, starCy = 0;
+  var starRotation = 0;
+  var starLastTime = 0;
+  var starAnimId = null;
+
+  function makeStars() {
+    stars = [];
+    var maxR = Math.hypot(starW, starH) / 1.6;
+    var count = Math.floor((starW * starH) / 3800);
+    for (var i = 0; i < count; i++) {
+      stars.push({
+        angle: Math.random() * Math.PI * 2,
+        radius: Math.random() * maxR,
+        r: Math.random() * 1.3 + 0.25,
+        a: Math.random() * 0.55 + 0.15
+      });
+    }
+  }
+
+  function resizeStarCanvas() {
+    var rect = pagesEl.getBoundingClientRect();
+    starW = rect.width;
+    starH = rect.height;
+    var dpr = window.devicePixelRatio || 1;
+    starCanvas.width = starW * dpr;
+    starCanvas.height = starH * dpr;
+    starCanvas.style.width = starW + 'px';
+    starCanvas.style.height = starH + 'px';
+    starCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    starCx = starW / 2;
+    starCy = starH / 2;
+    makeStars();
+  }
+
+  function stepStars(now) {
+    var dt = now - starLastTime;
+    starLastTime = now;
+    starRotation += STAR_ROTATION_SPEED * dt;
+
+    starCtx.clearRect(0, 0, starW, starH);
+    stars.forEach(function (st) {
+      var a = st.angle + starRotation;
+      var x = starCx + Math.cos(a) * st.radius;
+      var y = starCy + Math.sin(a) * st.radius;
+      starCtx.beginPath();
+      starCtx.arc(x, y, st.r, 0, Math.PI * 2);
+      starCtx.fillStyle = 'rgba(200,200,220,' + st.a + ')';
+      starCtx.fill();
+    });
+
+    starAnimId = requestAnimationFrame(stepStars);
+  }
+
+  function startStarfield() {
+    starCanvas.style.display = 'block';
+    resizeStarCanvas();
+    starLastTime = performance.now();
+    if (!starAnimId) starAnimId = requestAnimationFrame(stepStars);
+  }
+
+  function stopStarfield() {
+    starCanvas.style.display = 'none';
+    if (starAnimId) {
+      cancelAnimationFrame(starAnimId);
+      starAnimId = null;
+    }
+  }
+
+  window.addEventListener('resize', function () {
+    if (starAnimId) resizeStarCanvas();
+  });
+
+  function pageEl(n) {
+    return document.querySelector('.page[data-page="' + n + '"]');
+  }
+
+  function loadPage(n) {
+    if (loaded[n]) return;
+    loaded[n] = true;
+    var el = pageEl(n);
+    var padded = String(n).length === 1 ? '0' + n : String(n);
+    fetch('pages/' + padded + '/index.html?_=' + Date.now())
+      .then(function (res) {
+        if (!res.ok) throw new Error('not found');
+        return res.text();
+      })
+      .then(function (html) {
+        el.innerHTML = html;
+        el.querySelectorAll('img').forEach(function (img) {
+          var src = img.getAttribute('src');
+          img.src = src + (src.indexOf('?') === -1 ? '?' : '&') + '_=' + Date.now();
+        });
+      })
+      .catch(function () {
+        loaded[n] = false;
+      });
+  }
+
+  function setActive(n) {
+    n = Math.min(Math.max(n, 1), TOTAL);
+    segs.forEach(function (s) {
+      s.classList.toggle('active', Number(s.dataset.page) === n);
+    });
+    pages.forEach(function (p) {
+      p.classList.toggle('active', Number(p.dataset.page) === n);
+    });
+    loadPage(n);
+    localStorage.setItem(STORAGE_KEY, String(n));
+
+    if (n === 1) startStarfield();
+    else stopStarfield();
+  }
+
+  function showTooltip(seg) {
+    var rect = seg.getBoundingClientRect();
+    tooltip.textContent = seg.dataset.page.length === 1 ? '0' + seg.dataset.page : seg.dataset.page;
+    tooltip.style.left = (rect.left + rect.width / 2) + 'px';
+    tooltip.style.top = (rect.bottom + 8) + 'px';
+    tooltip.classList.add('visible');
+  }
+
+  function hideTooltip() {
+    tooltip.classList.remove('visible');
+  }
+
+  segs.forEach(function (seg) {
+    seg.addEventListener('click', function () { setActive(Number(seg.dataset.page)); });
+    seg.addEventListener('mouseenter', function () { showTooltip(seg); });
+    seg.addEventListener('mouseleave', hideTooltip);
+  });
+
+  helpBtn.addEventListener('click', function () { toggleModal(); });
+
+  modalOverlay.addEventListener('click', function (e) {
+    if (e.target === modalOverlay) toggleModal(false);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { toggleModal(false); return; }
+    if (e.key === 'i' || e.key === 'I') { toggleModal(); return; }
+    if (modalOverlay.classList.contains('visible')) return;
+
+    var current = Number((document.querySelector('.seg.active') || segs[0]).dataset.page);
+    if (e.key === 'ArrowRight') setActive(current + 1);
+    if (e.key === 'ArrowLeft') setActive(current - 1);
+  });
+
+  var saved = parseInt(localStorage.getItem(STORAGE_KEY), 10);
+  setActive(Number.isInteger(saved) && saved >= 1 && saved <= TOTAL ? saved : 1);
+})();
+</script>
+
+</body>
+</html>
