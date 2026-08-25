@@ -8,7 +8,7 @@
   .stat20-legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(230, 230, 240, 0.6); }
   .stat20-legend-swatch { width: 16px; height: 2px; }
 
-  .stat20-row { display: flex; align-items: center; gap: 28px; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.07); transition: opacity 0.15s; }
+  .stat20-row { display: flex; align-items: center; gap: 28px; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.07); transition: opacity 0.15s; text-decoration: none; }
   .stat20-rank { width: 22px; flex: none; font-size: 16px; font-weight: 700; color: rgba(230, 230, 240, 0.35); font-variant-numeric: tabular-nums; }
   .stat20-info { width: 300px; flex: none; }
   .stat20-name { font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.92); line-height: 1.35; margin-bottom: 8px; }
@@ -18,6 +18,48 @@
   .stat20-delta.up { color: rgba(255, 255, 255, 0.85); }
   .stat20-delta.down { color: rgba(255, 120, 120, 0.85); }
   .stat20-chart { flex: 1; min-width: 0; }
+
+  .stat11-modal { display: none; position: fixed; inset: 0; z-index: 100; align-items: center; justify-content: center; }
+  .stat11-modal:target { display: flex; }
+  .stat11-modal-backdrop { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.75); }
+  .stat11-modal-panel {
+    position: relative;
+    width: min(1100px, 90vw);
+    background: #080808;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    padding: 48px 56px 36px;
+  }
+  .stat11-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 24px;
+    line-height: 1;
+    color: rgba(230, 230, 240, 0.5);
+    text-decoration: none;
+  }
+  .stat11-modal-close:hover { color: rgba(255, 255, 255, 0.9); }
+  .stat11-modal-title { font-size: 20px; font-weight: 600; color: rgba(255, 255, 255, 0.95); margin-bottom: 8px; }
+  .stat20-modal-numbers { font-size: 16px; color: rgba(230, 230, 240, 0.6); font-variant-numeric: tabular-nums; margin-bottom: 28px; display: flex; align-items: baseline; gap: 12px; }
+  .stat20-modal-numbers b { color: rgba(255, 255, 255, 0.92); }
+  .stat20-modal-body { display: flex; gap: 18px; }
+  .stat20-modal-axis {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 320px;
+    padding-right: 12px;
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 12px;
+    color: rgba(230, 230, 240, 0.45);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat20-modal-chart { flex: 1; min-width: 0; }
+  .stat20-modal-months { display: flex; justify-content: space-between; margin-top: 12px; }
+  .stat20-modal-months span { font-size: 11px; color: rgba(230, 230, 240, 0.4); text-transform: uppercase; letter-spacing: 0.05em; }
 </style>
 
 <div class="stat20-wrap accent-group">
@@ -29,7 +71,7 @@
     <div class="stat20-legend-item"><span class="stat20-legend-swatch" style="background: rgba(255,255,255,0.92);"></span>2025/26</div>
   </div>
 
-  <div class="accent-item stat20-row">
+    <a href="#p20m1" class="accent-item stat20-row">
     <div class="stat20-rank">1</div>
     <div class="stat20-info">
       <div class="stat20-name">Операторское искусство</div>
@@ -42,9 +84,9 @@
         <path d="M0.0,77.9 C9.1,74.0 36.4,54.6 54.5,54.0 C72.7,53.4 90.9,72.2 109.1,74.2 C127.3,76.1 145.5,60.6 163.6,65.7 C181.8,70.9 200.0,100.1 218.2,105.1 C236.4,110.2 254.5,102.8 272.7,96.0 C290.9,89.2 309.1,70.2 327.3,64.3 C345.5,58.5 363.6,67.0 381.8,60.9 C400.0,54.8 418.2,28.5 436.4,27.6 C454.5,26.8 472.7,58.2 490.9,55.9 C509.1,53.7 527.3,11.9 545.5,14.0 C563.6,16.1 590.9,59.4 600.0,68.5" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="2.5" stroke-linecap="round" vector-effect="non-scaling-stroke" />
       </svg>
     </div>
-  </div>
+  </a>
 
-  <div class="accent-item stat20-row">
+    <a href="#p20m2" class="accent-item stat20-row">
     <div class="stat20-rank">2</div>
     <div class="stat20-info">
       <div class="stat20-name">42.03.05 Медиакоммуникации, Кинопроизводство</div>
@@ -57,9 +99,9 @@
         <path d="M0.0,92.5 C9.1,85.3 36.4,53.8 54.5,49.5 C72.7,45.3 90.9,60.7 109.1,66.9 C127.3,73.2 145.5,84.2 163.6,87.1 C181.8,89.9 200.0,78.8 218.2,84.0 C236.4,89.1 254.5,118.0 272.7,118.0 C290.9,118.1 309.1,93.1 327.3,84.1 C345.5,75.1 363.6,68.6 381.8,64.1 C400.0,59.5 418.2,65.3 436.4,57.0 C454.5,48.6 472.7,17.6 490.9,14.0 C509.1,10.4 527.3,23.9 545.5,35.1 C563.6,46.4 590.9,73.8 600.0,81.5" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="2.5" stroke-linecap="round" vector-effect="non-scaling-stroke" />
       </svg>
     </div>
-  </div>
+  </a>
 
-  <div class="accent-item stat20-row">
+    <a href="#p20m3" class="accent-item stat20-row">
     <div class="stat20-rank">3</div>
     <div class="stat20-info">
       <div class="stat20-name">Звукорежиссура и саунд-дизайн</div>
@@ -72,9 +114,9 @@
         <path d="M0.0,57.8 C9.1,50.5 36.4,8.4 54.5,14.0 C72.7,19.6 90.9,75.3 109.1,91.2 C127.3,107.2 145.5,103.7 163.6,109.5 C181.8,115.3 200.0,124.7 218.2,126.0 C236.4,127.3 254.5,118.6 272.7,117.2 C290.9,115.8 309.1,119.7 327.3,117.7 C345.5,115.6 363.6,107.1 381.8,104.8 C400.0,102.5 418.2,104.0 436.4,103.7 C454.5,103.4 472.7,101.8 490.9,103.1 C509.1,104.4 527.3,110.6 545.5,111.6 C563.6,112.5 590.9,109.3 600.0,108.8" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="2.5" stroke-linecap="round" vector-effect="non-scaling-stroke" />
       </svg>
     </div>
-  </div>
+  </a>
 
-  <div class="accent-item stat20-row">
+    <a href="#p20m4" class="accent-item stat20-row">
     <div class="stat20-rank">4</div>
     <div class="stat20-info">
       <div class="stat20-name">Режиссура монтажа</div>
@@ -87,9 +129,9 @@
         <path d="M0.0,34.3 C9.1,32.0 36.4,6.7 54.5,20.5 C72.7,34.2 90.9,101.5 109.1,116.7 C127.3,132.0 145.5,115.8 163.6,111.9 C181.8,108.0 200.0,95.8 218.2,93.3 C236.4,90.9 254.5,108.1 272.7,97.2 C290.9,86.3 309.1,28.3 327.3,27.9 C345.5,27.5 363.6,87.3 381.8,95.1 C400.0,102.8 418.2,79.7 436.4,74.4 C454.5,69.0 472.7,72.5 490.9,63.1 C509.1,53.7 527.3,21.2 545.5,18.1 C563.6,15.0 590.9,40.2 600.0,44.6" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="2.5" stroke-linecap="round" vector-effect="non-scaling-stroke" />
       </svg>
     </div>
-  </div>
+  </a>
 
-  <div class="accent-item stat20-row">
+    <a href="#p20m5" class="accent-item stat20-row">
     <div class="stat20-rank">5</div>
     <div class="stat20-info">
       <div class="stat20-name">Подгот. курс ДПО (Filmmaking)</div>
@@ -102,5 +144,120 @@
         <path d="M0.0,44.6 C9.1,49.1 36.4,69.9 54.5,71.8 C72.7,73.7 90.9,58.6 109.1,56.0 C127.3,53.3 145.5,45.2 163.6,55.7 C181.8,66.2 200.0,107.6 218.2,119.2 C236.4,130.8 254.5,133.5 272.7,125.2 C290.9,117.0 309.1,77.4 327.3,69.6 C345.5,61.8 363.6,75.7 381.8,78.3 C400.0,81.0 418.2,77.5 436.4,85.4 C454.5,93.4 472.7,123.7 490.9,126.0 C509.1,128.3 527.3,99.5 545.5,99.5 C563.6,99.5 590.9,121.6 600.0,126.0" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="2.5" stroke-linecap="round" vector-effect="non-scaling-stroke" />
       </svg>
     </div>
-  </div>
+  </a>
 </div>
+
+  <div class="stat11-modal" id="p20m1">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat20-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Операторское искусство</div>
+      <div class="stat20-modal-numbers"><b>130 726</b> → <b>178 594</b> <span class="stat20-delta up">▲ 37%</span></div>
+      <div class="stat20-modal-body">
+        <div class="stat20-modal-axis">
+          <span>22 236</span>
+          <span>13 950</span>
+          <span>5 664</span>
+        </div>
+        <div class="stat20-modal-chart">
+          <svg viewBox="0 0 600 140" width="100%" height="320" preserveAspectRatio="none">
+            <path d="M0.0,92.6 C9.1,90.7 36.4,76.1 54.5,81.3 C72.7,86.5 90.9,117.6 109.1,123.7 C127.3,129.8 145.5,117.5 163.6,117.9 C181.8,118.3 200.0,125.4 218.2,126.0 C236.4,126.6 254.5,126.2 272.7,121.3 C290.9,116.4 309.1,106.5 327.3,96.6 C345.5,86.7 363.6,66.0 381.8,62.0 C400.0,57.9 418.2,69.3 436.4,72.3 C454.5,75.4 472.7,84.9 490.9,80.4 C509.1,76.0 527.3,47.9 545.5,45.8 C563.6,43.7 590.9,64.1 600.0,67.8" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+            <path d="M0.0,77.9 C9.1,74.0 36.4,54.6 54.5,54.0 C72.7,53.4 90.9,72.2 109.1,74.2 C127.3,76.1 145.5,60.6 163.6,65.7 C181.8,70.9 200.0,100.1 218.2,105.1 C236.4,110.2 254.5,102.8 272.7,96.0 C290.9,89.2 309.1,70.2 327.3,64.3 C345.5,58.5 363.6,67.0 381.8,60.9 C400.0,54.8 418.2,28.5 436.4,27.6 C454.5,26.8 472.7,58.2 490.9,55.9 C509.1,53.7 527.3,11.9 545.5,14.0 C563.6,16.1 590.9,59.4 600.0,68.5" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+          </svg>
+          <div class="stat20-modal-months"><span>авг</span><span>сен</span><span>окт</span><span>ноя</span><span>дек</span><span>янв</span><span>фев</span><span>мар</span><span>апр</span><span>май</span><span>июн</span><span>июл</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stat11-modal" id="p20m2">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat20-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">42.03.05 Медиакоммуникации, Кинопроизводство</div>
+      <div class="stat20-modal-numbers"><b>29 323</b> → <b>52 819</b> <span class="stat20-delta up">▲ 80%</span></div>
+      <div class="stat20-modal-body">
+        <div class="stat20-modal-axis">
+          <span>8 450</span>
+          <span>4 364</span>
+          <span>278</span>
+        </div>
+        <div class="stat20-modal-chart">
+          <svg viewBox="0 0 600 140" width="100%" height="320" preserveAspectRatio="none">
+            <path d="M0.0,125.4 C9.1,124.4 36.4,121.9 54.5,119.3 C72.7,116.6 90.9,112.2 109.1,109.5 C127.3,106.8 145.5,102.9 163.6,103.3 C181.8,103.6 200.0,107.8 218.2,111.6 C236.4,115.4 254.5,127.8 272.7,126.0 C290.9,124.2 309.1,112.4 327.3,100.9 C345.5,89.4 363.6,58.6 381.8,57.1 C400.0,55.5 418.2,93.8 436.4,91.6 C454.5,89.4 472.7,47.1 490.9,43.7 C509.1,40.3 527.3,62.4 545.5,71.1 C563.6,79.9 590.9,92.2 600.0,96.4" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+            <path d="M0.0,92.5 C9.1,85.3 36.4,53.8 54.5,49.5 C72.7,45.3 90.9,60.7 109.1,66.9 C127.3,73.2 145.5,84.2 163.6,87.1 C181.8,89.9 200.0,78.8 218.2,84.0 C236.4,89.1 254.5,118.0 272.7,118.0 C290.9,118.1 309.1,93.1 327.3,84.1 C345.5,75.1 363.6,68.6 381.8,64.1 C400.0,59.5 418.2,65.3 436.4,57.0 C454.5,48.6 472.7,17.6 490.9,14.0 C509.1,10.4 527.3,23.9 545.5,35.1 C563.6,46.4 590.9,73.8 600.0,81.5" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+          </svg>
+          <div class="stat20-modal-months"><span>авг</span><span>сен</span><span>окт</span><span>ноя</span><span>дек</span><span>янв</span><span>фев</span><span>мар</span><span>апр</span><span>май</span><span>июн</span><span>июл</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stat11-modal" id="p20m3">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat20-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Звукорежиссура и саунд-дизайн</div>
+      <div class="stat20-modal-numbers"><b>39 321</b> → <b>25 140</b> <span class="stat20-delta down">▼ 36%</span></div>
+      <div class="stat20-modal-body">
+        <div class="stat20-modal-axis">
+          <span>7 672</span>
+          <span>3 915</span>
+          <span>157</span>
+        </div>
+        <div class="stat20-modal-chart">
+          <svg viewBox="0 0 600 140" width="100%" height="320" preserveAspectRatio="none">
+            <path d="M0.0,50.9 C9.1,60.7 36.4,102.3 54.5,109.6 C72.7,116.8 90.9,97.4 109.1,94.4 C127.3,91.4 145.5,93.4 163.6,91.5 C181.8,89.6 200.0,86.2 218.2,83.0 C236.4,79.7 254.5,74.5 272.7,72.0 C290.9,69.4 309.1,69.8 327.3,67.8 C345.5,65.8 363.6,56.1 381.8,59.8 C400.0,63.6 418.2,82.8 436.4,90.4 C454.5,98.1 472.7,107.7 490.9,105.7 C509.1,103.7 527.3,87.4 545.5,78.2 C563.6,69.1 590.9,55.4 600.0,50.8" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+            <path d="M0.0,57.8 C9.1,50.5 36.4,8.4 54.5,14.0 C72.7,19.6 90.9,75.3 109.1,91.2 C127.3,107.2 145.5,103.7 163.6,109.5 C181.8,115.3 200.0,124.7 218.2,126.0 C236.4,127.3 254.5,118.6 272.7,117.2 C290.9,115.8 309.1,119.7 327.3,117.7 C345.5,115.6 363.6,107.1 381.8,104.8 C400.0,102.5 418.2,104.0 436.4,103.7 C454.5,103.4 472.7,101.8 490.9,103.1 C509.1,104.4 527.3,110.6 545.5,111.6 C563.6,112.5 590.9,109.3 600.0,108.8" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+          </svg>
+          <div class="stat20-modal-months"><span>авг</span><span>сен</span><span>окт</span><span>ноя</span><span>дек</span><span>янв</span><span>фев</span><span>мар</span><span>апр</span><span>май</span><span>июн</span><span>июл</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stat11-modal" id="p20m4">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat20-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Режиссура монтажа</div>
+      <div class="stat20-modal-numbers"><b>10 629</b> → <b>14 000</b> <span class="stat20-delta up">▲ 32%</span></div>
+      <div class="stat20-modal-body">
+        <div class="stat20-modal-axis">
+          <span>1 900</span>
+          <span>1 117</span>
+          <span>334</span>
+        </div>
+        <div class="stat20-modal-chart">
+          <svg viewBox="0 0 600 140" width="100%" height="320" preserveAspectRatio="none">
+            <path d="M0.0,119.6 C9.1,115.0 36.4,95.6 54.5,92.3 C72.7,89.0 90.9,97.4 109.1,99.9 C127.3,102.4 145.5,102.8 163.6,107.1 C181.8,111.5 200.0,125.7 218.2,126.0 C236.4,126.3 254.5,111.3 272.7,108.8 C290.9,106.3 309.1,119.0 327.3,110.9 C345.5,102.9 363.6,76.7 381.8,60.6 C400.0,44.4 418.2,11.4 436.4,14.0 C454.5,16.6 472.7,67.8 490.9,76.3 C509.1,84.7 527.3,67.6 545.5,64.6 C563.6,61.6 590.9,59.1 600.0,58.0" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+            <path d="M0.0,34.3 C9.1,32.0 36.4,6.7 54.5,20.5 C72.7,34.2 90.9,101.5 109.1,116.7 C127.3,132.0 145.5,115.8 163.6,111.9 C181.8,108.0 200.0,95.8 218.2,93.3 C236.4,90.9 254.5,108.1 272.7,97.2 C290.9,86.3 309.1,28.3 327.3,27.9 C345.5,27.5 363.6,87.3 381.8,95.1 C400.0,102.8 418.2,79.7 436.4,74.4 C454.5,69.0 472.7,72.5 490.9,63.1 C509.1,53.7 527.3,21.2 545.5,18.1 C563.6,15.0 590.9,40.2 600.0,44.6" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+          </svg>
+          <div class="stat20-modal-months"><span>авг</span><span>сен</span><span>окт</span><span>ноя</span><span>дек</span><span>янв</span><span>фев</span><span>мар</span><span>апр</span><span>май</span><span>июн</span><span>июл</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stat11-modal" id="p20m5">
+    <a href="#" class="stat11-modal-backdrop" aria-label="Закрыть"></a>
+    <div class="stat11-modal-panel stat20-modal-panel">
+      <a href="#" class="stat11-modal-close" aria-label="Закрыть">&times;</a>
+      <div class="stat11-modal-title">Подгот. курс ДПО (Filmmaking)</div>
+      <div class="stat20-modal-numbers"><b>6 812</b> → <b>9 851</b> <span class="stat20-delta up">▲ 45%</span></div>
+      <div class="stat20-modal-body">
+        <div class="stat20-modal-axis">
+          <span>2 426</span>
+          <span>1 213</span>
+          <span>0</span>
+        </div>
+        <div class="stat20-modal-chart">
+          <svg viewBox="0 0 600 140" width="100%" height="320" preserveAspectRatio="none">
+            <path d="M0.0,120.4 C9.1,121.0 36.4,123.2 54.5,124.2 C72.7,125.1 90.9,126.4 109.1,126.0 C127.3,125.6 145.5,128.8 163.6,121.6 C181.8,114.4 200.0,83.0 218.2,82.9 C236.4,82.8 254.5,125.0 272.7,121.0 C290.9,117.0 309.1,61.7 327.3,58.9 C345.5,56.1 363.6,111.6 381.8,104.1 C400.0,96.6 418.2,10.3 436.4,14.0 C454.5,17.7 472.7,110.6 490.9,126.0 C509.1,141.4 527.3,111.9 545.5,106.3 C563.6,100.6 590.9,94.7 600.0,92.3" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+            <path d="M0.0,44.6 C9.1,49.1 36.4,69.9 54.5,71.8 C72.7,73.7 90.9,58.6 109.1,56.0 C127.3,53.3 145.5,45.2 163.6,55.7 C181.8,66.2 200.0,107.6 218.2,119.2 C236.4,130.8 254.5,133.5 272.7,125.2 C290.9,117.0 309.1,77.4 327.3,69.6 C345.5,61.8 363.6,75.7 381.8,78.3 C400.0,81.0 418.2,77.5 436.4,85.4 C454.5,93.4 472.7,123.7 490.9,126.0 C509.1,128.3 527.3,99.5 545.5,99.5 C563.6,99.5 590.9,121.6 600.0,126.0" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+          </svg>
+          <div class="stat20-modal-months"><span>авг</span><span>сен</span><span>окт</span><span>ноя</span><span>дек</span><span>янв</span><span>фев</span><span>мар</span><span>апр</span><span>май</span><span>июн</span><span>июл</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
