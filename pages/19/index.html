@@ -1,2 +1,158 @@
-<!-- Страница 19 — контент ещё не наполнен -->
-<div class="page-placeholder">Страница 19 / 30</div>
+<!-- Страница 19 -->
+<style>
+  .stat19-wrap { width: 100%; max-width: 1300px; padding: 0 50px; }
+  .stat19-kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(230, 230, 240, 0.5); margin-bottom: 10px; }
+  .stat19-title { font-size: 26px; font-weight: 600; color: rgba(255, 255, 255, 0.95); margin-bottom: 8px; }
+  .stat19-sub { font-size: 13px; color: rgba(230, 230, 240, 0.5); margin-bottom: 40px; }
+  .stat19-section { margin-bottom: 40px; }
+  .stat19-source { font-size: 11px; color: rgba(230, 230, 240, 0.4); margin-bottom: 14px; }
+
+  .stat12-chart-label { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(230, 230, 240, 0.5); margin-bottom: 4px; }
+  .stat12-legend { display: flex; flex-wrap: wrap; gap: 14px 20px; margin-bottom: 14px; }
+  .stat12-legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(230, 230, 240, 0.6); transition: opacity 0.15s; }
+  .stat12-legend-swatch { width: 12px; height: 12px; flex: none; }
+
+  .stat12-row-bars { display: flex; flex-direction: column; gap: 6px; }
+  .stat12-bar-line { display: flex; align-items: center; gap: 14px; }
+  .stat12-year-tag { width: 46px; flex: none; font-size: 11px; color: rgba(230, 230, 240, 0.4); font-variant-numeric: tabular-nums; }
+  .stat12-bar { flex: 1; display: flex; height: 30px; overflow: hidden; }
+  .stat12-bar:has(.stat12-seg:hover) { overflow: visible; }
+  .stat12-seg { position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap; }
+  .stat12-seg:hover { overflow: visible; z-index: 3; }
+  .stat12-seg-label { font-size: 11px; font-weight: 600; letter-spacing: 0.01em; padding: 0 6px; }
+  .stat12-seg-label b { font-weight: 700; }
+  .stat12-row-sum { display: none; }
+
+  .stat12-seg-tip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 6px;
+    padding: 3px 8px;
+    background: rgba(0, 0, 0, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.95);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+    z-index: 10;
+  }
+  .stat12-seg:hover .stat12-seg-tip { opacity: 1; }
+</style>
+
+<div class="stat19-wrap">
+  <div class="stat19-kicker">Прокат</div>
+  <div class="stat19-title">Кто использует технику</div>
+  <div class="stat19-sub">2024/25 → 2025/26 · доли от общего объёма использования</div>
+
+  <div class="stat19-section">
+    <div class="stat12-chart-label">По юрлицам</div>
+    <div class="stat19-source">Источник: RESOURCES, объём использования</div>
+    <div class="stat12-legend accent-group">
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.75);"></span>ООО</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.35);"></span>АНО ВО</div>
+    </div>
+    <div class="stat12-row-bars">
+      <div class="stat12-bar-line">
+        <span class="stat12-year-tag">24/25</span>
+        <div class="stat12-bar">
+          <div class="stat12-seg" style="width: 77.399%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>77%</b></span><span class="stat12-seg-tip">ООО 77%</span></div>
+              <div class="stat12-seg" style="width: 22.601%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>23%</b></span><span class="stat12-seg-tip">АНО ВО 23%</span></div>
+        </div>
+        <span class="stat12-row-sum">278 625</span>
+      </div>
+      <div class="stat12-bar-line">
+        <span class="stat12-year-tag">25/26</span>
+        <div class="stat12-bar">
+          <div class="stat12-seg" style="width: 73.629%; background: rgba(255,255,255,0.75); color: #0a0a0a;"><span class="stat12-seg-label">ООО <b>74%</b></span><span class="stat12-seg-tip">ООО 74%</span></div>
+              <div class="stat12-seg" style="width: 26.371%; background: rgba(255,255,255,0.35); color: rgba(255,255,255,0.85);"><span class="stat12-seg-label">АНО ВО <b>26%</b></span><span class="stat12-seg-tip">АНО ВО 26%</span></div>
+        </div>
+        <span class="stat12-row-sum">340 890</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stat19-section">
+    <div class="stat12-chart-label">По школам</div>
+    <div class="stat19-source">Источник: RESOURCES, объём использования</div>
+    <div class="stat12-legend accent-group">
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.9);"></span>МШК</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.74);"></span>БВШД</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.58);"></span>МАРШ</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.44);"></span>МШСИ</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.3);"></span>МШМ</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.18);"></span>Scream School</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.1);"></span>Школа подростков</div>
+    </div>
+    <div class="stat12-row-bars">
+      <div class="stat12-bar-line">
+        <span class="stat12-year-tag">24/25</span>
+        <div class="stat12-bar">
+          <div class="stat12-seg" style="width: 89.381%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">МШК <b>89%</b></span><span class="stat12-seg-tip">МШК 89%</span></div>
+              <div class="stat12-seg" style="width: 5.605%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>6%</b></span><span class="stat12-seg-tip">БВШД 6%</span></div>
+              <div class="stat12-seg" style="width: 2.597%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 3%</span></div>
+              <div class="stat12-seg" style="width: 0.970%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШСИ 1%</span></div>
+              <div class="stat12-seg" style="width: 0.734%; background: rgba(255,255,255,0.3); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 1%</span></div>
+              <div class="stat12-seg" style="width: 0.554%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Scream School 1%</span></div>
+              <div class="stat12-seg" style="width: 0.159%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Школа подростков 0%</span></div>
+        </div>
+        <span class="stat12-row-sum">285 443</span>
+      </div>
+      <div class="stat12-bar-line">
+        <span class="stat12-year-tag">25/26</span>
+        <div class="stat12-bar">
+          <div class="stat12-seg" style="width: 90.575%; background: rgba(255,255,255,0.9); color: #0a0a0a;"><span class="stat12-seg-label">МШК <b>91%</b></span><span class="stat12-seg-tip">МШК 91%</span></div>
+              <div class="stat12-seg" style="width: 5.413%; background: rgba(255,255,255,0.74); color: #0a0a0a;"><span class="stat12-seg-label">БВШД <b>5%</b></span><span class="stat12-seg-tip">БВШД 5%</span></div>
+              <div class="stat12-seg" style="width: 2.444%; background: rgba(255,255,255,0.58); color: #0a0a0a;"><span class="stat12-seg-tip">МАРШ 2%</span></div>
+              <div class="stat12-seg" style="width: 0.547%; background: rgba(255,255,255,0.44); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШСИ 1%</span></div>
+              <div class="stat12-seg" style="width: 0.512%; background: rgba(255,255,255,0.3); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">МШМ 1%</span></div>
+              <div class="stat12-seg" style="width: 0.316%; background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Scream School 0%</span></div>
+              <div class="stat12-seg" style="width: 0.193%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Школа подростков 0%</span></div>
+        </div>
+        <span class="stat12-row-sum">347 799</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stat19-section">
+    <div class="stat12-chart-label">По направлениям</div>
+    <div class="stat19-source">Источник: SELF, часы бронирования</div>
+    <div class="stat12-legend accent-group">
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.85);"></span>ДПО</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.68);"></span>Бакалавриат</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.51);"></span>Доп. образование</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.34);"></span>Подгот. курсы</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.2);"></span>Магистратура</div>
+    <div class="stat12-legend-item"><span class="stat12-legend-swatch" style="background: rgba(255,255,255,0.1);"></span>Специалитет</div>
+    </div>
+    <div class="stat12-row-bars">
+      <div class="stat12-bar-line">
+        <span class="stat12-year-tag">24/25</span>
+        <div class="stat12-bar">
+          <div class="stat12-seg" style="width: 48.622%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>49%</b></span><span class="stat12-seg-tip">ДПО 49%</span></div>
+              <div class="stat12-seg" style="width: 41.595%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>42%</b></span><span class="stat12-seg-tip">Бакалавриат 42%</span></div>
+              <div class="stat12-seg" style="width: 4.624%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-tip">Доп. образование 5%</span></div>
+              <div class="stat12-seg" style="width: 2.353%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Подгот. курсы 2%</span></div>
+              <div class="stat12-seg" style="width: 2.807%; background: rgba(255,255,255,0.2); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Магистратура 3%</span></div>
+        </div>
+        <span class="stat12-row-sum">56 283</span>
+      </div>
+      <div class="stat12-bar-line">
+        <span class="stat12-year-tag">25/26</span>
+        <div class="stat12-bar">
+          <div class="stat12-seg" style="width: 52.913%; background: rgba(255,255,255,0.85); color: #0a0a0a;"><span class="stat12-seg-label">ДПО <b>53%</b></span><span class="stat12-seg-tip">ДПО 53%</span></div>
+              <div class="stat12-seg" style="width: 42.433%; background: rgba(255,255,255,0.68); color: #0a0a0a;"><span class="stat12-seg-label">Бакалавриат <b>42%</b></span><span class="stat12-seg-tip">Бакалавриат 42%</span></div>
+              <div class="stat12-seg" style="width: 0.778%; background: rgba(255,255,255,0.51); color: #0a0a0a;"><span class="stat12-seg-tip">Доп. образование 1%</span></div>
+              <div class="stat12-seg" style="width: 2.703%; background: rgba(255,255,255,0.34); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Подгот. курсы 3%</span></div>
+              <div class="stat12-seg" style="width: 1.142%; background: rgba(255,255,255,0.2); color: rgba(255,255,255,0.85);"><span class="stat12-seg-tip">Магистратура 1%</span></div>
+        </div>
+        <span class="stat12-row-sum">50 826</span>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,2 +1,55 @@
-<!-- Страница 18 — контент ещё не наполнен -->
-<div class="page-placeholder">Страница 18 / 30</div>
+<!-- Страница 18 -->
+<style>
+  .stat18-wrap { width: 100%; max-width: 1300px; padding: 0 50px; }
+  .stat18-kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(230, 230, 240, 0.5); margin-bottom: 10px; }
+  .stat18-title { font-size: 26px; font-weight: 600; color: rgba(255, 255, 255, 0.95); margin-bottom: 14px; }
+  .stat18-explain { font-size: 15px; line-height: 1.5; color: rgba(230, 230, 240, 0.65); max-width: 780px; margin-bottom: 48px; }
+
+  .stat18-compare { display: flex; align-items: baseline; gap: 28px; margin-bottom: 8px; }
+  .stat18-compare-value { font-size: 72px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+  .stat18-compare-value.prev { color: rgba(230, 230, 240, 0.4); }
+  .stat18-compare-value.last { color: rgba(255, 255, 255, 0.95); }
+  .stat18-compare-arrow { font-size: 40px; color: rgba(230, 230, 240, 0.3); }
+  .stat18-compare-delta { font-size: 18px; font-weight: 700; color: rgba(255, 255, 255, 0.9); }
+  .stat18-compare-label { font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(230, 230, 240, 0.5); margin-bottom: 44px; }
+  .stat18-compare-years { display: flex; gap: 28px; margin-top: 8px; }
+  .stat18-compare-years span { font-size: 11px; color: rgba(230, 230, 240, 0.4); font-variant-numeric: tabular-nums; }
+
+  .stat18-chart-label { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(230, 230, 240, 0.5); margin-bottom: 14px; }
+  .stat18-legend { display: flex; gap: 20px; margin-bottom: 16px; }
+  .stat18-legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(230, 230, 240, 0.6); }
+  .stat18-legend-swatch { width: 16px; height: 2px; }
+  .stat18-months { display: flex; justify-content: space-between; margin-top: 8px; }
+  .stat18-months span { font-size: 10px; color: rgba(230, 230, 240, 0.4); text-transform: uppercase; letter-spacing: 0.05em; }
+</style>
+
+<div class="stat18-wrap">
+  <div class="stat18-kicker">Прокат</div>
+  <div class="stat18-title">Прокат техники — отдельный формат брони</div>
+  <div class="stat18-explain">В отличие от мастерских, здесь бронируется не время работы в помещении, а конкретная техника — камеры, свет, стойки, аккумуляторы и другое оборудование. Один визит может включать сразу несколько единиц техники.</div>
+
+  <div class="stat18-compare">
+    <div class="stat18-compare-value prev">285 443</div>
+    <div class="stat18-compare-arrow">→</div>
+    <div class="stat18-compare-value last">347 799</div>
+    <div class="stat18-compare-delta">▲ 22%</div>
+  </div>
+  <div class="stat18-compare-years">
+    <span>2024/25</span>
+    <span style="margin-left: 96px;">2025/26</span>
+  </div>
+  <div class="stat18-compare-label" style="margin-top: 10px;">Объём использования техники за учебный год</div>
+
+  <div class="stat18-chart-label">Помесячно</div>
+  <div class="stat18-legend">
+    <div class="stat18-legend-item"><span class="stat18-legend-swatch" style="background: rgba(255,255,255,0.35);"></span>2024/25</div>
+    <div class="stat18-legend-item"><span class="stat18-legend-swatch" style="background: rgba(255,255,255,0.92);"></span>2025/26</div>
+  </div>
+  <svg viewBox="0 0 1200 200" width="100%" height="200" preserveAspectRatio="none">
+    <path d="M0.0,133.9 C18.2,135.1 72.7,135.1 109.1,141.1 C145.5,147.1 181.8,167.1 218.2,169.9 C254.5,172.7 290.9,158.5 327.3,157.9 C363.6,157.4 400.0,163.2 436.4,166.6 C472.7,170.0 509.1,187.2 545.5,178.4 C581.8,169.6 618.2,130.9 654.5,113.8 C690.9,96.7 727.3,82.2 763.6,75.9 C800.0,69.5 836.4,70.8 872.7,75.9 C909.1,81.0 945.5,110.2 981.8,106.4 C1018.2,102.7 1054.5,59.4 1090.9,53.5 C1127.3,47.6 1181.8,68.3 1200.0,71.3" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+    <path d="M0.0,89.5 C18.2,79.7 72.7,32.0 109.1,31.1 C145.5,30.3 181.8,73.4 218.2,84.5 C254.5,95.5 290.9,87.5 327.3,97.5 C363.6,107.5 400.0,130.8 436.4,144.6 C472.7,158.3 509.1,186.3 545.5,180.0 C581.8,173.7 618.2,122.0 654.5,107.0 C690.9,92.0 727.3,102.7 763.6,90.0 C800.0,77.4 836.4,35.5 872.7,31.0 C909.1,26.5 945.5,64.8 981.8,62.9 C1018.2,61.1 1054.5,11.4 1090.9,20.0 C1127.3,28.6 1181.8,98.8 1200.0,114.5" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+  </svg>
+  <div class="stat18-months">
+    <span>авг</span><span>сен</span><span>окт</span><span>ноя</span><span>дек</span><span>янв</span><span>фев</span><span>мар</span><span>апр</span><span>май</span><span>июн</span><span>июл</span>
+  </div>
+</div>
