@@ -1,0 +1,162 @@
+/* RC Signature Style Preset
+   Reusable brand visual layer for future projects. */
+
+:root {
+  --bg: #050505;
+  --fg: #f2f2f2;
+  --border: rgba(255, 255, 255, 0.55);
+  --hud: rgba(255, 255, 255, 0.22);
+  --hud-dim: rgba(255, 255, 255, 0.2);
+  --hud-active: #ffffff;
+  --panel-bg: rgba(0, 0, 0, 0.94);
+  --panel-shadow: 0 8px 18px rgba(0, 0, 0, 0.75);
+  --confirm-bg: rgba(8, 8, 8, 0.96);
+  --link-color: #ffffff;
+  --danger: rgba(255, 120, 120, 0.9);
+  --danger-border: rgba(255, 120, 120, 0.55);
+  --ui-top-offset: 10px;
+  --radius: 3px;
+  --radius-lg: 4px;
+  --node-dim-fill: #3a3a3a;
+  --node-dim-stroke: #525252;
+  --node-dim-text: #9a9a9a;
+  --node-dim-text-on-fill: #d0d0d0;
+  --node-dim-link: #333333;
+  --node-dim-label: #5a5a5a;
+}
+
+[data-theme="bright"] {
+  --bg: #f6f6f4;
+  --fg: #1f1f1f;
+  --border: rgba(0, 0, 0, 0.35);
+  --hud: rgba(0, 0, 0, 0.45);
+  --hud-dim: rgba(0, 0, 0, 0.42);
+  --hud-active: #000000;
+  --panel-bg: rgba(255, 255, 255, 0.96);
+  --panel-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+  --confirm-bg: rgba(248, 248, 248, 0.98);
+  --link-color: #000000;
+  --danger: rgba(180, 60, 60, 0.95);
+  --danger-border: rgba(180, 60, 60, 0.55);
+  --node-dim-fill: #c4c4c4;
+  --node-dim-stroke: #a8a8a8;
+  --node-dim-text: #787878;
+  --node-dim-text-on-fill: #f0f0f0;
+  --node-dim-link: #c8c8c8;
+  --node-dim-label: #909090;
+}
+
+/* Core typography and controls */
+html,
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 300;
+}
+
+.btn,
+.theme-toggle {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: inherit;
+  font-weight: 300;
+  color: var(--hud);
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--fg) 28%, transparent);
+  border-radius: var(--radius);
+  padding: 4px 7px;
+}
+
+.btn:hover,
+.theme-toggle:hover {
+  color: var(--hud-active);
+  border-color: color-mix(in srgb, var(--fg) 48%, transparent);
+}
+
+/* Signature diagram look */
+.structure-guide-ring {
+  fill: none;
+  stroke: color-mix(in srgb, var(--fg) 12%, transparent);
+  stroke-width: 0.6;
+}
+
+.structure-guide-ring.ring-active {
+  stroke: color-mix(in srgb, var(--hud-active) 55%, transparent);
+  stroke-opacity: 0.85;
+  stroke-width: 1.1;
+}
+
+.structure-link {
+  stroke: color-mix(in srgb, var(--fg) 72%, transparent);
+  stroke-width: 0.9;
+}
+
+.structure-link.dim {
+  stroke: var(--node-dim-link);
+}
+
+.structure-node-ring {
+  fill: var(--bg);
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.structure-node-fill {
+  fill: var(--fg);
+  stroke: var(--bg);
+  stroke-width: 1;
+}
+
+.structure-node.active:not(.dim) .structure-node-ring,
+.structure-node.active:not(.dim) .structure-node-fill {
+  stroke: var(--hud-active);
+  stroke-width: 1.6;
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--hud-active) 35%, transparent));
+}
+
+.structure-node-text {
+  fill: var(--bg);
+  text-anchor: middle;
+  dominant-baseline: central;
+  font-family: Inter, system-ui, "Segoe UI", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.structure-node-tg .structure-node-text,
+.structure-node-workshop .structure-node-text,
+.structure-node-root .structure-node-text {
+  fill: var(--fg);
+  font-weight: 300;
+  letter-spacing: 0.06em;
+}
+
+/* RC glow signature */
+.structure-rc-aura {
+  fill: var(--hud-active);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.structure-node-root.rc-hover:not(.dim) .structure-rc-aura-wide {
+  animation: rc-aura-wide 2.8s ease-in-out infinite;
+}
+
+.structure-node-root.rc-hover:not(.dim) .structure-rc-aura-mid {
+  animation: rc-aura-mid 2.8s ease-in-out infinite;
+}
+
+@keyframes rc-aura-wide {
+  0%,
+  100% { opacity: 0.22; }
+  50% { opacity: 0.48; }
+}
+
+@keyframes rc-aura-mid {
+  0%,
+  100% { opacity: 0.42; }
+  50% { opacity: 0.78; }
+}
+
