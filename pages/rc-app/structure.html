@@ -10,17 +10,7 @@
   <div id="app">
     <div id="structure-stage" class="structure-stage" aria-label="Визуализация структуры"></div>
 
-    <div id="hud-status" class="hud-tl">загрузка…</div>
-    <div class="hud-tr">
-      <button id="reset-camera-btn" type="button" class="theme-toggle">reset</button>
-    </div>
     <div id="hud-count" class="hud-bl">загрузка…</div>
-    <div class="hud-br">
-      <button type="button" class="btn" id="export-btn">export</button>
-      <button type="button" class="btn" id="import-btn">import</button>
-      <button type="button" class="btn btn-primary" id="help-trigger">help</button>
-      <input type="file" id="import-file" accept=".xlsx,.xls" hidden />
-    </div>
   </div>
 
   <div id="rc-mosaic-overlay" class="overlay" aria-hidden="true">
@@ -57,30 +47,6 @@
     </div>
   </div>
 
-  <div id="help-overlay" class="overlay" aria-hidden="true">
-    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="help-title">
-      <div id="help-title" class="dialog-title">Управление</div>
-      <div class="dialog-body">
-        <div class="help-section">Навигация</div>
-        <p class="help-row"><span class="kbd">Пробел</span><span class="help-row-desc">+ перетаскивание — панорама</span></p>
-        <p class="help-row"><span class="kbd">Ctrl</span><span class="help-row-desc">+ колёсико — масштаб</span></p>
-        <p class="help-row"><span class="kbd">reset</span><span class="help-row-desc">сбросить масштаб и позицию</span></p>
-        <div class="help-section">Данные</div>
-        <p class="help-row"><span class="kbd">import</span><span class="help-row-desc">загрузить новый structure.xlsx</span></p>
-        <p class="help-row"><span class="kbd">export</span><span class="help-row-desc">скачать дерево в JSON</span></p>
-        <div class="help-section">Уровни схемы</div>
-        <p class="help-row"><span class="help-row-desc">Центр — РЦ · кольцо 1 — ТГ · кольцо 2 — код мастерской · кольцо 3 — сотрудники · внешний круг — оболочка схемы</span></p>
-        <div class="help-section">Схема</div>
-        <p class="help-row"><span class="help-row-desc">Клик по центру (РЦ) — развернуть схему · повторный клик — мозаика фото команды · правый клик по РЦ — свернуть схему</span></p>
-        <div class="help-section">Карточка мастерской</div>
-        <p class="help-row"><span class="help-row-desc">Клик по коду мастерской на кольце 2 — карточка с сотрудниками</span></p>
-      </div>
-      <div class="dialog-actions">
-        <button type="button" class="btn" data-close>Закрыть</button>
-      </div>
-    </div>
-  </div>
-
   <div id="confirm-overlay" class="confirm-overlay" aria-hidden="true">
     <div class="confirm-box">
       <div id="confirm-title" class="confirm-title">Подтверждение</div>
@@ -92,7 +58,6 @@
     </div>
   </div>
 
-  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
   <script type="module" src="structure-main.js"></script>
 </body>
 </html>

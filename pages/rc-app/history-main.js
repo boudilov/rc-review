@@ -115,7 +115,6 @@ function buildHistoryAnimSteps(rows) {
   for (const row of rows) {
     if (row.showYear) steps.push({ kind: "year", year: row.year });
   }
-  steps.push({ kind: "complete" });
   return steps;
 }
 
@@ -247,6 +246,22 @@ async function boot() {
     console.error(err);
   }
   renderHistoryWorkspace(content);
+  startAutoPlay();
 }
+
+function startAutoPlay() {
+  const timer = setInterval(() => {
+    if (historyAnimStep >= historyAnimSteps.length - 1) {
+      clearInterval(timer);
+      return;
+    }
+    advanceHistoryStep();
+  }, 1000);
+}
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowRight") window.parent?.rcNavigate?.(1);
+  if (e.key === "ArrowLeft") window.parent?.rcNavigate?.(-1);
+});
 
 boot();

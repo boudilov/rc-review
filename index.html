@@ -18,6 +18,7 @@
     background: #080808;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     overflow: hidden;
+    cursor: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PGNpcmNsZSBjeD0iOCIgY3k9IjgiIHI9IjMiIGZpbGw9IndoaXRlIiBmaWxsLW9wYWNpdHk9IjAuNDUiLz48L3N2Zz4=") 8 8, auto;
   }
 
   /* ---------- Toolbar ---------- */
@@ -447,9 +448,9 @@
       })
       .then(function (html) {
         el.innerHTML = html;
-        el.querySelectorAll('img').forEach(function (img) {
-          var src = img.getAttribute('src');
-          img.src = src + (src.indexOf('?') === -1 ? '?' : '&') + '_=' + Date.now();
+        el.querySelectorAll('img, iframe').forEach(function (el) {
+          var src = el.getAttribute('src');
+          el.src = src + (src.indexOf('?') === -1 ? '?' : '&') + '_=' + Date.now();
         });
       })
       .catch(function () {
@@ -457,8 +458,13 @@
       });
   }
 
+  var currentActivePage = null;
+
   function setActive(n) {
     n = Math.min(Math.max(n, 1), TOTAL);
+    var changed = n !== currentActivePage;
+    currentActivePage = n;
+
     segs.forEach(function (s) {
       s.classList.toggle('active', Number(s.dataset.page) === n);
     });
@@ -470,7 +476,17 @@
 
     if (n === 1) startStarfield();
     else stopStarfield();
+
+    if (changed) {
+      var iframe = pageEl(n).querySelector('iframe[data-restart-on-show]');
+      if (iframe && iframe.contentWindow) iframe.contentWindow.location.reload();
+    }
   }
+
+  window.rcNavigate = function (dir) {
+    var current = Number((document.querySelector('.seg.active') || segs[0]).dataset.page);
+    setActive(current + dir);
+  };
 
   function showTooltip(seg) {
     var rect = seg.getBoundingClientRect();

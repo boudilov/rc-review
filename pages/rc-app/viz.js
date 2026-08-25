@@ -889,12 +889,6 @@ export class StructureViz {
         class: "structure-guide-hit",
         "data-ring-type": type,
       });
-      hit.addEventListener("pointerenter", () => this.setHoverRing(type));
-      hit.addEventListener("pointerleave", (e) => {
-        if (this.nodeFromEventTarget(e.relatedTarget)) return;
-        if (this.ringTypeFromTarget(e.relatedTarget)) return;
-        this.clearHoverRing(type);
-      });
       hitFold.appendChild(hit);
       hitOrigin.appendChild(hitFold);
       this.ringHitsGroup.appendChild(hitOrigin);
@@ -1017,22 +1011,6 @@ export class StructureViz {
         body.appendChild(t);
       }
 
-      g.addEventListener("pointerenter", () => {
-        if (!this.diagramExpanded && node.type !== "root") return;
-        if (this.hoverId === node.id && !this.hoverRing) return;
-        this.hoverId = node.id;
-        this.hoverRing = null;
-        this.syncInteractionStyles();
-        this.updateGuideRingStyles();
-      });
-      g.addEventListener("pointerleave", (e) => {
-        if (this.nodeFromEventTarget(e.relatedTarget)) return;
-        if (this.ringTypeFromTarget(e.relatedTarget)) return;
-        if (this.hoverId !== node.id) return;
-        this.hoverId = null;
-        this.syncInteractionStyles();
-        this.updateGuideRingStyles();
-      });
       g.addEventListener("click", (e) => this.handleNodeActivate(node, e));
 
       nodesLayer.appendChild(g);

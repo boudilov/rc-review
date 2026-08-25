@@ -1,7 +1,8 @@
 /* RC Structure — shared design system (Notes Textfix lineage) */
 
 :root {
-  --bg: #050505;
+  --cursor-dot: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PGNpcmNsZSBjeD0iOCIgY3k9IjgiIHI9IjMiIGZpbGw9IndoaXRlIiBmaWxsLW9wYWNpdHk9IjAuNDUiLz48L3N2Zz4=") 8 8, auto;
+  --bg: #080808;
   --fg: #f2f2f2;
   --border: rgba(255, 255, 255, 0.55);
   --hud: rgba(255, 255, 255, 0.22);
@@ -67,6 +68,7 @@ body {
   font-weight: 300;
   font-size: 13px;
   line-height: 1.4;
+  cursor: var(--cursor-dot);
 }
 
 #app {
@@ -752,7 +754,7 @@ body {
   position: absolute;
   inset: calc(var(--ui-top-offset) + 8px) 0 12px;
   overflow: hidden;
-  cursor: default;
+  cursor: var(--cursor-dot);
 }
 
 .structure-stage.hidden {
