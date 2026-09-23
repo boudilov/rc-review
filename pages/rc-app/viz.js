@@ -3,10 +3,10 @@ import { layoutTree, collectLinks, flattenNodes } from "./layout.js?v=44";
 import { countPeople } from "./parser.js?v=44";
 
 const NODE_STYLE = {
-  root: { r: 28, font: 11, stroke: 1.2, fill: true },
-  tg: { r: 24, font: 10, stroke: 1, fill: false },
-  workshop: { r: 22, font: 8, stroke: 1, fill: false },
-  person: { r: 14, font: 7, stroke: 1, fill: true },
+  root: { r: 40, font: 15, stroke: 1.2, fill: true },
+  tg: { r: 34, font: 14, stroke: 1, fill: false },
+  workshop: { r: 31, font: 11, stroke: 1, fill: false },
+  person: { r: 20, font: 10, stroke: 1, fill: true },
 };
 
 const FOLD_DELAY_MS = { tg: 90, workshop: 180, person: 280 };

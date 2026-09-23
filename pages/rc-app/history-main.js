@@ -246,22 +246,16 @@ async function boot() {
     console.error(err);
   }
   renderHistoryWorkspace(content);
-  startAutoPlay();
-}
-
-function startAutoPlay() {
-  const timer = setInterval(() => {
-    if (historyAnimStep >= historyAnimSteps.length - 1) {
-      clearInterval(timer);
-      return;
-    }
-    advanceHistoryStep();
-  }, 1000);
 }
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowRight") window.parent?.rcNavigate?.(1);
   if (e.key === "ArrowLeft") window.parent?.rcNavigate?.(-1);
+  if (e.key === " " || e.code === "Space") {
+    e.preventDefault();
+    if (e.ctrlKey) retreatHistoryStep();
+    else advanceHistoryStep();
+  }
 });
 
 boot();

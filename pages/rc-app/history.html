@@ -11,6 +11,8 @@
     <div id="workspace-content" class="workspace-content" aria-live="polite"></div>
   </div>
 
-  <script type="module" src="history-main.js"></script>
+  <script type="module">
+    import("./history-main.js?_=" + Date.now());
+  </script>
 </body>
 </html>
