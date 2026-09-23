@@ -1,2 +1,46 @@
-<!-- Страница 31 — UCampus, live-визуализация (демо) -->
-<iframe data-restart-on-show src="pages/ucampus-viz/index.html" title="UCampus — real-time визуализация (демо)" style="width: 100%; height: 100%; border: 0; display: block;"></iframe>
+<!-- Страница 31 — Печать: скан + помесячная динамика -->
+<style>
+  .ws31-wrap { width: 100%; max-width: 1600px; padding: 0 60px; }
+  .ws31-scan { width: 100%; height: 300px; border: 1px dashed rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; margin-bottom: 32px; }
+  .ws31-scan-label { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(230,230,240,0.35); }
+  .ws31-charts { display: flex; gap: 48px; }
+  .wsChart { flex: 1; min-width: 0; }
+  .wsChart-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+  .wsChart-kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(230,230,240,0.55); }
+  .wsChart-total { font-size: 20px; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; }
+  .wsChart-svg { display: block; }
+  .wsChart-months { display: flex; justify-content: space-between; margin-top: 6px; font-size: 9px; letter-spacing: 0.06em; color: rgba(230,230,240,0.35); }
+</style>
+<div class="ws31-wrap">
+  <div class="ws31-scan"><span class="ws31-scan-label">Скан мастерской «Печать» · ожидает фото</span></div>
+  <div class="ws31-charts">
+    
+    <div class="wsChart">
+      <div class="wsChart-head">
+        <span class="wsChart-kicker">SELF</span>
+        <span class="wsChart-total">2 954,5 ч</span>
+      </div>
+      <svg viewBox="0 0 600 150" width="100%" height="150" preserveAspectRatio="none" class="wsChart-svg">
+        <path d="M 2.0,128.3 C 11.0,118.3 38.1,86.9 56.2,68.2 C 74.2,49.4 92.3,25.3 110.4,15.9 C 128.4,6.5 146.5,7.7 164.5,12.0 C 182.6,16.3 200.7,30.4 218.7,41.7 C 236.8,53.0 254.8,68.9 272.9,79.8 C 291.0,90.8 309.0,115.8 327.1,107.5 C 345.2,99.1 363.2,34.6 381.3,29.9 C 399.3,25.1 417.4,69.9 435.5,79.0 C 453.5,88.1 471.6,86.9 489.6,84.3 C 507.7,81.6 525.8,57.0 543.8,62.9 C 561.9,68.8 589.0,110.3 598.0,119.8 L 598.0,148 L 2.0,148 Z" fill="rgba(255,255,255,0.08)" stroke="none"/>
+        <path d="M 2.0,128.3 C 11.0,118.3 38.1,86.9 56.2,68.2 C 74.2,49.4 92.3,25.3 110.4,15.9 C 128.4,6.5 146.5,7.7 164.5,12.0 C 182.6,16.3 200.7,30.4 218.7,41.7 C 236.8,53.0 254.8,68.9 272.9,79.8 C 291.0,90.8 309.0,115.8 327.1,107.5 C 345.2,99.1 363.2,34.6 381.3,29.9 C 399.3,25.1 417.4,69.9 435.5,79.0 C 453.5,88.1 471.6,86.9 489.6,84.3 C 507.7,81.6 525.8,57.0 543.8,62.9 C 561.9,68.8 589.0,110.3 598.0,119.8" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2"/>
+        <circle cx="2.0" cy="128.3" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="56.2" cy="68.2" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="110.4" cy="15.9" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="164.5" cy="12.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="218.7" cy="41.7" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="272.9" cy="79.8" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="327.1" cy="107.5" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="381.3" cy="29.9" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="435.5" cy="79.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="489.6" cy="84.3" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="543.8" cy="62.9" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="598.0" cy="119.8" r="2.2" fill="rgba(255,255,255,0.55)"/>
+      </svg>
+      <div class="wsChart-months"><span>АВГ</span><span>СЕН</span><span>ОКТ</span><span>НОЯ</span><span>ДЕК</span><span>ЯНВ</span><span>ФЕВ</span><span>МАР</span><span>АПР</span><span>МАЙ</span><span>ИЮН</span><span>ИЮЛ</span></div>
+    </div>
+    
+    
+    <div class="wsChart">
+      <div class="wsChart-head">
+        <span class="wsChart-kicker">CLASS</span>
+        <span class="wsChart-total">592,5 ч</span>
+      </div>
+      <svg viewBox="0 0 600 150" width="100%" height="150" preserveAspectRatio="none" class="wsChart-svg">
+        <path d="M 2.0,148.0 C 11.0,148.0 38.1,161.8 56.2,148.0 C 74.2,134.2 92.3,86.6 110.4,65.3 C 128.4,44.1 146.5,18.5 164.5,20.7 C 182.6,22.8 200.7,65.6 218.7,78.4 C 236.8,91.2 254.8,95.2 272.9,97.3 C 291.0,99.5 309.0,105.6 327.1,91.3 C 345.2,77.1 363.2,20.3 381.3,12.0 C 399.3,3.7 417.4,31.7 435.5,41.6 C 453.5,51.5 471.6,63.9 489.6,71.3 C 507.7,78.8 525.8,77.2 543.8,86.3 C 561.9,95.3 589.0,119.2 598.0,125.7 L 598.0,148 L 2.0,148 Z" fill="rgba(255,255,255,0.08)" stroke="none"/>
+        <path d="M 2.0,148.0 C 11.0,148.0 38.1,161.8 56.2,148.0 C 74.2,134.2 92.3,86.6 110.4,65.3 C 128.4,44.1 146.5,18.5 164.5,20.7 C 182.6,22.8 200.7,65.6 218.7,78.4 C 236.8,91.2 254.8,95.2 272.9,97.3 C 291.0,99.5 309.0,105.6 327.1,91.3 C 345.2,77.1 363.2,20.3 381.3,12.0 C 399.3,3.7 417.4,31.7 435.5,41.6 C 453.5,51.5 471.6,63.9 489.6,71.3 C 507.7,78.8 525.8,77.2 543.8,86.3 C 561.9,95.3 589.0,119.2 598.0,125.7" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2"/>
+        <circle cx="2.0" cy="148.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="56.2" cy="148.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="110.4" cy="65.3" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="164.5" cy="20.7" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="218.7" cy="78.4" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="272.9" cy="97.3" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="327.1" cy="91.3" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="381.3" cy="12.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="435.5" cy="41.6" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="489.6" cy="71.3" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="543.8" cy="86.3" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="598.0" cy="125.7" r="2.2" fill="rgba(255,255,255,0.55)"/>
+      </svg>
+      <div class="wsChart-months"><span>АВГ</span><span>СЕН</span><span>ОКТ</span><span>НОЯ</span><span>ДЕК</span><span>ЯНВ</span><span>ФЕВ</span><span>МАР</span><span>АПР</span><span>МАЙ</span><span>ИЮН</span><span>ИЮЛ</span></div>
+    </div>
+    
+  </div>
+</div>
