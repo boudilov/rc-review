@@ -6,6 +6,12 @@
       "runtimeExecutable": "python",
       "runtimeArgs": ["-m", "http.server", "8936"],
       "port": 8936
+    },
+    {
+      "name": "scan-viewer",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8937", "--directory", "C:/DATA/UU/UCampus/Сканы помещений"],
+      "port": 8937
     }
   ]
 }
