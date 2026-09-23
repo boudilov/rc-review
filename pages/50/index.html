@@ -1,8 +1,12 @@
-<!-- Страница 50 — Тёмная комната: скан + помесячная динамика -->
+<!-- Страница 50 — Тёмная комната: скан + помесячная динамика (год к году) -->
 <style>
   .ws50-wrap { width: 100%; max-width: 1600px; padding: 0 60px; }
-  .ws50-scan { width: 100%; height: 300px; border: 1px dashed rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; margin-bottom: 32px; }
+  .ws50-title { font-size: 28px; font-weight: 700; color: rgba(255,255,255,0.96); margin-bottom: 22px; }
+  .ws50-scan { width: 100%; height: 260px; border: 1px dashed rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; margin-bottom: 28px; }
   .ws50-scan-label { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(230,230,240,0.35); }
+  .ws50-legend { display: flex; gap: 24px; margin-bottom: 18px; }
+  .ws50-legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(230,230,240,0.6); }
+  .ws50-legend-swatch { width: 16px; height: 2px; }
   .ws50-charts { display: flex; gap: 48px; }
   .wsChart { flex: 1; min-width: 0; }
   .wsChart-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
@@ -12,7 +16,12 @@
   .wsChart-months { display: flex; justify-content: space-between; margin-top: 6px; font-size: 9px; letter-spacing: 0.06em; color: rgba(230,230,240,0.35); }
 </style>
 <div class="ws50-wrap">
+  <div class="ws50-title">Тёмная комната</div>
   <div class="ws50-scan"><span class="ws50-scan-label">Скан мастерской «Тёмная комната» · ожидает фото</span></div>
+  <div class="ws50-legend">
+    <div class="ws50-legend-item"><span class="ws50-legend-swatch" style="background: rgba(255,255,255,0.35);"></span>2024/25</div>
+    <div class="ws50-legend-item"><span class="ws50-legend-swatch" style="background: rgba(255,255,255,0.92);"></span>2025/26</div>
+  </div>
   <div class="ws50-charts">
     
     <div class="wsChart">
@@ -21,9 +30,8 @@
         <span class="wsChart-total">800,0 ч</span>
       </div>
       <svg viewBox="0 0 600 150" width="100%" height="150" preserveAspectRatio="none" class="wsChart-svg">
-        <path d="M 2.0,138.1 C 11.0,135.8 38.1,133.3 56.2,124.4 C 74.2,115.4 92.3,91.2 110.4,84.4 C 128.4,77.5 146.5,95.3 164.5,83.3 C 182.6,71.2 200.7,3.7 218.7,12.0 C 236.8,20.3 254.8,114.8 272.9,133.2 C 291.0,151.6 309.0,127.9 327.1,122.5 C 345.2,117.1 363.2,99.8 381.3,100.9 C 399.3,102.0 417.4,127.4 435.5,129.2 C 453.5,131.0 471.6,116.1 489.6,111.9 C 507.7,107.6 525.8,100.8 543.8,103.8 C 561.9,106.7 589.0,125.4 598.0,129.7 L 598.0,148 L 2.0,148 Z" fill="rgba(255,255,255,0.08)" stroke="none"/>
-        <path d="M 2.0,138.1 C 11.0,135.8 38.1,133.3 56.2,124.4 C 74.2,115.4 92.3,91.2 110.4,84.4 C 128.4,77.5 146.5,95.3 164.5,83.3 C 182.6,71.2 200.7,3.7 218.7,12.0 C 236.8,20.3 254.8,114.8 272.9,133.2 C 291.0,151.6 309.0,127.9 327.1,122.5 C 345.2,117.1 363.2,99.8 381.3,100.9 C 399.3,102.0 417.4,127.4 435.5,129.2 C 453.5,131.0 471.6,116.1 489.6,111.9 C 507.7,107.6 525.8,100.8 543.8,103.8 C 561.9,106.7 589.0,125.4 598.0,129.7" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2"/>
-        <circle cx="2.0" cy="138.1" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="56.2" cy="124.4" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="110.4" cy="84.4" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="164.5" cy="83.3" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="218.7" cy="12.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="272.9" cy="133.2" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="327.1" cy="122.5" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="381.3" cy="100.9" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="435.5" cy="129.2" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="489.6" cy="111.9" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="543.8" cy="103.8" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="598.0" cy="129.7" r="2.2" fill="rgba(255,255,255,0.55)"/>
+        <path d="M 2.0,143.5 C 11.0,140.5 38.1,129.6 56.2,125.0 C 74.2,120.5 92.3,134.9 110.4,116.1 C 128.4,97.3 146.5,29.1 164.5,12.0 C 182.6,0.0 200.7,0.9 218.7,13.4 C 236.8,26.0 254.8,85.9 272.9,87.2 C 291.0,88.5 309.0,28.8 327.1,21.2 C 345.2,13.6 363.2,35.1 381.3,41.4 C 399.3,47.8 417.4,50.3 435.5,59.2 C 453.5,68.1 471.6,91.5 489.6,94.7 C 507.7,97.8 525.8,73.6 543.8,77.9 C 561.9,82.3 589.0,113.5 598.0,120.6" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2.5" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+        <path d="M 2.0,141.3 C 11.0,139.8 38.1,138.2 56.2,132.2 C 74.2,126.2 92.3,110.0 110.4,105.4 C 128.4,100.8 146.5,112.7 164.5,104.6 C 182.6,96.5 200.7,51.3 218.7,56.8 C 236.8,62.4 254.8,125.7 272.9,138.1 C 291.0,150.0 309.0,134.5 327.1,130.9 C 345.2,127.3 363.2,115.7 381.3,116.4 C 399.3,117.2 417.4,134.2 435.5,135.4 C 453.5,136.6 471.6,126.6 489.6,123.8 C 507.7,120.9 525.8,116.3 543.8,118.3 C 561.9,120.3 589.0,132.8 598.0,135.7" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="2.5" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
       </svg>
       <div class="wsChart-months"><span>АВГ</span><span>СЕН</span><span>ОКТ</span><span>НОЯ</span><span>ДЕК</span><span>ЯНВ</span><span>ФЕВ</span><span>МАР</span><span>АПР</span><span>МАЙ</span><span>ИЮН</span><span>ИЮЛ</span></div>
     </div>
@@ -35,9 +43,8 @@
         <span class="wsChart-total">182,7 ч</span>
       </div>
       <svg viewBox="0 0 600 150" width="100%" height="150" preserveAspectRatio="none" class="wsChart-svg">
-        <path d="M 2.0,148.0 C 11.0,148.0 38.1,150.4 56.2,148.0 C 74.2,145.6 92.3,156.3 110.4,133.6 C 128.4,111.0 146.5,18.4 164.5,12.0 C 182.6,5.6 200.7,76.6 218.7,95.3 C 236.8,114.0 254.8,120.2 272.9,124.1 C 291.0,127.9 309.0,121.3 327.1,118.5 C 345.2,115.8 363.2,118.0 381.3,107.8 C 399.3,97.5 417.4,54.7 435.5,57.0 C 453.5,59.3 471.6,108.5 489.6,121.7 C 507.7,134.8 525.8,133.6 543.8,136.0 C 561.9,138.5 589.0,136.4 598.0,136.5 L 598.0,148 L 2.0,148 Z" fill="rgba(255,255,255,0.08)" stroke="none"/>
-        <path d="M 2.0,148.0 C 11.0,148.0 38.1,150.4 56.2,148.0 C 74.2,145.6 92.3,156.3 110.4,133.6 C 128.4,111.0 146.5,18.4 164.5,12.0 C 182.6,5.6 200.7,76.6 218.7,95.3 C 236.8,114.0 254.8,120.2 272.9,124.1 C 291.0,127.9 309.0,121.3 327.1,118.5 C 345.2,115.8 363.2,118.0 381.3,107.8 C 399.3,97.5 417.4,54.7 435.5,57.0 C 453.5,59.3 471.6,108.5 489.6,121.7 C 507.7,134.8 525.8,133.6 543.8,136.0 C 561.9,138.5 589.0,136.4 598.0,136.5" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2"/>
-        <circle cx="2.0" cy="148.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="56.2" cy="148.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="110.4" cy="133.6" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="164.5" cy="12.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="218.7" cy="95.3" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="272.9" cy="124.1" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="327.1" cy="118.5" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="381.3" cy="107.8" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="435.5" cy="57.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="489.6" cy="121.7" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="543.8" cy="136.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="598.0" cy="136.5" r="2.2" fill="rgba(255,255,255,0.55)"/>
+        <path d="M 2.0,114.5 C 11.0,120.1 38.1,150.0 56.2,148.0 C 74.2,145.2 92.3,120.5 110.4,97.8 C 128.4,75.1 146.5,19.1 164.5,12.0 C 182.6,4.9 200.7,34.1 218.7,55.0 C 236.8,75.9 254.8,126.1 272.9,137.2 C 291.0,148.4 309.0,139.8 327.1,121.7 C 345.2,103.6 363.2,46.1 381.3,28.5 C 399.3,10.9 417.4,0.9 435.5,16.1 C 453.5,31.2 471.6,109.9 489.6,119.3 C 507.7,128.8 525.8,86.2 543.8,72.7 C 561.9,59.2 589.0,44.2 598.0,38.5" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2.5" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+        <path d="M 2.0,148.0 C 11.0,148.0 38.1,150.0 56.2,148.0 C 74.2,145.6 92.3,150.0 110.4,133.7 C 128.4,111.0 146.5,18.6 164.5,12.2 C 182.6,5.9 200.7,76.8 218.7,95.4 C 236.8,114.1 254.8,120.2 272.9,124.1 C 291.0,128.0 309.0,121.3 327.1,118.6 C 345.2,115.9 363.2,118.1 381.3,107.8 C 399.3,97.6 417.4,54.9 435.5,57.2 C 453.5,59.5 471.6,108.6 489.6,121.7 C 507.7,134.9 525.8,133.6 543.8,136.0 C 561.9,138.5 589.0,136.4 598.0,136.5" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="2.5" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
       </svg>
       <div class="wsChart-months"><span>АВГ</span><span>СЕН</span><span>ОКТ</span><span>НОЯ</span><span>ДЕК</span><span>ЯНВ</span><span>ФЕВ</span><span>МАР</span><span>АПР</span><span>МАЙ</span><span>ИЮН</span><span>ИЮЛ</span></div>
     </div>

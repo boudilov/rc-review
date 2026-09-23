@@ -1,109 +1,139 @@
-<!-- Страница 25 — общая статистика SELF&CLASS по техгруппам -->
+<!-- Страница 25 — heatmap SELF и CLASS по мастерским, год к году -->
 <style>
-  .ws25-wrap { width: 100%; max-width: 1700px; padding: 0 60px; }
-  .ws25-row { display: flex; align-items: center; gap: 40px; padding: 22px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
-  .ws25-row:last-child { border-bottom: none; }
-  .ws25-row-label { flex: 0 0 220px; display: flex; flex-direction: column; gap: 4px; }
-  .ws25-tg { font-size: 20px; font-weight: 700; color: #fff; }
-  .ws25-names { font-size: 11px; color: rgba(230,230,240,0.45); line-height: 1.4; }
-  .ws25-charts { flex: 1; display: flex; gap: 40px; }
-  .wsChart { flex: 1; min-width: 0; }
-  .wsChart-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
-  .wsChart-kicker { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(230,230,240,0.5); }
-  .wsChart-total { font-size: 16px; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; }
-  .wsChart-svg { display: block; }
-  .wsChart-months { display: none; }
+  .stat25-wrap { width: 100%; max-width: 1500px; padding: 0 50px; }
+  .stat25-kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(230, 230, 240, 0.5); margin-bottom: 10px; }
+  .stat25-title { font-size: 26px; font-weight: 600; color: rgba(255, 255, 255, 0.95); margin-bottom: 8px; }
+  .stat25-sub { font-size: 13px; color: rgba(230, 230, 240, 0.5); margin-bottom: 32px; }
+  .stat25-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  .stat25-table th { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(230, 230, 240, 0.5); text-align: center; padding: 0 10px 10px; }
+  .stat25-table th.stat25-name-h { text-align: left; padding-left: 0; }
+  .stat25-table th.stat25-group { font-size: 11px; letter-spacing: 0.2em; color: rgba(230, 230, 240, 0.75); padding-bottom: 6px; }
+  .stat25-table thead tr:first-child th { border-bottom: none; }
+  .stat25-table thead tr:last-child th { border-bottom: 1px solid rgba(255, 255, 255, 0.18); }
+  .stat25-table td { padding: 6px; text-align: center; font-size: 15px; color: rgba(255, 255, 255, 0.92); }
+  .stat25-table tr { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+  .stat25-name { text-align: left !important; padding: 10px 16px 10px 0 !important; font-size: 15px; font-weight: 500; color: rgba(255, 255, 255, 0.9); white-space: nowrap; }
+  .stat25-tile { padding: 10px 4px; min-width: 64px; }
+  .stat25-divider { border-left: 1px solid rgba(255, 255, 255, 0.12); }
+  .stat25-delta { font-size: 13px; font-weight: 700; white-space: nowrap; }
+  .stat25-delta.down { color: rgba(255, 120, 120, 0.85); }
+  .stat25-delta.up { color: rgba(255, 255, 255, 0.85); }
+  .stat25-delta.new { color: rgba(230, 230, 240, 0.5); font-weight: 600; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
 </style>
-<div class="ws25-wrap">
-  
-    <div class="ws25-row">
-      <div class="ws25-row-label"><span class="ws25-tg">3ТГ</span><span class="ws25-names">Одежда · Текстиль · Печать</span></div>
-      <div class="ws25-charts">
-    <div class="wsChart">
-      <div class="wsChart-head">
-        <span class="wsChart-kicker">SELF</span>
-        <span class="wsChart-total">6 126,8 ч</span>
-      </div>
-      <svg viewBox="0 0 560 110" width="100%" height="110" preserveAspectRatio="none" class="wsChart-svg">
-        <path d="M 2.0,101.1 C 10.4,90.1 35.7,50.0 52.5,35.2 C 69.4,20.3 86.2,12.5 103.1,12.0 C 119.9,11.5 136.8,27.1 153.6,32.3 C 170.5,37.5 187.3,35.6 204.2,43.2 C 221.0,50.8 237.9,71.1 254.7,77.7 C 271.6,84.3 288.4,90.8 305.3,83.0 C 322.1,75.3 339.0,38.6 355.8,31.3 C 372.7,24.1 389.5,34.5 406.4,39.4 C 423.2,44.3 440.1,64.7 456.9,60.5 C 473.8,56.3 490.6,12.0 507.5,14.2 C 524.3,16.4 549.6,63.8 558.0,73.8 L 558.0,108 L 2.0,108 Z" fill="rgba(255,255,255,0.08)" stroke="none"/>
-        <path d="M 2.0,101.1 C 10.4,90.1 35.7,50.0 52.5,35.2 C 69.4,20.3 86.2,12.5 103.1,12.0 C 119.9,11.5 136.8,27.1 153.6,32.3 C 170.5,37.5 187.3,35.6 204.2,43.2 C 221.0,50.8 237.9,71.1 254.7,77.7 C 271.6,84.3 288.4,90.8 305.3,83.0 C 322.1,75.3 339.0,38.6 355.8,31.3 C 372.7,24.1 389.5,34.5 406.4,39.4 C 423.2,44.3 440.1,64.7 456.9,60.5 C 473.8,56.3 490.6,12.0 507.5,14.2 C 524.3,16.4 549.6,63.8 558.0,73.8" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2"/>
-        <circle cx="2.0" cy="101.1" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="52.5" cy="35.2" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="103.1" cy="12.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="153.6" cy="32.3" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="204.2" cy="43.2" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="254.7" cy="77.7" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="305.3" cy="83.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="355.8" cy="31.3" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="406.4" cy="39.4" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="456.9" cy="60.5" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="507.5" cy="14.2" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="558.0" cy="73.8" r="2.2" fill="rgba(255,255,255,0.55)"/>
-      </svg>
-      <div class="wsChart-months"><span>АВГ</span><span>СЕН</span><span>ОКТ</span><span>НОЯ</span><span>ДЕК</span><span>ЯНВ</span><span>ФЕВ</span><span>МАР</span><span>АПР</span><span>МАЙ</span><span>ИЮН</span><span>ИЮЛ</span></div>
-    </div>
-    
-    <div class="wsChart">
-      <div class="wsChart-head">
-        <span class="wsChart-kicker">CLASS</span>
-        <span class="wsChart-total">4 225,2 ч</span>
-      </div>
-      <svg viewBox="0 0 560 110" width="100%" height="110" preserveAspectRatio="none" class="wsChart-svg">
-        <path d="M 2.0,108.0 C 10.4,106.5 35.7,111.5 52.5,99.2 C 69.4,86.9 86.2,45.9 103.1,34.1 C 119.9,22.3 136.8,30.2 153.6,28.2 C 170.5,26.3 187.3,19.6 204.2,22.4 C 221.0,25.1 237.9,43.3 254.7,44.8 C 271.6,46.4 288.4,37.3 305.3,31.9 C 322.1,26.4 339.0,15.0 355.8,12.0 C 372.7,9.0 389.5,8.5 406.4,14.2 C 423.2,19.8 440.1,37.7 456.9,45.8 C 473.8,53.9 490.6,54.5 507.5,62.8 C 524.3,71.1 549.6,90.2 558.0,95.7 L 558.0,108 L 2.0,108 Z" fill="rgba(255,255,255,0.08)" stroke="none"/>
-        <path d="M 2.0,108.0 C 10.4,106.5 35.7,111.5 52.5,99.2 C 69.4,86.9 86.2,45.9 103.1,34.1 C 119.9,22.3 136.8,30.2 153.6,28.2 C 170.5,26.3 187.3,19.6 204.2,22.4 C 221.0,25.1 237.9,43.3 254.7,44.8 C 271.6,46.4 288.4,37.3 305.3,31.9 C 322.1,26.4 339.0,15.0 355.8,12.0 C 372.7,9.0 389.5,8.5 406.4,14.2 C 423.2,19.8 440.1,37.7 456.9,45.8 C 473.8,53.9 490.6,54.5 507.5,62.8 C 524.3,71.1 549.6,90.2 558.0,95.7" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2"/>
-        <circle cx="2.0" cy="108.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="52.5" cy="99.2" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="103.1" cy="34.1" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="153.6" cy="28.2" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="204.2" cy="22.4" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="254.7" cy="44.8" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="305.3" cy="31.9" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="355.8" cy="12.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="406.4" cy="14.2" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="456.9" cy="45.8" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="507.5" cy="62.8" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="558.0" cy="95.7" r="2.2" fill="rgba(255,255,255,0.55)"/>
-      </svg>
-      <div class="wsChart-months"><span>АВГ</span><span>СЕН</span><span>ОКТ</span><span>НОЯ</span><span>ДЕК</span><span>ЯНВ</span><span>ФЕВ</span><span>МАР</span><span>АПР</span><span>МАЙ</span><span>ИЮН</span><span>ИЮЛ</span></div>
-    </div>
-    </div>
-    </div>
-    <div class="ws25-row">
-      <div class="ws25-row-label"><span class="ws25-tg">2ТГ</span><span class="ws25-names">3D · Ювелирная · Керамика</span></div>
-      <div class="ws25-charts">
-    <div class="wsChart">
-      <div class="wsChart-head">
-        <span class="wsChart-kicker">SELF</span>
-        <span class="wsChart-total">13 253,6 ч</span>
-      </div>
-      <svg viewBox="0 0 560 110" width="100%" height="110" preserveAspectRatio="none" class="wsChart-svg">
-        <path d="M 2.0,93.6 C 10.4,91.1 35.7,88.7 52.5,78.8 C 69.4,68.8 86.2,42.5 103.1,34.0 C 119.9,25.6 136.8,27.0 153.6,27.9 C 170.5,28.8 187.3,32.0 204.2,39.5 C 221.0,47.0 237.9,77.5 254.7,72.9 C 271.6,68.3 288.4,20.0 305.3,12.0 C 322.1,4.0 339.0,22.8 355.8,24.8 C 372.7,26.8 389.5,23.0 406.4,24.0 C 423.2,25.0 440.1,30.5 456.9,30.8 C 473.8,31.0 490.6,17.4 507.5,25.5 C 524.3,33.5 549.6,70.3 558.0,79.3 L 558.0,108 L 2.0,108 Z" fill="rgba(255,255,255,0.08)" stroke="none"/>
-        <path d="M 2.0,93.6 C 10.4,91.1 35.7,88.7 52.5,78.8 C 69.4,68.8 86.2,42.5 103.1,34.0 C 119.9,25.6 136.8,27.0 153.6,27.9 C 170.5,28.8 187.3,32.0 204.2,39.5 C 221.0,47.0 237.9,77.5 254.7,72.9 C 271.6,68.3 288.4,20.0 305.3,12.0 C 322.1,4.0 339.0,22.8 355.8,24.8 C 372.7,26.8 389.5,23.0 406.4,24.0 C 423.2,25.0 440.1,30.5 456.9,30.8 C 473.8,31.0 490.6,17.4 507.5,25.5 C 524.3,33.5 549.6,70.3 558.0,79.3" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2"/>
-        <circle cx="2.0" cy="93.6" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="52.5" cy="78.8" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="103.1" cy="34.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="153.6" cy="27.9" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="204.2" cy="39.5" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="254.7" cy="72.9" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="305.3" cy="12.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="355.8" cy="24.8" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="406.4" cy="24.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="456.9" cy="30.8" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="507.5" cy="25.5" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="558.0" cy="79.3" r="2.2" fill="rgba(255,255,255,0.55)"/>
-      </svg>
-      <div class="wsChart-months"><span>АВГ</span><span>СЕН</span><span>ОКТ</span><span>НОЯ</span><span>ДЕК</span><span>ЯНВ</span><span>ФЕВ</span><span>МАР</span><span>АПР</span><span>МАЙ</span><span>ИЮН</span><span>ИЮЛ</span></div>
-    </div>
-    
-    <div class="wsChart">
-      <div class="wsChart-head">
-        <span class="wsChart-kicker">CLASS</span>
-        <span class="wsChart-total">1 280,5 ч</span>
-      </div>
-      <svg viewBox="0 0 560 110" width="100%" height="110" preserveAspectRatio="none" class="wsChart-svg">
-        <path d="M 2.0,100.1 C 10.4,98.5 35.7,104.2 52.5,90.8 C 69.4,77.4 86.2,28.6 103.1,19.6 C 119.9,10.7 136.8,35.5 153.6,37.2 C 170.5,38.8 187.3,33.5 204.2,29.7 C 221.0,26.0 237.9,16.8 254.7,14.6 C 271.6,12.5 288.4,15.7 305.3,17.0 C 322.1,18.2 339.0,20.5 355.8,22.3 C 372.7,24.0 389.5,29.3 406.4,27.6 C 423.2,25.8 440.1,8.9 456.9,12.0 C 473.8,15.1 490.6,43.1 507.5,46.3 C 524.3,49.5 549.6,33.7 558.0,31.2 L 558.0,108 L 2.0,108 Z" fill="rgba(255,255,255,0.08)" stroke="none"/>
-        <path d="M 2.0,100.1 C 10.4,98.5 35.7,104.2 52.5,90.8 C 69.4,77.4 86.2,28.6 103.1,19.6 C 119.9,10.7 136.8,35.5 153.6,37.2 C 170.5,38.8 187.3,33.5 204.2,29.7 C 221.0,26.0 237.9,16.8 254.7,14.6 C 271.6,12.5 288.4,15.7 305.3,17.0 C 322.1,18.2 339.0,20.5 355.8,22.3 C 372.7,24.0 389.5,29.3 406.4,27.6 C 423.2,25.8 440.1,8.9 456.9,12.0 C 473.8,15.1 490.6,43.1 507.5,46.3 C 524.3,49.5 549.6,33.7 558.0,31.2" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2"/>
-        <circle cx="2.0" cy="100.1" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="52.5" cy="90.8" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="103.1" cy="19.6" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="153.6" cy="37.2" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="204.2" cy="29.7" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="254.7" cy="14.6" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="305.3" cy="17.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="355.8" cy="22.3" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="406.4" cy="27.6" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="456.9" cy="12.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="507.5" cy="46.3" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="558.0" cy="31.2" r="2.2" fill="rgba(255,255,255,0.55)"/>
-      </svg>
-      <div class="wsChart-months"><span>АВГ</span><span>СЕН</span><span>ОКТ</span><span>НОЯ</span><span>ДЕК</span><span>ЯНВ</span><span>ФЕВ</span><span>МАР</span><span>АПР</span><span>МАЙ</span><span>ИЮН</span><span>ИЮЛ</span></div>
-    </div>
-    </div>
-    </div>
-    <div class="ws25-row">
-      <div class="ws25-row-label"><span class="ws25-tg">1ТГ</span><span class="ws25-names">Артплей · Фабрика · Тёмная комната · Принт-офис</span></div>
-      <div class="ws25-charts">
-    <div class="wsChart">
-      <div class="wsChart-head">
-        <span class="wsChart-kicker">SELF</span>
-        <span class="wsChart-total">10 373,5 ч</span>
-      </div>
-      <svg viewBox="0 0 560 110" width="100%" height="110" preserveAspectRatio="none" class="wsChart-svg">
-        <path d="M 2.0,100.9 C 10.4,95.8 35.7,79.8 52.5,70.1 C 69.4,60.4 86.2,50.0 103.1,42.6 C 119.9,35.2 136.8,30.8 153.6,25.7 C 170.5,20.6 187.3,10.3 204.2,12.0 C 221.0,13.7 237.9,32.9 254.7,35.6 C 271.6,38.3 288.4,26.0 305.3,28.1 C 322.1,30.2 339.0,43.1 355.8,48.4 C 372.7,53.8 389.5,59.5 406.4,60.4 C 423.2,61.3 440.1,54.7 456.9,54.0 C 473.8,53.3 490.6,56.9 507.5,56.2 C 524.3,55.5 549.6,51.1 558.0,50.0 L 558.0,108 L 2.0,108 Z" fill="rgba(255,255,255,0.08)" stroke="none"/>
-        <path d="M 2.0,100.9 C 10.4,95.8 35.7,79.8 52.5,70.1 C 69.4,60.4 86.2,50.0 103.1,42.6 C 119.9,35.2 136.8,30.8 153.6,25.7 C 170.5,20.6 187.3,10.3 204.2,12.0 C 221.0,13.7 237.9,32.9 254.7,35.6 C 271.6,38.3 288.4,26.0 305.3,28.1 C 322.1,30.2 339.0,43.1 355.8,48.4 C 372.7,53.8 389.5,59.5 406.4,60.4 C 423.2,61.3 440.1,54.7 456.9,54.0 C 473.8,53.3 490.6,56.9 507.5,56.2 C 524.3,55.5 549.6,51.1 558.0,50.0" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2"/>
-        <circle cx="2.0" cy="100.9" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="52.5" cy="70.1" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="103.1" cy="42.6" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="153.6" cy="25.7" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="204.2" cy="12.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="254.7" cy="35.6" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="305.3" cy="28.1" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="355.8" cy="48.4" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="406.4" cy="60.4" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="456.9" cy="54.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="507.5" cy="56.2" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="558.0" cy="50.0" r="2.2" fill="rgba(255,255,255,0.55)"/>
-      </svg>
-      <div class="wsChart-months"><span>АВГ</span><span>СЕН</span><span>ОКТ</span><span>НОЯ</span><span>ДЕК</span><span>ЯНВ</span><span>ФЕВ</span><span>МАР</span><span>АПР</span><span>МАЙ</span><span>ИЮН</span><span>ИЮЛ</span></div>
-    </div>
-    
-    <div class="wsChart">
-      <div class="wsChart-head">
-        <span class="wsChart-kicker">CLASS</span>
-        <span class="wsChart-total">4 222,4 ч</span>
-      </div>
-      <svg viewBox="0 0 560 110" width="100%" height="110" preserveAspectRatio="none" class="wsChart-svg">
-        <path d="M 2.0,105.8 C 10.4,105.6 35.7,105.7 52.5,104.6 C 69.4,103.4 86.2,105.7 103.1,98.8 C 119.9,91.9 136.8,67.3 153.6,63.0 C 170.5,58.8 187.3,70.4 204.2,73.5 C 221.0,76.7 237.9,84.0 254.7,81.9 C 271.6,79.7 288.4,65.4 305.3,60.8 C 322.1,56.2 339.0,62.5 355.8,54.4 C 372.7,46.3 389.5,14.5 406.4,12.0 C 423.2,9.5 440.1,28.9 456.9,39.2 C 473.8,49.5 490.6,65.4 507.5,73.7 C 524.3,81.9 549.6,86.2 558.0,88.7 L 558.0,108 L 2.0,108 Z" fill="rgba(255,255,255,0.08)" stroke="none"/>
-        <path d="M 2.0,105.8 C 10.4,105.6 35.7,105.7 52.5,104.6 C 69.4,103.4 86.2,105.7 103.1,98.8 C 119.9,91.9 136.8,67.3 153.6,63.0 C 170.5,58.8 187.3,70.4 204.2,73.5 C 221.0,76.7 237.9,84.0 254.7,81.9 C 271.6,79.7 288.4,65.4 305.3,60.8 C 322.1,56.2 339.0,62.5 355.8,54.4 C 372.7,46.3 389.5,14.5 406.4,12.0 C 423.2,9.5 440.1,28.9 456.9,39.2 C 473.8,49.5 490.6,65.4 507.5,73.7 C 524.3,81.9 549.6,86.2 558.0,88.7" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2"/>
-        <circle cx="2.0" cy="105.8" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="52.5" cy="104.6" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="103.1" cy="98.8" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="153.6" cy="63.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="204.2" cy="73.5" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="254.7" cy="81.9" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="305.3" cy="60.8" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="355.8" cy="54.4" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="406.4" cy="12.0" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="456.9" cy="39.2" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="507.5" cy="73.7" r="2.2" fill="rgba(255,255,255,0.55)"/><circle cx="558.0" cy="88.7" r="2.2" fill="rgba(255,255,255,0.55)"/>
-      </svg>
-      <div class="wsChart-months"><span>АВГ</span><span>СЕН</span><span>ОКТ</span><span>НОЯ</span><span>ДЕК</span><span>ЯНВ</span><span>ФЕВ</span><span>МАР</span><span>АПР</span><span>МАЙ</span><span>ИЮН</span><span>ИЮЛ</span></div>
-    </div>
-    </div>
-    </div>
+
+<div class="stat25-wrap">
+  <div class="stat25-kicker">Сравнение по годам</div>
+  <div class="stat25-title">Часы SELF и CLASS по мастерским</div>
+  <div class="stat25-sub">2024/25 → 2025/26 учебный год · без библиотеки (нет данных) и без проката (другая единица измерения) · яркость плитки = часы (своя шкала для SELF и для CLASS)</div>
+
+  <table class="stat25-table">
+    <thead>
+      <tr>
+        <th class="stat25-name-h" rowspan="2">Мастерская</th>
+        <th class="stat25-group" colspan="3">SELF</th>
+        <th class="stat25-group stat25-divider" colspan="3">CLASS</th>
+      </tr>
+      <tr>
+        <th>24/25</th>
+        <th>25/26</th>
+        <th>Δ</th>
+        <th class="stat25-divider">24/25</th>
+        <th>25/26</th>
+        <th>Δ</th>
+      </tr>
+    </thead>
+    <tbody class="accent-group">
+      
+      <tr class="accent-item">
+        <td class="stat25-name">Фешн</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.262);">1 741</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.277);">1 889</td>
+        <td class="stat25-delta up">▲ 8%</td>
+        <td class="stat25-tile stat25-divider" style="background: rgba(255,255,255,0.885); color: #0a0a0a;">3 347</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.9); color: #0a0a0a;">3 409</td>
+        <td class="stat25-delta up">▲ 2%</td>
+      </tr>
+      <tr class="accent-item">
+        <td class="stat25-name">Текстиль</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.131);">486</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.214);">1 284</td>
+        <td class="stat25-delta up">▲ 164%</td>
+        <td class="stat25-tile stat25-divider" style="background: rgba(255,255,255,0.109);">122</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.134);">224</td>
+        <td class="stat25-delta up">▲ 83%</td>
+      </tr>
+      <tr class="accent-item">
+        <td class="stat25-name">Ручная печать</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.623); color: #0a0a0a;">5 212</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.388);">2 954</td>
+        <td class="stat25-delta down">▼ 43%</td>
+        <td class="stat25-tile stat25-divider" style="background: rgba(255,255,255,0.181);">419</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.223);">592</td>
+        <td class="stat25-delta up">▲ 41%</td>
+      </tr>
+      <tr class="accent-item">
+        <td class="stat25-name">3D</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.862); color: #0a0a0a;">7 500</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.9); color: #0a0a0a;">7 864</td>
+        <td class="stat25-delta up">▲ 5%</td>
+        <td class="stat25-tile stat25-divider" style="background: rgba(255,255,255,0.141);">254</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.151);">295</td>
+        <td class="stat25-delta up">▲ 16%</td>
+      </tr>
+      <tr class="accent-item">
+        <td class="stat25-name">Ювелирная</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.243);">1 565</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.254);">1 665</td>
+        <td class="stat25-delta up">▲ 6%</td>
+        <td class="stat25-tile stat25-divider" style="background: rgba(255,255,255,0.138);">240</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.149);">286</td>
+        <td class="stat25-delta up">▲ 19%</td>
+      </tr>
+      <tr class="accent-item">
+        <td class="stat25-name">Керамика</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.674); color: #0a0a0a;">5 696</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.468);">3 724</td>
+        <td class="stat25-delta down">▼ 35%</td>
+        <td class="stat25-tile stat25-divider" style="background: rgba(255,255,255,0.18);">415</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.248);">700</td>
+        <td class="stat25-delta up">▲ 69%</td>
+      </tr>
+      <tr class="accent-item">
+        <td class="stat25-name">Фотостудия Артплей</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.894); color: #0a0a0a;">7 804</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.807); color: #0a0a0a;">6 968</td>
+        <td class="stat25-delta down">▼ 11%</td>
+        <td class="stat25-tile stat25-divider" style="background: rgba(255,255,255,0.814); color: #0a0a0a;">3 050</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.85); color: #0a0a0a;">3 201</td>
+        <td class="stat25-delta up">▲ 5%</td>
+      </tr>
+      <tr class="accent-item">
+        <td class="stat25-name">Фотостудия Фабрика</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.08);">0</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.2);">1 152</td>
+        <td class="stat25-delta new">новое</td>
+        <td class="stat25-tile stat25-divider" style="background: rgba(255,255,255,0.08);">0</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.26);">748</td>
+        <td class="stat25-delta new">новое</td>
+      </tr>
+      <tr class="accent-item">
+        <td class="stat25-name">Принт-офис</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.329);">2 384</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.232);">1 454</td>
+        <td class="stat25-delta down">▼ 39%</td>
+        <td class="stat25-tile stat25-divider" style="background: rgba(255,255,255,0.112);">131</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.102);">90</td>
+        <td class="stat25-delta down">▼ 31%</td>
+      </tr>
+      <tr class="accent-item">
+        <td class="stat25-name">Тёмная комната</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.294);">2 050</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.163);">800</td>
+        <td class="stat25-delta down">▼ 61%</td>
+        <td class="stat25-tile stat25-divider" style="background: rgba(255,255,255,0.162);">341</td>
+        <td class="stat25-tile" style="background: rgba(255,255,255,0.124);">183</td>
+        <td class="stat25-delta down">▼ 46%</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
