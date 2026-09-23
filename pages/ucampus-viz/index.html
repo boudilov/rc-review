@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UCampus · Step 1</title>
+<script src="https://unpkg.com/pusher-js@8.4.0/dist/web/pusher.min.js"></script>
+<script src="https://unpkg.com/laravel-echo@1.16.1/dist/echo.iife.js"></script>
 <style>
   html, body {
     margin: 0; padding: 0; width: 100%; height: 100%;
@@ -21,6 +23,11 @@
     user-select: none;
     z-index: 5;
   }
+  #hud-status {
+    color: rgba(230,230,240,0.35);
+    margin-left: 8px;
+  }
+  #hud-status.hud-status--error { color: rgba(255,120,120,0.85); }
 
   #stats-panel {
     position: fixed; top: 16px; right: 18px;
@@ -56,31 +63,52 @@
   }
   #info-btn:hover { background: rgba(255,255,255,0.12); border-color: rgba(220,220,230,0.6); }
 
-  #info-modal { position: fixed; inset: 0; z-index: 10; display: none; }
-  #info-modal.open { display: block; }
-  #info-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
-  #info-modal-panel {
-    position: relative; margin: 12vh auto 0; width: min(360px, 86vw);
+  /* оверлей/панель модального окна — переиспользуется горячими клавишами (I) и потоком WS (W) */
+  .modal-overlay { position: fixed; inset: 0; z-index: 10; display: none; }
+  .modal-overlay.open { display: block; }
+  .modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
+  .modal-panel {
+    position: relative;
     background: rgba(18,18,22,0.95);
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 10px;
-    padding: 16px 18px 18px;
     color: rgba(230,230,240,0.9);
     font: 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     box-shadow: 0 10px 40px rgba(0,0,0,0.5);
   }
-  #info-modal-header {
+  .modal-header {
     display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 12px; font-weight: 600; letter-spacing: 0.04em;
+    font-weight: 600; letter-spacing: 0.04em;
   }
-  #info-modal-close {
+  .modal-close {
     background: none; border: none; color: inherit; font-size: 18px;
     cursor: pointer; line-height: 1; padding: 0 4px;
   }
+
+  #info-modal-panel { margin: 12vh auto 0; width: min(360px, 86vw); padding: 16px 18px 18px; }
+  #info-modal-header { margin-bottom: 12px; }
   #info-modal-table { width: 100%; border-collapse: collapse; }
   #info-modal-table td { padding: 7px 4px; border-top: 1px solid rgba(255,255,255,0.08); }
   #info-modal-table td:first-child { width: 46px; font-weight: 600; color: #fff; }
   #info-modal-table tr:first-child td { border-top: none; }
+
+  #ws-log-panel {
+    margin: 6vh auto 0; width: min(560px, 92vw); max-height: 84vh;
+    padding: 14px 16px 16px;
+    display: flex; flex-direction: column;
+  }
+  #ws-log-header { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  #ws-log-sub { font: 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: rgba(230,230,240,0.4); margin-bottom: 10px; }
+  #ws-log-list { overflow-y: auto; flex: 1; }
+  .ws-log-row {
+    padding: 8px 0; border-top: 1px solid rgba(255,255,255,0.07);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; line-height: 1.5;
+  }
+  .ws-log-row:first-child { border-top: none; }
+  .ws-log-row .ws-log-meta { color: rgba(230,230,240,0.4); margin-bottom: 3px; }
+  .ws-log-row .ws-log-event { color: #fff; }
+  .ws-log-row pre { margin: 0; white-space: pre-wrap; word-break: break-word; color: rgba(210,225,255,0.8); }
+  #ws-log-list .empty { color: rgba(230,230,240,0.35); font: 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
 
   #settings-panel {
     position: fixed; right: 16px; bottom: 16px;
@@ -172,24 +200,20 @@
 <body>
 <canvas id="stage"></canvas>
 
-<div id="hud-title">UCAMPUS LIVE</div>
+<div id="hud-title">UCAMPUS LIVE <span id="hud-status"></span></div>
 
 <div id="stats-panel">
   <span>На сцене<b id="stat-active">0</b></span>
-  <span>Подтверждено<b id="stat-created">0</b></span>
-  <span>Отменено<b id="stat-cancelled">0</b></span>
-  <span>Заблокировано<b id="stat-blocked">0</b></span>
-  <span>Ушли<b id="stat-exited">0</b></span>
 </div>
 
 <button id="info-btn" title="Горячие клавиши (I)" aria-label="Горячие клавиши">i</button>
 
-<div id="info-modal">
-  <div id="info-modal-backdrop"></div>
-  <div id="info-modal-panel">
-    <div id="info-modal-header">
+<div id="info-modal" class="modal-overlay">
+  <div id="info-modal-backdrop" class="modal-backdrop"></div>
+  <div id="info-modal-panel" class="modal-panel">
+    <div id="info-modal-header" class="modal-header">
       <span>Горячие клавиши</span>
-      <button id="info-modal-close" aria-label="Закрыть">&times;</button>
+      <button id="info-modal-close" class="modal-close" aria-label="Закрыть">&times;</button>
     </div>
     <table id="info-modal-table">
       <tr><td>L</td><td>показать/скрыть названия мастерских</td></tr>
@@ -197,12 +221,27 @@
       <tr><td>U</td><td>показать/скрыть id пользователей</td></tr>
       <tr><td>R</td><td>включить/выключить вращение фона</td></tr>
       <tr><td>M</td><td>показать/скрыть "звёзды" мастерских</td></tr>
+      <tr><td>E</td><td>показать/скрыть панель эмуляции и настроек</td></tr>
+      <tr><td>S</td><td>включить/выключить звук</td></tr>
+      <tr><td>W</td><td>показать/скрыть прямую трансляцию WS-сообщений</td></tr>
       <tr><td>I</td><td>показать/скрыть это окно</td></tr>
     </table>
   </div>
 </div>
 
-<div id="settings-panel">
+<div id="ws-log-modal" class="modal-overlay">
+  <div id="ws-log-backdrop" class="modal-backdrop"></div>
+  <div id="ws-log-panel" class="modal-panel">
+    <div id="ws-log-header" class="modal-header">
+      <span>WS-трафик</span>
+      <button id="ws-log-close" class="modal-close" aria-label="Закрыть">&times;</button>
+    </div>
+    <div id="ws-log-sub">канал <span id="ws-log-channel">—</span> · сырые сообщения сокета, новые сверху</div>
+    <div id="ws-log-list"><div class="empty">сообщений пока не было</div></div>
+  </div>
+</div>
+
+<div id="settings-panel" hidden>
   <div class="settings-header">
     <h2>Эмуляция</h2>
     <button id="reset-btn" title="Сбросить эмуляцию и отрисовку">Reset</button>
@@ -376,10 +415,15 @@
   window.addEventListener('resize', handleResizeWorkshops);
   layoutWorkshops();
 
+  // если live-режим (ниже) успеет загрузить реальные мастерские раньше, чем
+  // отработает этот fetch — не даём локальному резервному списку затереть
+  // уже применённые живые данные (гонка двух независимых fetch'ей)
+  let liveWorkshopsLoaded = false;
+
   fetch('data/workshops.json')
     .then(res => res.json())
     .then(data => {
-      if (Array.isArray(data) && data.length){
+      if (Array.isArray(data) && data.length && !liveWorkshopsLoaded){
         workshopDefs = data;
         layoutWorkshops();
       }
@@ -400,20 +444,15 @@
   };
 
   // ---------- Статистика (панель справа вверху) ----------
+  // created/cancelled/blocked/exited больше не отображаются в HUD, но
+  // счётчики оставлены — ими пользуется внутренняя логика (см. их ++ в
+  // startBookingCreated/startBookingCancelled/startBookingBlocked/startLeaving)
   const STATS = { created: 0, cancelled: 0, blocked: 0, exited: 0 };
   const statsEls = {
-    active: document.getElementById('stat-active'),
-    created: document.getElementById('stat-created'),
-    cancelled: document.getElementById('stat-cancelled'),
-    blocked: document.getElementById('stat-blocked'),
-    exited: document.getElementById('stat-exited')
+    active: document.getElementById('stat-active')
   };
   function updateStatsPanel(){
     statsEls.active.textContent = users.length;
-    statsEls.created.textContent = STATS.created;
-    statsEls.cancelled.textContent = STATS.cancelled;
-    statsEls.blocked.textContent = STATS.blocked;
-    statsEls.exited.textContent = STATS.exited;
   }
 
   // ---------- Эмбиент-звук: фоновый гул, реагирующий на активность сцены ----------
@@ -460,7 +499,7 @@
       osc.frequency.value = baseFreq;
       osc.detune.value = cents;
       const g = audioCtx.createGain();
-      g.gain.value = 0.33;
+      g.gain.value = 0.165; // вдвое тише гул (не трогаем masterGain — он общий со щелчком брони)
       osc.connect(g);
       g.connect(filterNode);
       osc.start();
@@ -602,13 +641,12 @@
   const USER_FLASH_DECAY_MS = 700; // медленное затухание вспышки
   const USER_FLASH_MS = USER_FLASH_RISE_MS + USER_FLASH_DECAY_MS; // полная длительность
 
-  function spawnUser(){
+  // общий каркас звезды-пользователя: и для локальной эмуляции (spawnUser),
+  // и для live-сессий с бэкенда (spawnLiveUser, см. секцию "Live-режим" ниже)
+  function makeUser(now, extra){
     const { minR, maxR } = userRadiusBounds();
     const dir = Math.random() < 0.5 ? 1 : -1;
-    const now = performance.now();
-    noteActivity(now);
-    users.push({
-      id: 'id' + String(nextUserId++).padStart(4, '0'),
+    return Object.assign({
       state: 'outer', // outer | toWorkshop | atWorkshop | toOuter | leaving
       angle: Math.random() * Math.PI * 2,
       radius: minR + Math.random() * (maxR - minR),
@@ -616,8 +654,11 @@
       born: now,
       opacity: 0,
       trail: [],
-      decisionAt: now + SETTINGS.decisionMin + Math.random() * Math.max(0, SETTINGS.decisionMax - SETTINGS.decisionMin),
-      atWorkshopUntil: 0,
+      // Infinity по умолчанию: у live-звёзд переходы дёргают обработчики
+      // WS-событий, а не таймер (см. ранний выход в maybeTriggerNextEvent)
+      decisionAt: Infinity,
+      atWorkshopUntil: Infinity,
+      role: null, // user_role сессии (только у live-звёзд) — влияет на цвет точки, см. actorRgb()
       workshop: null,
       localAngle: 0,        // угол на маленькой орбите вокруг мастерской (atWorkshop)
       localRadius: 0,       // текущий радиус этой маленькой орбиты
@@ -632,7 +673,16 @@
       flashTriggered: false,
       flashFixed: false, // если true — вспышка рисуется неподвижно в центре сцены, а не у точки пользователя
       flashRayOffset: 0  // поворот лучей блика (только для flashFixed)
-    });
+    }, extra);
+  }
+
+  function spawnUser(){
+    const now = performance.now();
+    noteActivity(now);
+    users.push(makeUser(now, {
+      id: 'id' + String(nextUserId++).padStart(4, '0'),
+      decisionAt: now + SETTINGS.decisionMin + Math.random() * Math.max(0, SETTINGS.decisionMax - SETTINGS.decisionMin)
+    }));
   }
 
   // кратчайшая угловая интерполяция (чтобы перелёт не делал лишний оборот)
@@ -651,8 +701,8 @@
   }
 
   // user.booking.init — открыт диалог бронирования случайной мастерской
-  function startBookingInit(u, now){
-    const w = workshops[Math.floor(Math.random() * workshops.length)];
+  function startBookingInit(u, now, workshop){
+    const w = workshop || workshops[Math.floor(Math.random() * workshops.length)];
     u.workshop = w;
     startFlight(u, w.radius, w.angle + (Math.random() - 0.5) * 0.3, 700 + Math.random() * 300, 'toWorkshop');
   }
@@ -706,14 +756,16 @@
     noteActivity(now);
   }
 
-  // user.booking.blocked — мастерская недоступна для брони
-  function startBookingBlocked(u, now){
+  // user.booking.blocked — мастерская недоступна для брони.
+  // opts.returnToOuter = false используется live-обработчиком: по спеке
+  // состояние сессии не меняется, звезда остаётся на своей орбите
+  function startBookingBlocked(u, now, opts){
     u.flashStart = now;
     u.flashUntil = now + USER_FLASH_MS;
     u.flashColor = 'rgba(255,120,120,';
     u.flashSize = 23;
     u.flashFixed = false;
-    flyBackToOuter(u, now);
+    if (!opts || opts.returnToOuter !== false) flyBackToOuter(u, now);
     STATS.blocked++;
     noteActivity(now);
   }
@@ -757,6 +809,7 @@
   }
 
   function maybeTriggerNextEvent(u, now){
+    if (u.live) return; // переходы live-звёзд дёргают обработчики WS-событий, а не таймер
     if (u.state === 'outer' && now >= u.decisionAt){
       if (workshops.length && Math.random() * 100 < SETTINGS.bookingChance){
         startBookingInit(u, now);
@@ -845,15 +898,22 @@
     users = users.filter(u => !(u.state === 'leaving' && u.opacity <= 0));
   }
 
+  // цвет точки-актора по роли: administrator — с холодным голубоватым акцентом
+  // (исходный оттенок "точек-акторов" из styles.md), все остальные — ровный белый
+  function actorRgb(u){
+    return u.role === 'administrator' ? '210,225,255' : '235,235,240';
+  }
+
   function drawUserTrail(u, dim){
     const pts = u.trail;
     if (pts.length < 2) return;
+    const rgb = actorRgb(u);
     for (let i = 1; i < pts.length; i++){
       const t = i / (pts.length - 1); // 0 (старое) → 1 (голова)
       ctx.beginPath();
       ctx.moveTo(pts[i - 1].x, pts[i - 1].y);
       ctx.lineTo(pts[i].x, pts[i].y);
-      ctx.strokeStyle = `rgba(210,225,255,${t * t * 0.5 * u.opacity * dim})`;
+      ctx.strokeStyle = `rgba(${rgb},${t * t * 0.5 * u.opacity * dim})`;
       ctx.lineWidth = Math.max(0.5, 1.6 * t);
       ctx.stroke();
     }
@@ -922,15 +982,16 @@
         }
       }
 
+      const rgb = actorRgb(u);
       ctx.beginPath();
       ctx.arc(x, y, 1.8, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(210,225,255,${0.6 * u.opacity * dim})`;
+      ctx.fillStyle = `rgba(${rgb},${0.6 * u.opacity * dim})`;
       ctx.fill();
 
       if (SHOW_USER_IDS && u.opacity > 0.05){
         const align = Math.cos(u.angle) > 0.15 ? 'left' : (Math.cos(u.angle) < -0.15 ? 'right' : 'center');
         ctx.font = '10px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
-        ctx.fillStyle = `rgba(210,225,255,${0.8 * u.opacity * dim})`;
+        ctx.fillStyle = `rgba(${rgb},${0.8 * u.opacity * dim})`;
         ctx.textAlign = align;
         ctx.textBaseline = 'middle';
         const lOffset = 8;
@@ -940,6 +1001,252 @@
       }
     });
   }
+
+  // ---------- Live-режим: реальные события с бэкенда вместо эмуляции ----------
+  // Транспорт по мотивам ws-starter.html (Laravel Echo + Pusher), но вместо
+  // текстовых заглушек render* дёргает те же переходы состояний, что и
+  // эмулятор выше (startFlight/flyBackToOuter/startBookingCreated/...).
+  // Работает независимо от таймеров эмуляции — см. флаг live в makeUser()
+  // и ранний выход в maybeTriggerNextEvent(). Включается сама при загрузке
+  // страницы; если недоступна (сеть/CORS) — сцена остаётся пустой со
+  // статусом ошибки, и резервным вариантом служит ручной тумблер
+  // «Пользователи» в панели «Эмуляция».
+
+  const liveParams = new URLSearchParams(window.location.search);
+  // если страница открыта не с домена кабинета (например, с github.io) —
+  // по умолчанию бьём в прод, чтобы не требовать ?api= при каждом показе
+  const API_BASE = (liveParams.get('api')
+    || (window.location.hostname === 'ucampus.u.university' ? '' : 'https://ucampus.u.university')
+  ).replace(/\/$/, '');
+
+  // у бэкенда нет поля size — размеры точек заданы вручную (id мастерской → 1..5),
+  // 0 значит "не показывать эту мастерскую вовсе"; для мастерской не из списка
+  // (например, новой на бэкенде) — LIVE_DOT_SIZE_DEFAULT
+  const LIVE_WORKSHOP_SIZES = {
+    15: 1, 11: 4, 23: 1, 10: 3, 8: 4, 6: 2, 4: 3, 14: 0, 9: 5,
+    26: 5, 7: 2, 13: 3, 16: 5, 22: 0, 12: 0, 25: 1, 27: 2, 28: 4
+  };
+  const LIVE_DOT_SIZE_DEFAULT = 3;
+  const liveWorkshops = new Map(); // id -> сырые данные с бэкенда (name, name_en, slug, cover_url)
+
+  const hudStatusEl = document.getElementById('hud-status');
+  function setLiveStatus(status, text){
+    hudStatusEl.textContent = text;
+    hudStatusEl.classList.toggle('hud-status--error', status === 'error');
+  }
+
+  function findWorkshop(id){
+    return workshops.find(w => w.id === id);
+  }
+
+  function findLiveUser(sessionId){
+    return users.find(u => u.sessionId === sessionId);
+  }
+
+  function spawnLiveUser(sessionId){
+    const now = performance.now();
+    noteActivity(now);
+    const u = makeUser(now, { id: sessionId.slice(0, 8), sessionId, live: true });
+    users.push(u);
+    return u;
+  }
+
+  // role передаётся из envelope.payload.user_role, если он в этот момент известен —
+  // применяется и к уже существующей звезде (на случай если appeared пропущен и роль
+  // впервые пришла с более поздним событием)
+  function getOrSpawnLiveUser(sessionId, role){
+    const u = findLiveUser(sessionId) || spawnLiveUser(sessionId);
+    if (role) u.role = role;
+    return u;
+  }
+
+  /* ------------------------------------------------------------------
+     Обработчики событий канала. Конверт: { event, timestamp, session_id, payload }.
+     Дубликаты и "осиротевшие" события возможны (см. websocket-events.md) —
+     opened/created создают звезду по факту, если appeared не было замечен.
+     ------------------------------------------------------------------ */
+
+  function onLiveUserAppeared(envelope){
+    getOrSpawnLiveUser(envelope.session_id, envelope.payload.user_role);
+  }
+
+  function onLiveScheduleOpened(envelope){
+    if (envelope.payload.workshop_id == null){
+      // бэкенд иногда не кладёт workshop_id в это событие (расхождение с websocket-events.md) —
+      // без него мы не знаем, к какой орбите лететь, звезда остаётся на прежнем месте
+      console.warn('user.schedule.opened без workshop_id — звезда не пристыкуется', envelope);
+      return;
+    }
+    const w = findWorkshop(envelope.payload.workshop_id);
+    if (!w) return;
+    const u = getOrSpawnLiveUser(envelope.session_id, envelope.payload.user_role);
+    // дубликат opened для орбиты, где звезда уже находится — не дёргаем анимацию заново
+    if (u.state === 'atWorkshop' && u.workshop && u.workshop.id === w.id) return;
+    startBookingInit(u, performance.now(), w);
+  }
+
+  function onLiveScheduleClosed(envelope){
+    const u = findLiveUser(envelope.session_id);
+    if (!u) return;
+    flyBackToOuter(u, performance.now());
+  }
+
+  function onLiveBookingCreated(envelope){
+    const u = getOrSpawnLiveUser(envelope.session_id, envelope.payload.user_role);
+    startBookingCreated(u, performance.now());
+  }
+
+  function onLiveBookingBlocked(envelope){
+    const u = findLiveUser(envelope.session_id);
+    if (!u) return;
+    startBookingBlocked(u, performance.now(), { returnToOuter: false });
+  }
+
+  function onLiveUserExit(envelope){
+    const u = findLiveUser(envelope.session_id);
+    if (!u) return;
+    startLeaving(u, performance.now());
+  }
+
+  // Снапшот при (пере)подключении — источник истины по текущим сессиям,
+  // расставляется без анимации появления: это восстановление картины,
+  // а не появление новых пользователей
+  function placeLiveSnapshot(sessions){
+    users = users.filter(u => !u.live);
+
+    sessions.forEach((session) => {
+      const u = spawnLiveUser(session.session_id);
+      u.role = session.user_role;
+      u.opacity = 1;
+
+      if (session.state === 'orbiting'){
+        const w = findWorkshop(session.workshop_id);
+        if (w){
+          u.workshop = w;
+          u.state = 'atWorkshop';
+          u.localAngle = Math.random() * Math.PI * 2;
+          u.localRadiusTarget = w.dotR + 8 + Math.random() * 6;
+          u.localRadius = u.localRadiusTarget;
+          const dir = Math.random() < 0.5 ? 1 : -1;
+          u.localSpeed = dir * (0.0006 + Math.random() * 0.0009);
+          const wx = cx + Math.cos(w.angle) * w.radius;
+          const wy = cy + Math.sin(w.angle) * w.radius;
+          const lx = wx + Math.cos(u.localAngle) * u.localRadius;
+          const ly = wy + Math.sin(u.localAngle) * u.localRadius;
+          u.radius = Math.hypot(lx - cx, ly - cy);
+          u.angle = Math.atan2(ly - cy, lx - cx);
+        }
+      }
+      // 'drifting' и 'booked' (вспышка уже позади к моменту снапшота)
+      // оставляем как есть — spawnLiveUser уже поставил случайную точку
+      // на внешнем контуре
+    });
+  }
+
+  async function loadLiveSnapshot(){
+    try {
+      const response = await fetch(API_BASE + '/visualization/snapshot')
+      const envelope = await response.json()
+      placeLiveSnapshot(envelope.payload.sessions);
+    } catch (error) {
+      console.error('Не удалось загрузить снапшот визуализации', error);
+    }
+  }
+
+  function connectLive(config){
+    // хост сокета: из конфига, иначе из адреса API, иначе текущая страница —
+    // важно, когда экран открыт с другого домена (github.io)
+    const apiUrl = API_BASE ? new URL(API_BASE) : null;
+    const host = config.host || (apiUrl ? apiUrl.hostname : window.location.hostname);
+    const forceTLS = config.scheme === 'https';
+
+    window.Echo = new Echo({
+      broadcaster: 'pusher',
+      key: config.key,
+      wsHost: host,
+      wsPort: config.port,
+      wssPort: config.port,
+      forceTLS: forceTLS,
+      encrypted: forceTLS,
+      disableStats: true,
+      enabledTransports: ['ws', 'wss'],
+      cluster: 'mt1', // обязателен для pusher-js, self-hosted сервер его игнорирует
+    });
+
+    const connection = window.Echo.connector.pusher.connection;
+    connection.bind('connected', () => {
+      setLiveStatus('connected', 'ПОДКЛЮЧЕНО');
+      loadLiveSnapshot();
+    });
+    connection.bind('disconnected', () => setLiveStatus('error', 'НЕТ СВЯЗИ'));
+    connection.bind('error', (error) => {
+      console.error('Ошибка WebSocket-соединения визуализации', error);
+      setLiveStatus('error', 'ОШИБКА СОЕДИНЕНИЯ');
+    });
+    // сырые сообщения сокета (включая служебные pusher:*) — для модалки "WS-трафик" (клавиша W)
+    connection.bind('message', (message) => logWsMessage(message));
+    document.getElementById('ws-log-channel').textContent = config.channel;
+
+    const channel = window.Echo.channel(config.channel);
+    // точка перед именем обязательна: сервер задаёт собственные имена событий
+    channel.listen('.user.appeared', onLiveUserAppeared);
+    channel.listen('.user.schedule.opened', onLiveScheduleOpened);
+    channel.listen('.user.schedule.closed', onLiveScheduleClosed);
+    channel.listen('.user.booking.created', onLiveBookingCreated);
+    channel.listen('.user.booking.blocked', onLiveBookingBlocked);
+    channel.listen('.user.exit', onLiveUserExit);
+
+    // pusher-js в этой связке не подключается сам при создании — без явного
+    // connect() соединение так и остаётся в состоянии disconnected навсегда
+    window.Echo.connector.pusher.connect();
+  }
+
+  async function bootLive(){
+    setLiveStatus('connecting', 'ПОДКЛЮЧЕНИЕ…');
+
+    let config, workshopsRes;
+    try {
+      [config, workshopsRes] = await Promise.all([
+        fetch(API_BASE + '/visualization/config').then(r => r.json()),
+        fetch(API_BASE + '/visualization/workshops').then(r => r.json())
+      ]);
+    } catch (error) {
+      console.error('Live-режим недоступен (проверьте ?api= и CORS на бэкенде), доступна эмуляция — переключатель «Пользователи»', error);
+      setLiveStatus('error', 'НЕТ СВЯЗИ');
+      return;
+    }
+
+    workshopsRes.workshops.forEach((w) => liveWorkshops.set(w.id, w));
+
+    // size: 0 в LIVE_WORKSHOP_SIZES — мастерская скрыта целиком (не попадает в workshopDefs,
+    // сессии на ней просто не пристыковываются — см. guard'ы на findWorkshop() ниже)
+    const visibleWorkshops = workshopsRes.workshops.filter((w) => {
+      const size = LIVE_WORKSHOP_SIZES[w.id];
+      return size === undefined || size > 0;
+    });
+
+    // у бэкенда position бывает null — сортируем вручную (nullish-safe) и
+    // переприсваиваем чистый последовательный порядок для layoutWorkshops()
+    const sortedWorkshops = visibleWorkshops.slice().sort((a, b) => {
+      if (a.position == null && b.position == null) return a.id - b.id;
+      if (a.position == null) return 1;
+      if (b.position == null) return -1;
+      return a.position - b.position;
+    });
+    liveWorkshopsLoaded = true; // блокируем возможный поздний оверрайд от data/workshops.json
+    workshopDefs = sortedWorkshops.map((w, i) => ({
+      id: w.id,
+      name: w.name,
+      short_name: null,
+      size: LIVE_WORKSHOP_SIZES[w.id] !== undefined ? LIVE_WORKSHOP_SIZES[w.id] : LIVE_DOT_SIZE_DEFAULT,
+      position: i + 1
+    }));
+    layoutWorkshops();
+
+    connectLive(config);
+  }
+
+  bootLive();
 
   // ---------- Настройки ----------
   let SHOW_LABELS = false; // включить/выключить подписи названий мастерских
@@ -961,6 +1268,61 @@
   infoClose.addEventListener('click', closeInfoModal);
   infoModal.querySelector('#info-modal-backdrop').addEventListener('click', closeInfoModal);
 
+  // ---------- Модальное окно "WS-трафик" (клавиша W) ----------
+  // Прямая трансляция сырых сообщений сокета — от connection.bind('message', ...)
+  // в connectLive(), включая служебные pusher:*/pusher_internal:*, не только
+  // наши шесть событий visualization-канала
+  const wsLogModal = document.getElementById('ws-log-modal');
+  const wsLogClose = document.getElementById('ws-log-close');
+  const wsLogListEl = document.getElementById('ws-log-list');
+
+  function openWsLogModal(){ wsLogModal.classList.add('open'); }
+  function closeWsLogModal(){ wsLogModal.classList.remove('open'); }
+  function toggleWsLogModal(){ wsLogModal.classList.toggle('open'); }
+
+  wsLogClose.addEventListener('click', closeWsLogModal);
+  wsLogModal.querySelector('#ws-log-backdrop').addEventListener('click', closeWsLogModal);
+
+  const WS_LOG_MAX = 150; // старые строки обрезаются, чтобы модалка не разрослась за часы работы
+
+  function formatWsData(data){
+    if (data == null) return '';
+    if (typeof data === 'string'){
+      try { return JSON.stringify(JSON.parse(data), null, 2); }
+      catch (e) { return data; }
+    }
+    try { return JSON.stringify(data, null, 2); }
+    catch (e) { return String(data); }
+  }
+
+  function logWsMessage(message){
+    if (wsLogListEl.querySelector('.empty')) wsLogListEl.innerHTML = '';
+
+    const row = document.createElement('div');
+    row.className = 'ws-log-row';
+
+    const meta = document.createElement('div');
+    meta.className = 'ws-log-meta';
+    meta.textContent = new Date().toLocaleTimeString('ru-RU') + (message.channel ? ' · ' + message.channel : '') + ' · ';
+    const eventTag = document.createElement('span');
+    eventTag.className = 'ws-log-event';
+    eventTag.textContent = message.event || '(без имени события)';
+    meta.appendChild(eventTag);
+
+    const pre = document.createElement('pre');
+    pre.textContent = formatWsData(message.data);
+
+    row.appendChild(meta);
+    row.appendChild(pre);
+    wsLogListEl.prepend(row);
+
+    while (wsLogListEl.children.length > WS_LOG_MAX) wsLogListEl.lastChild.remove();
+  }
+
+  // панель эмуляции/настроек скрыта по умолчанию (атрибут hidden в разметке) — только по клавише E
+  const settingsPanelEl = document.getElementById('settings-panel');
+  const soundCheckbox = document.getElementById('set-sound');
+
   window.addEventListener('keydown', (e) => {
     if (e.key === 'l' || e.key === 'L'){
       SHOW_LABELS = !SHOW_LABELS;
@@ -977,11 +1339,22 @@
     if (e.key === 'm' || e.key === 'M'){
       SHOW_WORKSHOPS = !SHOW_WORKSHOPS;
     }
+    if (e.key === 'e' || e.key === 'E'){
+      settingsPanelEl.hidden = !settingsPanelEl.hidden;
+    }
+    if (e.key === 's' || e.key === 'S'){
+      soundCheckbox.checked = !soundCheckbox.checked;
+      soundCheckbox.dispatchEvent(new Event('change'));
+    }
+    if (e.key === 'w' || e.key === 'W'){
+      toggleWsLogModal();
+    }
     if (e.key === 'i' || e.key === 'I'){
       toggleInfoModal();
     }
     if (e.key === 'Escape'){
       closeInfoModal();
+      closeWsLogModal();
     }
   });
 
@@ -1080,8 +1453,9 @@
 
     canvas.style.cursor = hovered ? 'pointer' : 'default';
 
-    if (hovered && hovered.w.shortName){
+    if (hovered){
       const { w, x, y, align } = hovered;
+      const label = w.shortName || w.name; // у живых мастерских нет short_name — показываем полное имя
       const lOffset = w.dotR + 10;
       const lx = x + Math.cos(w.angle) * lOffset;
       const ly = y + Math.sin(w.angle) * lOffset;
@@ -1091,7 +1465,7 @@
       ctx.fillStyle = 'rgba(255,255,255,0.95)';
       ctx.shadowColor = 'rgba(0,0,0,0.9)';
       ctx.shadowBlur = 4;
-      ctx.fillText(w.shortName, lx, ly);
+      ctx.fillText(label, lx, ly);
       ctx.shadowBlur = 0;
     }
   }
