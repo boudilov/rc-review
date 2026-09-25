@@ -1,2 +1,58 @@
-<!-- Страница 74 — контент ещё не наполнен -->
-<div class="page-placeholder">Страница 74 / 83</div>
+<!-- Страница 74 — как устроена плитка-элемент (периодическая система РЦ) -->
+<style>
+  .el74-wrap { width: 100%; max-width: 1400px; padding: 0 70px; display: flex; align-items: center; gap: 90px; }
+
+  .el74-tile { position: relative; width: 340px; height: 340px; flex-shrink: 0; border-radius: 22px; background: linear-gradient(160deg, #2b2b2e 0%, #101012 65%); border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+  .el74-corner { position: absolute; font-variant-numeric: tabular-nums; }
+  .el74-tl { top: 26px; left: 28px; font-size: 20px; font-weight: 600; color: rgba(230,230,240,0.75); }
+  .el74-tr { top: 26px; right: 28px; font-size: 20px; font-weight: 600; color: rgba(230,230,240,0.75); }
+  .el74-bl { bottom: 26px; left: 28px; font-size: 20px; font-weight: 600; color: rgba(230,230,240,0.75); }
+  .el74-br { bottom: 26px; right: 28px; font-size: 15px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.92); text-align: right; max-width: 140px; }
+  .el74-symbol { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 128px; font-weight: 700; color: rgba(255,255,255,0.97); }
+
+  .el74-legend { display: flex; flex-direction: column; gap: 26px; max-width: 640px; }
+  .el74-legend-title { font-size: 32px; font-weight: 700; color: rgba(255,255,255,0.96); margin-bottom: 6px; }
+  .el74-row { display: flex; align-items: baseline; gap: 18px; }
+  .el74-tag { flex-shrink: 0; width: 150px; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(230,230,240,0.45); }
+  .el74-val { flex-shrink: 0; min-width: 70px; font-size: 18px; font-weight: 700; color: rgba(255,255,255,0.92); font-variant-numeric: tabular-nums; }
+  .el74-desc { font-size: 16px; line-height: 1.5; color: rgba(230,230,240,0.7); }
+</style>
+
+<div class="el74-wrap">
+  <div class="el74-tile">
+    <div class="el74-corner el74-tl">2 / 4.06</div>
+    <div class="el74-corner el74-tr">2</div>
+    <div class="el74-symbol">Ph</div>
+    <div class="el74-corner el74-bl">2009</div>
+    <div class="el74-corner el74-br">Фотостудия</div>
+  </div>
+
+  <div class="el74-legend">
+    <div class="el74-legend-title">Как читать плитку</div>
+    <div class="el74-row">
+      <div class="el74-tag">Слева сверху</div>
+      <div class="el74-val">2 / 4.06</div>
+      <div class="el74-desc">номер аудитории — корпус 2, аудитория 4.06</div>
+    </div>
+    <div class="el74-row">
+      <div class="el74-tag">Справа сверху</div>
+      <div class="el74-val">2</div>
+      <div class="el74-desc">порядковый номер РЦ в системе</div>
+    </div>
+    <div class="el74-row">
+      <div class="el74-tag">По центру</div>
+      <div class="el74-val">Ph</div>
+      <div class="el74-desc">символ — буквенное сокращение названия РЦ</div>
+    </div>
+    <div class="el74-row">
+      <div class="el74-tag">Слева снизу</div>
+      <div class="el74-val">2009</div>
+      <div class="el74-desc">год основания РЦ</div>
+    </div>
+    <div class="el74-row">
+      <div class="el74-tag">Справа снизу</div>
+      <div class="el74-val">Фотостудия</div>
+      <div class="el74-desc">полное название РЦ</div>
+    </div>
+  </div>
+</div>

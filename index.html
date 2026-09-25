@@ -109,6 +109,25 @@
     border-color: rgba(255, 255, 255, 0.6);
   }
 
+  .page-num {
+    position: absolute;
+    right: 54px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    font-variant-numeric: tabular-nums;
+    color: rgba(230, 230, 240, 0.5);
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: none;
+  }
+  .page-num b {
+    color: rgba(255, 255, 255, 0.92);
+    font-weight: 700;
+  }
+
   /* ---------- Modal ---------- */
 
   .modal-overlay {
@@ -264,104 +283,106 @@
 <nav class="toolbar" id="toolbar" aria-label="Навигация по страницам">
   <div class="brand">RC REVIEW</div>
   <div class="seg-group" data-block="ИНТРО">
-    <button class="seg" data-page="1" data-block="ИНТРО" aria-label="Страница 1"></button>
-    <button class="seg" data-page="2" data-block="ИНТРО" aria-label="Страница 2"></button>
-    <button class="seg" data-page="3" data-block="ИНТРО" aria-label="Страница 3"></button>
+    <button class="seg" data-page="1" data-block="ИНТРО" aria-label="Страница 1" data-title="Лого"></button>
+    <button class="seg" data-page="2" data-block="ИНТРО" aria-label="Страница 2" data-title="Визуализация кампуса"></button>
+    <button class="seg" data-page="3" data-block="ИНТРО" aria-label="Страница 3" data-title="Титул"></button>
   </div>
   <div class="seg-group" data-block="РОЛЬ">
-    <button class="seg" data-page="4" data-block="РОЛЬ" aria-label="Страница 4"></button>
-    <button class="seg" data-page="5" data-block="РОЛЬ" aria-label="Страница 5"></button>
-    <button class="seg" data-page="6" data-block="РОЛЬ" aria-label="Страница 6"></button>
-    <button class="seg" data-page="7" data-block="РОЛЬ" aria-label="Страница 7"></button>
-    <button class="seg" data-page="8" data-block="РОЛЬ" aria-label="Страница 8"></button>
-    <button class="seg" data-page="9" data-block="РОЛЬ" aria-label="Страница 9"></button>
-    <button class="seg" data-page="10" data-block="РОЛЬ" aria-label="Страница 10"></button>
-    <button class="seg" data-page="11" data-block="РОЛЬ" aria-label="Страница 11"></button>
-    <button class="seg" data-page="12" data-block="РОЛЬ" aria-label="Страница 12"></button>
-    <button class="seg" data-page="13" data-block="РОЛЬ" aria-label="Страница 13"></button>
-    <button class="seg" data-page="14" data-block="РОЛЬ" aria-label="Страница 14"></button>
-    <button class="seg" data-page="15" data-block="РОЛЬ" aria-label="Страница 15"></button>
-    <button class="seg" data-page="16" data-block="РОЛЬ" aria-label="Страница 16"></button>
-    <button class="seg" data-page="17" data-block="РОЛЬ" aria-label="Страница 17"></button>
-    <button class="seg" data-page="18" data-block="РОЛЬ" aria-label="Страница 18"></button>
-    <button class="seg" data-page="19" data-block="РОЛЬ" aria-label="Страница 19"></button>
+    <button class="seg" data-page="4" data-block="РОЛЬ" aria-label="Страница 4" data-title="Роль РЦ"></button>
+    <button class="seg" data-page="5" data-block="РОЛЬ" aria-label="Страница 5" data-title="Инфраструктура"></button>
+    <button class="seg" data-page="6" data-block="РОЛЬ" aria-label="Страница 6" data-title="Теория и навык"></button>
+    <button class="seg" data-page="7" data-block="РОЛЬ" aria-label="Страница 7" data-title="39 482 часа"></button>
+    <button class="seg" data-page="8" data-block="РОЛЬ" aria-label="Страница 8" data-title="Индустриальный уровень"></button>
+    <button class="seg" data-page="9" data-block="РОЛЬ" aria-label="Страница 9" data-title="1 145 единиц техники"></button>
+    <button class="seg" data-page="10" data-block="РОЛЬ" aria-label="Страница 10" data-title="Минимальные расходы"></button>
+    <button class="seg" data-page="11" data-block="РОЛЬ" aria-label="Страница 11" data-title="Два кейса"></button>
+    <button class="seg" data-page="12" data-block="РОЛЬ" aria-label="Страница 12" data-title="Университет видим"></button>
+    <button class="seg" data-page="13" data-block="РОЛЬ" aria-label="Страница 13" data-title="Мероприятия"></button>
+    <button class="seg" data-page="14" data-block="РОЛЬ" aria-label="Страница 14" data-title="Выбор университета"></button>
+    <button class="seg" data-page="15" data-block="РОЛЬ" aria-label="Страница 15" data-title="Топ-5 конкурентов"></button>
+    <button class="seg" data-page="16" data-block="РОЛЬ" aria-label="Страница 16" data-title="Собственный ресурс"></button>
+    <button class="seg" data-page="17" data-block="РОЛЬ" aria-label="Страница 17" data-title="Км печати"></button>
+    <button class="seg" data-page="18" data-block="РОЛЬ" aria-label="Страница 18" data-title="Может зарабатывать"></button>
+    <button class="seg" data-page="19" data-block="РОЛЬ" aria-label="Страница 19" data-title="Бартер, коворкинг"></button>
   </div>
   <div class="seg-group" data-block="СТРУКТУРА">
-    <button class="seg" data-page="20" data-block="СТРУКТУРА" aria-label="Страница 20"></button>
-    <button class="seg" data-page="21" data-block="СТРУКТУРА" aria-label="Страница 21"></button>
-    <button class="seg" data-page="22" data-block="СТРУКТУРА" aria-label="Страница 22"></button>
-    <button class="seg" data-page="23" data-block="СТРУКТУРА" aria-label="Страница 23"></button>
+    <button class="seg" data-page="20" data-block="СТРУКТУРА" aria-label="Страница 20" data-title="Структура"></button>
+    <button class="seg" data-page="21" data-block="СТРУКТУРА" aria-label="Страница 21" data-title="История РЦ"></button>
+    <button class="seg" data-page="22" data-block="СТРУКТУРА" aria-label="Страница 22" data-title="Орг-структура"></button>
+    <button class="seg" data-page="23" data-block="СТРУКТУРА" aria-label="Страница 23" data-title="Сотрудники, м²"></button>
   </div>
   <div class="seg-group" data-block="ПРОГРЕСС И РАЗВИТИЕ">
-    <button class="seg" data-page="24" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 24"></button>
-    <button class="seg" data-page="25" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 25"></button>
-    <button class="seg" data-page="26" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 26"></button>
-    <button class="seg" data-page="27" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 27"></button>
-    <button class="seg" data-page="28" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 28"></button>
-    <button class="seg" data-page="29" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 29"></button>
-    <button class="seg" data-page="30" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 30"></button>
-    <button class="seg" data-page="31" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 31"></button>
-    <button class="seg" data-page="32" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 32"></button>
-    <button class="seg" data-page="33" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 33"></button>
-    <button class="seg" data-page="34" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 34"></button>
-    <button class="seg" data-page="35" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 35"></button>
-    <button class="seg" data-page="36" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 36"></button>
-    <button class="seg" data-page="37" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 37"></button>
-    <button class="seg" data-page="38" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 38"></button>
-    <button class="seg" data-page="39" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 39"></button>
-    <button class="seg" data-page="40" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 40"></button>
-    <button class="seg" data-page="41" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 41"></button>
-    <button class="seg" data-page="42" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 42"></button>
-    <button class="seg" data-page="43" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 43"></button>
-    <button class="seg" data-page="44" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 44"></button>
-    <button class="seg" data-page="45" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 45"></button>
-    <button class="seg" data-page="46" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 46"></button>
-    <button class="seg" data-page="47" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 47"></button>
-    <button class="seg" data-page="48" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 48"></button>
-    <button class="seg" data-page="49" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 49"></button>
-    <button class="seg" data-page="50" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 50"></button>
-    <button class="seg" data-page="51" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 51"></button>
-    <button class="seg" data-page="52" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 52"></button>
-    <button class="seg" data-page="53" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 53"></button>
-    <button class="seg" data-page="54" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 54"></button>
+    <button class="seg" data-page="24" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 24" data-title="Прогресс и развитие"></button>
+    <button class="seg" data-page="25" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 25" data-title="Heatmap CLASS/SELF"></button>
+    <button class="seg" data-page="26" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 26" data-title="Библиотека"></button>
+    <button class="seg" data-page="27" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 27" data-title="Фешн"></button>
+    <button class="seg" data-page="28" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 28" data-title="Фешн: топ-5"></button>
+    <button class="seg" data-page="29" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 29" data-title="Текстиль"></button>
+    <button class="seg" data-page="30" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 30" data-title="Текстиль: топ-5"></button>
+    <button class="seg" data-page="31" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 31" data-title="Ручная печать"></button>
+    <button class="seg" data-page="32" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 32" data-title="Печать: топ-5"></button>
+    <button class="seg" data-page="33" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 33" data-title="3D мастерская"></button>
+    <button class="seg" data-page="34" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 34" data-title="3D: топ-5"></button>
+    <button class="seg" data-page="35" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 35" data-title="Ювелирная"></button>
+    <button class="seg" data-page="36" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 36" data-title="Ювелирная: топ-5"></button>
+    <button class="seg" data-page="37" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 37" data-title="Керамика"></button>
+    <button class="seg" data-page="38" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 38" data-title="Керамика: топ-5"></button>
+    <button class="seg" data-page="39" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 39" data-title="Фотостудия Артплей"></button>
+    <button class="seg" data-page="40" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 40" data-title="Артплей: топ-5"></button>
+    <button class="seg" data-page="41" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 41" data-title="Фотостудия Фабрика"></button>
+    <button class="seg" data-page="42" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 42" data-title="Фабрика: топ-5"></button>
+    <button class="seg" data-page="43" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 43" data-title="Прокат: техника"></button>
+    <button class="seg" data-page="44" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 44" data-title="Прокат: помесячно"></button>
+    <button class="seg" data-page="45" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 45" data-title="Прокат: кто использует"></button>
+    <button class="seg" data-page="46" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 46" data-title="Прокат: топ-5"></button>
+    <button class="seg" data-page="47" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 47" data-title="Принт-офис"></button>
+    <button class="seg" data-page="48" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 48" data-title="Принт-офис: топ-5"></button>
+    <button class="seg" data-page="49" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 49" data-title="Объёмы печати"></button>
+    <button class="seg" data-page="50" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 50" data-title="Тёмная комната"></button>
+    <button class="seg" data-page="51" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 51" data-title="Тёмная комната: топ-5"></button>
+    <button class="seg" data-page="52" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 52" data-title="Галерея"></button>
+    <button class="seg" data-page="53" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 53" data-title="IDLE: простой"></button>
+    <button class="seg" data-page="54" data-block="ПРОГРЕСС И РАЗВИТИЕ" aria-label="Страница 54" data-title="Общие выводы"></button>
   </div>
   <div class="seg-group" data-block="ТЕКУЩИЕ И ПЛАНИРУЕМЫЕ ПРОЕКТЫ">
-    <button class="seg" data-page="55" data-block="ТЕКУЩИЕ И ПЛАНИРУЕМЫЕ ПРОЕКТЫ" aria-label="Страница 55"></button>
-    <button class="seg" data-page="56" data-block="ТЕКУЩИЕ И ПЛАНИРУЕМЫЕ ПРОЕКТЫ" aria-label="Страница 56"></button>
-    <button class="seg" data-page="57" data-block="ТЕКУЩИЕ И ПЛАНИРУЕМЫЕ ПРОЕКТЫ" aria-label="Страница 57"></button>
-    <button class="seg" data-page="58" data-block="ТЕКУЩИЕ И ПЛАНИРУЕМЫЕ ПРОЕКТЫ" aria-label="Страница 58"></button>
+    <button class="seg" data-page="55" data-block="ТЕКУЩИЕ И ПЛАНИРУЕМЫЕ ПРОЕКТЫ" aria-label="Страница 55" data-title="Проекты"></button>
+    <button class="seg" data-page="56" data-block="ТЕКУЩИЕ И ПЛАНИРУЕМЫЕ ПРОЕКТЫ" aria-label="Страница 56" data-title="Коворкинг"></button>
+    <button class="seg" data-page="57" data-block="ТЕКУЩИЕ И ПЛАНИРУЕМЫЕ ПРОЕКТЫ" aria-label="Страница 57" data-title="Баланс часов"></button>
+    <button class="seg" data-page="58" data-block="ТЕКУЩИЕ И ПЛАНИРУЕМЫЕ ПРОЕКТЫ" aria-label="Страница 58" data-title="Уровни пользователей"></button>
   </div>
   <div class="seg-group" data-block="UCAMP">
-    <button class="seg" data-page="59" data-block="UCAMP" aria-label="Страница 59"></button>
-    <button class="seg" data-page="60" data-block="UCAMP" aria-label="Страница 60"></button>
-    <button class="seg" data-page="61" data-block="UCAMP" aria-label="Страница 61"></button>
-    <button class="seg" data-page="62" data-block="UCAMP" aria-label="Страница 62"></button>
-    <button class="seg" data-page="63" data-block="UCAMP" aria-label="Страница 63"></button>
-    <button class="seg" data-page="64" data-block="UCAMP" aria-label="Страница 64"></button>
-    <button class="seg" data-page="65" data-block="UCAMP" aria-label="Страница 65"></button>
-    <button class="seg" data-page="66" data-block="UCAMP" aria-label="Страница 66"></button>
-    <button class="seg" data-page="67" data-block="UCAMP" aria-label="Страница 67"></button>
-    <button class="seg" data-page="68" data-block="UCAMP" aria-label="Страница 68"></button>
-    <button class="seg" data-page="69" data-block="UCAMP" aria-label="Страница 69"></button>
-    <button class="seg" data-page="70" data-block="UCAMP" aria-label="Страница 70"></button>
+    <button class="seg" data-page="59" data-block="UCAMP" aria-label="Страница 59" data-title="UCampus"></button>
+    <button class="seg" data-page="60" data-block="UCAMP" aria-label="Страница 60" data-title="Визуализация кампуса"></button>
+    <button class="seg" data-page="61" data-block="UCAMP" aria-label="Страница 61" data-title="Что такое UCampus"></button>
+    <button class="seg" data-page="62" data-block="UCAMP" aria-label="Страница 62" data-title="Операционный контур"></button>
+    <button class="seg" data-page="63" data-block="UCAMP" aria-label="Страница 63" data-title="Бронирование"></button>
+    <button class="seg" data-page="64" data-block="UCAMP" aria-label="Страница 64" data-title="Доступ"></button>
+    <button class="seg" data-page="65" data-block="UCAMP" aria-label="Страница 65" data-title="Коммуникация"></button>
+    <button class="seg" data-page="66" data-block="UCAMP" aria-label="Страница 66" data-title="Учёт оборудования"></button>
+    <button class="seg" data-page="67" data-block="UCAMP" aria-label="Страница 67" data-title="Аналитика"></button>
+    <button class="seg" data-page="68" data-block="UCAMP" aria-label="Страница 68" data-title="Контроль рисков"></button>
+    <button class="seg" data-page="69" data-block="UCAMP" aria-label="Страница 69" data-title="Посещения платформы"></button>
+    <button class="seg" data-page="70" data-block="UCAMP" aria-label="Страница 70" data-title="Прогресс UCampus"></button>
   </div>
   <div class="seg-group" data-block="НАША БАЦ">
-    <button class="seg" data-page="71" data-block="НАША БАЦ" aria-label="Страница 71"></button>
-    <button class="seg" data-page="72" data-block="НАША БАЦ" aria-label="Страница 72"></button>
-    <button class="seg" data-page="73" data-block="НАША БАЦ" aria-label="Страница 73"></button>
-    <button class="seg" data-page="74" data-block="НАША БАЦ" aria-label="Страница 74"></button>
-    <button class="seg" data-page="75" data-block="НАША БАЦ" aria-label="Страница 75"></button>
-    <button class="seg" data-page="76" data-block="НАША БАЦ" aria-label="Страница 76"></button>
-    <button class="seg" data-page="77" data-block="НАША БАЦ" aria-label="Страница 77"></button>
-    <button class="seg" data-page="78" data-block="НАША БАЦ" aria-label="Страница 78"></button>
-    <button class="seg" data-page="79" data-block="НАША БАЦ" aria-label="Страница 79"></button>
-    <button class="seg" data-page="80" data-block="НАША БАЦ" aria-label="Страница 80"></button>
-    <button class="seg" data-page="81" data-block="НАША БАЦ" aria-label="Страница 81"></button>
+    <button class="seg" data-page="71" data-block="НАША БАЦ" aria-label="Страница 71" data-title="БАЦ"></button>
+    <button class="seg" data-page="72" data-block="НАША БАЦ" aria-label="Страница 72" data-title="РЦ as is"></button>
+    <button class="seg" data-page="73" data-block="НАША БАЦ" aria-label="Страница 73" data-title="РЦ to be"></button>
+    <button class="seg" data-page="74" data-block="НАША БАЦ" aria-label="Страница 74" data-title="Как читать плитку"></button>
+    <button class="seg" data-page="75" data-block="НАША БАЦ" aria-label="Страница 75" data-title="Группировка РЦ"></button>
+    <button class="seg" data-page="76" data-block="НАША БАЦ" aria-label="Страница 76" data-title="Три хаба"></button>
+    <button class="seg" data-page="77" data-block="НАША БАЦ" aria-label="Страница 77" data-title="Цели 2032"></button>
+    <button class="seg" data-page="78" data-block="НАША БАЦ" aria-label="Страница 78" data-title="Что даёт бренд"></button>
+    <button class="seg" data-page="79" data-block="НАША БАЦ" aria-label="Страница 79" data-title="Кампус мечты"></button>
+    <button class="seg" data-page="80" data-block="НАША БАЦ" aria-label="Страница 80" data-title="Ночной двор"></button>
+    <button class="seg" data-page="81" data-block="НАША БАЦ" aria-label="Страница 81" data-title="Творческий проход"></button>
+    <button class="seg" data-page="82" data-block="НАША БАЦ" aria-label="Страница 82" data-title="Квартал мастерских"></button>
   </div>
   <div class="seg-group" data-block="ПРИГЛАШЕНИЕ НА ВЫСТАВКУ">
-    <button class="seg" data-page="82" data-block="ПРИГЛАШЕНИЕ НА ВЫСТАВКУ" aria-label="Страница 82"></button>
-    <button class="seg" data-page="83" data-block="ПРИГЛАШЕНИЕ НА ВЫСТАВКУ" aria-label="Страница 83"></button>
+    <button class="seg" data-page="83" data-block="ПРИГЛАШЕНИЕ НА ВЫСТАВКУ" aria-label="Страница 83" data-title="Описание выставки"></button>
+    <button class="seg" data-page="84" data-block="ПРИГЛАШЕНИЕ НА ВЫСТАВКУ" aria-label="Страница 84" data-title="QR-код"></button>
   </div>
+  <div class="page-num" id="pageNum"></div>
   <button class="icon-btn" id="helpBtn" aria-label="Горячие клавиши">i</button>
 </nav>
 
@@ -464,11 +485,12 @@
   <section class="page" data-page="81"></section>
   <section class="page" data-page="82"></section>
   <section class="page" data-page="83"></section>
+  <section class="page" data-page="84"></section>
 </main>
 
 <script>
 (function () {
-  var TOTAL = 83;
+  var TOTAL = 84;
   var STORAGE_KEY = 'rc-review-active-page';
 
   var segs = Array.prototype.slice.call(document.querySelectorAll('.seg'));
@@ -599,6 +621,8 @@
     pages.forEach(function (p) {
       p.classList.toggle('active', Number(p.dataset.page) === n);
     });
+    var pageNumEl = document.getElementById('pageNum');
+    if (pageNumEl) pageNumEl.innerHTML = '<b>' + n + '</b> / ' + TOTAL;
     loadPage(n);
     localStorage.setItem(STORAGE_KEY, String(n));
 
@@ -619,7 +643,7 @@
   function showTooltip(seg) {
     var rect = seg.getBoundingClientRect();
     var num = seg.dataset.page.length === 1 ? '0' + seg.dataset.page : seg.dataset.page;
-    tooltip.textContent = num + ' · ' + seg.dataset.block;
+    tooltip.textContent = num + ' · ' + (seg.dataset.title || seg.dataset.block);
     tooltip.style.left = (rect.left + rect.width / 2) + 'px';
     tooltip.style.top = (rect.bottom + 8) + 'px';
     tooltip.classList.add('visible');

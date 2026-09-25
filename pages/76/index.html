@@ -1,2 +1,354 @@
-<!-- Страница 76 — контент ещё не наполнен -->
-<div class="page-placeholder">Страница 76 / 83</div>
+<!-- Страница 76 — объединение в три хаба: Tech / Touch / Think -->
+<style>
+  .el76-wrap { width: 100%; max-width: 1650px; padding: 0 60px; }
+  .el76-title { font-size: 46px; font-weight: 700; color: rgba(255, 255, 255, 0.96); margin-bottom: 44px; }
+
+  .el76-row-group { display: flex; align-items: center; gap: 30px; margin-bottom: 26px; }
+  .el76-label { width: 140px; flex-shrink: 0; font-size: 17px; font-weight: 700; letter-spacing: 0.04em; color: rgba(255,255,255,0.92); }
+  .el76-tiles { display: flex; gap: 10px; }
+
+  .el76-tile { position: relative; width: 104px; height: 104px; flex-shrink: 0; border-radius: 13px; background: linear-gradient(160deg, #2b2b2e 0%, #101012 65%); border: 1px solid rgba(255,255,255,0.14); display: block; text-decoration: none; cursor: pointer; }
+  .el76-tile.ghost { background: linear-gradient(160deg, #1c1c1e 0%, #0a0a0b 65%); border: 1px dashed rgba(255,255,255,0.18); }
+  .el76-tile:hover { border-color: rgba(255,255,255,0.4); }
+  .el76-corner { position: absolute; font-variant-numeric: tabular-nums; }
+  .el76-tl { top: 7px; left: 8px; font-size: 8px; font-weight: 600; color: rgba(230,230,240,0.65); }
+  .el76-tr { top: 7px; right: 8px; font-size: 8px; font-weight: 600; color: rgba(230,230,240,0.65); }
+  .el76-bl { bottom: 7px; left: 8px; font-size: 8px; font-weight: 600; color: rgba(230,230,240,0.65); }
+  .el76-br { bottom: 7px; right: 8px; font-size: 6.5px; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; color: rgba(255,255,255,0.82); text-align: right; max-width: 50px; line-height: 1.2; }
+  .el76-symbol { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 700; color: rgba(255,255,255,0.97); }
+  .ghost .el76-symbol { color: rgba(255,255,255,0.5); }
+  .ghost .el76-corner { color: rgba(230,230,240,0.35); }
+
+  .el76-modal { display: none; position: fixed; inset: 0; z-index: 1000; align-items: center; justify-content: center; }
+  .el76-modal:target { display: flex; }
+  .el76-modal-bg { position: absolute; inset: 0; background: rgba(0,0,0,0.86); }
+  .el76-modal-inner { position: relative; }
+  .el76-close { position: absolute; top: -14px; right: -14px; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; color: rgba(230,230,240,0.75); text-decoration: none; }
+  .el76-close:hover { color: rgba(255,255,255,0.95); }
+
+  .el76-big { position: relative; width: 340px; height: 340px; border-radius: 22px; background: linear-gradient(160deg, #2b2b2e 0%, #101012 65%); border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 30px 60px rgba(0,0,0,0.55); }
+  .el76-big.ghost { background: linear-gradient(160deg, #1c1c1e 0%, #0a0a0b 65%); border: 1px dashed rgba(255,255,255,0.2); }
+  .el76-big-corner { position: absolute; font-variant-numeric: tabular-nums; }
+  .el76-big-tl { top: 26px; left: 28px; font-size: 20px; font-weight: 600; color: rgba(230,230,240,0.75); }
+  .el76-big-tr { top: 26px; right: 28px; font-size: 20px; font-weight: 600; color: rgba(230,230,240,0.75); }
+  .el76-big-bl { bottom: 26px; left: 28px; font-size: 20px; font-weight: 600; color: rgba(230,230,240,0.75); }
+  .el76-big-br { bottom: 26px; right: 28px; font-size: 15px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.92); text-align: right; max-width: 140px; }
+  .el76-big-symbol { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 128px; font-weight: 700; color: rgba(255,255,255,0.97); }
+  .el76-big.ghost .el76-big-symbol { color: rgba(255,255,255,0.55); }
+  .el76-big.ghost .el76-big-corner { color: rgba(230,230,240,0.4); }
+</style>
+
+<div class="el76-wrap">
+  <div class="el76-title">Три хаба</div>
+
+  <div class="el76-row-group">
+    <div class="el76-label">Tech Hub</div>
+    <div class="el76-tiles">
+      <a href="#el76-m-Ph" class="el76-tile"><div class="el76-corner el76-tl">2 / 4.06</div><div class="el76-corner el76-tr">2</div><div class="el76-symbol">Ph</div><div class="el76-corner el76-bl">2009</div><div class="el76-corner el76-br">Фотостудия</div></a>
+      <a href="#el76-m-Pr" class="el76-tile"><div class="el76-corner el76-tl">3 / 4.21</div><div class="el76-corner el76-tr">4</div><div class="el76-symbol">Pr</div><div class="el76-corner el76-bl">2018</div><div class="el76-corner el76-br">Принт офис</div></a>
+      <a href="#el76-m-Fp" class="el76-tile"><div class="el76-corner el76-tl">X / X.XX</div><div class="el76-corner el76-tr">15</div><div class="el76-symbol">Fp</div><div class="el76-corner el76-bl">2030</div><div class="el76-corner el76-br">Кинопавильон</div></a>
+      <a href="#el76-m-Rn" class="el76-tile"><div class="el76-corner el76-tl">2 / 4.11</div><div class="el76-corner el76-tr">3</div><div class="el76-symbol">Rn</div><div class="el76-corner el76-bl">2018</div><div class="el76-corner el76-br">Прокат</div></a>
+      <a href="#el76-m-Au" class="el76-tile"><div class="el76-corner el76-tl">X / X.XX</div><div class="el76-corner el76-tr">17</div><div class="el76-symbol">Au</div><div class="el76-corner el76-bl">2028</div><div class="el76-corner el76-br">Звукозапись</div></a>
+      <a href="#el76-m-Vr" class="el76-tile"><div class="el76-corner el76-tl">X / X.XX</div><div class="el76-corner el76-tr">19</div><div class="el76-symbol">Vr</div><div class="el76-corner el76-bl">2030</div><div class="el76-corner el76-br">VR</div></a>
+    </div>
+  </div>
+  <div class="el76-row-group">
+    <div class="el76-label">Touch Hub</div>
+    <div class="el76-tiles">
+      <a href="#el76-m-3D" class="el76-tile"><div class="el76-corner el76-tl">3 / 5.14</div><div class="el76-corner el76-tr">6</div><div class="el76-symbol">3D</div><div class="el76-corner el76-bl">2007</div><div class="el76-corner el76-br">3D мастерская</div></a>
+      <a href="#el76-m-Jw" class="el76-tile"><div class="el76-corner el76-tl">3 / 5.14</div><div class="el76-corner el76-tr">7</div><div class="el76-symbol">Jw</div><div class="el76-corner el76-bl">2016</div><div class="el76-corner el76-br">Ювелирная</div></a>
+      <a href="#el76-m-Cr" class="el76-tile"><div class="el76-corner el76-tl">3 / 4.03</div><div class="el76-corner el76-tr">8</div><div class="el76-symbol">Cr</div><div class="el76-corner el76-bl">2012</div><div class="el76-corner el76-br">Керамика</div></a>
+      <a href="#el76-m-Fs" class="el76-tile"><div class="el76-corner el76-tl">3 / 5.03</div><div class="el76-corner el76-tr">9</div><div class="el76-symbol">Fs</div><div class="el76-corner el76-bl">2008</div><div class="el76-corner el76-br">Фешн</div></a>
+      <a href="#el76-m-Tx" class="el76-tile"><div class="el76-corner el76-tl">3 / 4.18</div><div class="el76-corner el76-tr">10</div><div class="el76-symbol">Tx</div><div class="el76-corner el76-bl">2022</div><div class="el76-corner el76-br">Текстиль</div></a>
+      <a href="#el76-m-Pm" class="el76-tile"><div class="el76-corner el76-tl">2 / 4.02</div><div class="el76-corner el76-tr">11</div><div class="el76-symbol">Pm</div><div class="el76-corner el76-bl">2012</div><div class="el76-corner el76-br">Руч.печать</div></a>
+      <a href="#el76-m-Dr" class="el76-tile"><div class="el76-corner el76-tl">2 / 4.17</div><div class="el76-corner el76-tr">5</div><div class="el76-symbol">Dr</div><div class="el76-corner el76-bl">2011</div><div class="el76-corner el76-br">Даркрум</div></a>
+      <a href="#el76-m-Gl" class="el76-tile"><div class="el76-corner el76-tl">X / X.XX</div><div class="el76-corner el76-tr">18</div><div class="el76-symbol">Gl</div><div class="el76-corner el76-bl">2030</div><div class="el76-corner el76-br">Стеклодувная</div></a>
+      <a href="#el76-m-Fd" class="el76-tile"><div class="el76-corner el76-tl">X / X.XX</div><div class="el76-corner el76-tr">20</div><div class="el76-symbol">Fd</div><div class="el76-corner el76-bl">2030</div><div class="el76-corner el76-br">Кухня</div></a>
+    </div>
+  </div>
+  <div class="el76-row-group">
+    <div class="el76-label">Think Hub</div>
+    <div class="el76-tiles">
+      <a href="#el76-m-Ga" class="el76-tile"><div class="el76-corner el76-tl">3 / 4.00</div><div class="el76-corner el76-tr">12</div><div class="el76-symbol">Ga</div><div class="el76-corner el76-bl">2026</div><div class="el76-corner el76-br">Галерея</div></a>
+      <a href="#el76-m-Ch" class="el76-tile"><div class="el76-corner el76-tl">X / X.XX</div><div class="el76-corner el76-tr">14</div><div class="el76-symbol">Ch</div><div class="el76-corner el76-bl">2030</div><div class="el76-corner el76-br">Кинозал</div></a>
+      <a href="#el76-m-Al" class="el76-tile"><div class="el76-corner el76-tl">X / X.XX</div><div class="el76-corner el76-tr">21</div><div class="el76-symbol">Al</div><div class="el76-corner el76-bl">2030</div><div class="el76-corner el76-br">Клуб выпускников</div></a>
+      <a href="#el76-m-Uc" class="el76-tile"><div class="el76-corner el76-tl">X / X.XX</div><div class="el76-corner el76-tr">13</div><div class="el76-symbol">Uc</div><div class="el76-corner el76-bl">2020</div><div class="el76-corner el76-br">UCampus</div></a>
+      <a href="#el76-m-Lb" class="el76-tile"><div class="el76-corner el76-tl">3 / 5.01</div><div class="el76-corner el76-tr">1</div><div class="el76-symbol">Lb</div><div class="el76-corner el76-bl">2003</div><div class="el76-corner el76-br">Библиотека</div></a>
+      <a href="#el76-m-Ai" class="el76-tile"><div class="el76-corner el76-tl">X / X.XX</div><div class="el76-corner el76-tr">22</div><div class="el76-symbol">Ai</div><div class="el76-corner el76-bl">2030</div><div class="el76-corner el76-br">Лаборатория ИИ</div></a>
+    </div>
+  </div>
+</div>
+
+  <div id="el76-m-Ph" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">2 / 4.06</div>
+        <div class="el76-big-corner el76-big-tr">2</div>
+        <div class="el76-big-symbol">Ph</div>
+        <div class="el76-big-corner el76-big-bl">2009</div>
+        <div class="el76-big-corner el76-big-br">Фотостудия</div>
+      </div>
+    </div>
+  </div>
+  <div id="el76-m-Pr" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">3 / 4.21</div>
+        <div class="el76-big-corner el76-big-tr">4</div>
+        <div class="el76-big-symbol">Pr</div>
+        <div class="el76-big-corner el76-big-bl">2018</div>
+        <div class="el76-big-corner el76-big-br">Принт офис</div>
+      </div>
+    </div>
+  </div>
+  <div id="el76-m-Fp" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">X / X.XX</div>
+        <div class="el76-big-corner el76-big-tr">15</div>
+        <div class="el76-big-symbol">Fp</div>
+        <div class="el76-big-corner el76-big-bl">2030</div>
+        <div class="el76-big-corner el76-big-br">Кинопавильон</div>
+      </div>
+    </div>
+  </div>
+  <div id="el76-m-Rn" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">2 / 4.11</div>
+        <div class="el76-big-corner el76-big-tr">3</div>
+        <div class="el76-big-symbol">Rn</div>
+        <div class="el76-big-corner el76-big-bl">2018</div>
+        <div class="el76-big-corner el76-big-br">Прокат</div>
+      </div>
+    </div>
+  </div>
+  <div id="el76-m-Au" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">X / X.XX</div>
+        <div class="el76-big-corner el76-big-tr">17</div>
+        <div class="el76-big-symbol">Au</div>
+        <div class="el76-big-corner el76-big-bl">2028</div>
+        <div class="el76-big-corner el76-big-br">Звукозапись</div>
+      </div>
+    </div>
+  </div>
+  <div id="el76-m-Vr" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">X / X.XX</div>
+        <div class="el76-big-corner el76-big-tr">19</div>
+        <div class="el76-big-symbol">Vr</div>
+        <div class="el76-big-corner el76-big-bl">2030</div>
+        <div class="el76-big-corner el76-big-br">VR</div>
+      </div>
+    </div>
+  </div>
+  <div id="el76-m-3D" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">3 / 5.14</div>
+        <div class="el76-big-corner el76-big-tr">6</div>
+        <div class="el76-big-symbol">3D</div>
+        <div class="el76-big-corner el76-big-bl">2007</div>
+        <div class="el76-big-corner el76-big-br">3D мастерская</div>
+      </div>
+    </div>
+  </div>
+  <div id="el76-m-Jw" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">3 / 5.14</div>
+        <div class="el76-big-corner el76-big-tr">7</div>
+        <div class="el76-big-symbol">Jw</div>
+        <div class="el76-big-corner el76-big-bl">2016</div>
+        <div class="el76-big-corner el76-big-br">Ювелирная</div>
+      </div>
+    </div>
+  </div>
+  <div id="el76-m-Cr" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">3 / 4.03</div>
+        <div class="el76-big-corner el76-big-tr">8</div>
+        <div class="el76-big-symbol">Cr</div>
+        <div class="el76-big-corner el76-big-bl">2012</div>
+        <div class="el76-big-corner el76-big-br">Керамика</div>
+      </div>
+    </div>
+  </div>
+  <div id="el76-m-Fs" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">3 / 5.03</div>
+        <div class="el76-big-corner el76-big-tr">9</div>
+        <div class="el76-big-symbol">Fs</div>
+        <div class="el76-big-corner el76-big-bl">2008</div>
+        <div class="el76-big-corner el76-big-br">Фешн</div>
+      </div>
+    </div>
+  </div>
+  <div id="el76-m-Tx" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">3 / 4.18</div>
+        <div class="el76-big-corner el76-big-tr">10</div>
+        <div class="el76-big-symbol">Tx</div>
+        <div class="el76-big-corner el76-big-bl">2022</div>
+        <div class="el76-big-corner el76-big-br">Текстиль</div>
+      </div>
+    </div>
+  </div>
+  <div id="el76-m-Pm" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">2 / 4.02</div>
+        <div class="el76-big-corner el76-big-tr">11</div>
+        <div class="el76-big-symbol">Pm</div>
+        <div class="el76-big-corner el76-big-bl">2012</div>
+        <div class="el76-big-corner el76-big-br">Руч.печать</div>
+      </div>
+    </div>
+  </div>
+  <div id="el76-m-Dr" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">2 / 4.17</div>
+        <div class="el76-big-corner el76-big-tr">5</div>
+        <div class="el76-big-symbol">Dr</div>
+        <div class="el76-big-corner el76-big-bl">2011</div>
+        <div class="el76-big-corner el76-big-br">Даркрум</div>
+      </div>
+    </div>
+  </div>
+  <div id="el76-m-Gl" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">X / X.XX</div>
+        <div class="el76-big-corner el76-big-tr">18</div>
+        <div class="el76-big-symbol">Gl</div>
+        <div class="el76-big-corner el76-big-bl">2030</div>
+        <div class="el76-big-corner el76-big-br">Стеклодувная</div>
+      </div>
+    </div>
+  </div>
+  <div id="el76-m-Fd" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">X / X.XX</div>
+        <div class="el76-big-corner el76-big-tr">20</div>
+        <div class="el76-big-symbol">Fd</div>
+        <div class="el76-big-corner el76-big-bl">2030</div>
+        <div class="el76-big-corner el76-big-br">Кухня</div>
+      </div>
+    </div>
+  </div>
+  <div id="el76-m-Ga" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">3 / 4.00</div>
+        <div class="el76-big-corner el76-big-tr">12</div>
+        <div class="el76-big-symbol">Ga</div>
+        <div class="el76-big-corner el76-big-bl">2026</div>
+        <div class="el76-big-corner el76-big-br">Галерея</div>
+      </div>
+    </div>
+  </div>
+  <div id="el76-m-Ch" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">X / X.XX</div>
+        <div class="el76-big-corner el76-big-tr">14</div>
+        <div class="el76-big-symbol">Ch</div>
+        <div class="el76-big-corner el76-big-bl">2030</div>
+        <div class="el76-big-corner el76-big-br">Кинозал</div>
+      </div>
+    </div>
+  </div>
+  <div id="el76-m-Al" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">X / X.XX</div>
+        <div class="el76-big-corner el76-big-tr">21</div>
+        <div class="el76-big-symbol">Al</div>
+        <div class="el76-big-corner el76-big-bl">2030</div>
+        <div class="el76-big-corner el76-big-br">Клуб выпускников</div>
+      </div>
+    </div>
+  </div>
+  <div id="el76-m-Uc" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">X / X.XX</div>
+        <div class="el76-big-corner el76-big-tr">13</div>
+        <div class="el76-big-symbol">Uc</div>
+        <div class="el76-big-corner el76-big-bl">2020</div>
+        <div class="el76-big-corner el76-big-br">UCampus</div>
+      </div>
+    </div>
+  </div>
+  <div id="el76-m-Lb" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">3 / 5.01</div>
+        <div class="el76-big-corner el76-big-tr">1</div>
+        <div class="el76-big-symbol">Lb</div>
+        <div class="el76-big-corner el76-big-bl">2003</div>
+        <div class="el76-big-corner el76-big-br">Библиотека</div>
+      </div>
+    </div>
+  </div>
+  <div id="el76-m-Ai" class="el76-modal">
+    <a href="#" class="el76-modal-bg" aria-label="Закрыть"></a>
+    <div class="el76-modal-inner">
+      <a href="#" class="el76-close">&#10005;</a>
+      <div class="el76-big">
+        <div class="el76-big-corner el76-big-tl">X / X.XX</div>
+        <div class="el76-big-corner el76-big-tr">22</div>
+        <div class="el76-big-symbol">Ai</div>
+        <div class="el76-big-corner el76-big-bl">2030</div>
+        <div class="el76-big-corner el76-big-br">Лаборатория ИИ</div>
+      </div>
+    </div>
+  </div>

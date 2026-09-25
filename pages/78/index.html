@@ -1,2 +1,356 @@
-<!-- Страница 78 — контент ещё не наполнен -->
-<div class="page-placeholder">Страница 78 / 83</div>
+<!-- Страница 78 -->
+<style>
+  .el78-wrap { display: flex; flex-direction: column; align-items: center; gap: 64px; max-width: 1500px; padding: 0 40px; }
+  .el78-lead { text-align: center; font-size: 34px; font-weight: 500; line-height: 1.5; color: rgba(255, 255, 255, 0.92); }
+  .el78-lead b { font-weight: 700; color: #fff; }
+  .el78-col { display: flex; flex-direction: column; align-items: center; gap: 26px; }
+  .el78-item { display: flex; align-items: baseline; gap: 18px; font-size: 68px; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; color: rgba(255,255,255,0.96); line-height: 1.05; }
+  .el78-plus { color: rgba(230,230,240,0.4); }
+
+  .el78-footer { position: absolute; left: 0; right: 0; bottom: 54px; display: flex; justify-content: center; }
+  .el78-footer-row { display: flex; gap: 6px; }
+  .el78-mini { width: 54px; height: 54px; flex-shrink: 0; border-radius: 9px; background: linear-gradient(160deg, #2b2b2e 0%, #101012 65%); border: 1px solid rgba(255,255,255,0.14); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: rgba(255,255,255,0.95); text-decoration: none; cursor: pointer; }
+  .el78-mini.ghost { background: linear-gradient(160deg, #1c1c1e 0%, #0a0a0b 65%); border: 1px dashed rgba(255,255,255,0.18); color: rgba(255,255,255,0.5); }
+  .el78-mini:hover { border-color: rgba(255,255,255,0.4); }
+
+  .el78-modal { display: none; position: fixed; inset: 0; z-index: 1000; align-items: center; justify-content: center; }
+  .el78-modal:target { display: flex; }
+  .el78-modal-bg { position: absolute; inset: 0; background: rgba(0,0,0,0.86); }
+  .el78-modal-inner { position: relative; }
+  .el78-close { position: absolute; top: -14px; right: -14px; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; color: rgba(230,230,240,0.75); text-decoration: none; }
+  .el78-close:hover { color: rgba(255,255,255,0.95); }
+
+  .el78-big { position: relative; width: 340px; height: 340px; border-radius: 22px; background: linear-gradient(160deg, #2b2b2e 0%, #101012 65%); border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 30px 60px rgba(0,0,0,0.55); }
+  .el78-big.ghost { background: linear-gradient(160deg, #1c1c1e 0%, #0a0a0b 65%); border: 1px dashed rgba(255,255,255,0.2); }
+  .el78-big-corner { position: absolute; font-variant-numeric: tabular-nums; }
+  .el78-big-tl { top: 26px; left: 28px; font-size: 20px; font-weight: 600; color: rgba(230,230,240,0.75); }
+  .el78-big-tr { top: 26px; right: 28px; font-size: 20px; font-weight: 600; color: rgba(230,230,240,0.75); }
+  .el78-big-bl { bottom: 26px; left: 28px; font-size: 20px; font-weight: 600; color: rgba(230,230,240,0.75); }
+  .el78-big-br { bottom: 26px; right: 28px; font-size: 15px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.92); text-align: right; max-width: 140px; }
+  .el78-big-symbol { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 128px; font-weight: 700; color: rgba(255,255,255,0.97); }
+  .el78-big.ghost .el78-big-symbol { color: rgba(255,255,255,0.55); }
+  .el78-big.ghost .el78-big-corner { color: rgba(230,230,240,0.4); }
+</style>
+<div class="el78-wrap">
+  <p class="el78-lead"><b>22</b> элемента под единым брендом</p>
+  <div class="el78-col">
+    <span class="el78-item"><span class="el78-plus">+</span>Trust&amp;Reputation</span>
+    <span class="el78-item"><span class="el78-plus">+</span>Dreamteam</span>
+    <span class="el78-item"><span class="el78-plus">+</span>Profit</span>
+  </div>
+</div>
+
+<div class="el78-footer">
+  <div class="el78-footer-row">
+      <a href="#el78-m-Lb" class="el78-mini">Lb</a>
+      <a href="#el78-m-Ph" class="el78-mini">Ph</a>
+      <a href="#el78-m-Rn" class="el78-mini">Rn</a>
+      <a href="#el78-m-Pr" class="el78-mini">Pr</a>
+      <a href="#el78-m-Dr" class="el78-mini">Dr</a>
+      <a href="#el78-m-3D" class="el78-mini">3D</a>
+      <a href="#el78-m-Jw" class="el78-mini">Jw</a>
+      <a href="#el78-m-Cr" class="el78-mini">Cr</a>
+      <a href="#el78-m-Fs" class="el78-mini">Fs</a>
+      <a href="#el78-m-Tx" class="el78-mini">Tx</a>
+      <a href="#el78-m-Pm" class="el78-mini">Pm</a>
+      <a href="#el78-m-Ga" class="el78-mini">Ga</a>
+      <a href="#el78-m-Uc" class="el78-mini ghost">Uc</a>
+      <a href="#el78-m-Ch" class="el78-mini ghost">Ch</a>
+      <a href="#el78-m-Fp" class="el78-mini ghost">Fp</a>
+      <a href="#el78-m-Ar" class="el78-mini ghost">Ar</a>
+      <a href="#el78-m-Au" class="el78-mini ghost">Au</a>
+      <a href="#el78-m-Gl" class="el78-mini ghost">Gl</a>
+      <a href="#el78-m-Vr" class="el78-mini ghost">Vr</a>
+      <a href="#el78-m-Fd" class="el78-mini ghost">Fd</a>
+      <a href="#el78-m-Al" class="el78-mini ghost">Al</a>
+      <a href="#el78-m-Ai" class="el78-mini ghost">Ai</a>
+  </div>
+</div>
+
+  <div id="el78-m-Lb" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big">
+        <div class="el78-big-corner el78-big-tl">3 / 5.01</div>
+        <div class="el78-big-corner el78-big-tr">1</div>
+        <div class="el78-big-symbol">Lb</div>
+        <div class="el78-big-corner el78-big-bl">2003</div>
+        <div class="el78-big-corner el78-big-br">Библиотека</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-Ph" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big">
+        <div class="el78-big-corner el78-big-tl">2 / 4.06</div>
+        <div class="el78-big-corner el78-big-tr">2</div>
+        <div class="el78-big-symbol">Ph</div>
+        <div class="el78-big-corner el78-big-bl">2009</div>
+        <div class="el78-big-corner el78-big-br">Фотостудия</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-Rn" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big">
+        <div class="el78-big-corner el78-big-tl">2 / 4.11</div>
+        <div class="el78-big-corner el78-big-tr">3</div>
+        <div class="el78-big-symbol">Rn</div>
+        <div class="el78-big-corner el78-big-bl">2018</div>
+        <div class="el78-big-corner el78-big-br">Прокат</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-Pr" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big">
+        <div class="el78-big-corner el78-big-tl">3 / 4.21</div>
+        <div class="el78-big-corner el78-big-tr">4</div>
+        <div class="el78-big-symbol">Pr</div>
+        <div class="el78-big-corner el78-big-bl">2018</div>
+        <div class="el78-big-corner el78-big-br">Принт офис</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-Dr" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big">
+        <div class="el78-big-corner el78-big-tl">2 / 4.17</div>
+        <div class="el78-big-corner el78-big-tr">5</div>
+        <div class="el78-big-symbol">Dr</div>
+        <div class="el78-big-corner el78-big-bl">2011</div>
+        <div class="el78-big-corner el78-big-br">Даркрум</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-3D" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big">
+        <div class="el78-big-corner el78-big-tl">3 / 5.14</div>
+        <div class="el78-big-corner el78-big-tr">6</div>
+        <div class="el78-big-symbol">3D</div>
+        <div class="el78-big-corner el78-big-bl">2007</div>
+        <div class="el78-big-corner el78-big-br">3D мастерская</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-Jw" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big">
+        <div class="el78-big-corner el78-big-tl">3 / 5.14</div>
+        <div class="el78-big-corner el78-big-tr">7</div>
+        <div class="el78-big-symbol">Jw</div>
+        <div class="el78-big-corner el78-big-bl">2016</div>
+        <div class="el78-big-corner el78-big-br">Ювелирная</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-Cr" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big">
+        <div class="el78-big-corner el78-big-tl">3 / 4.03</div>
+        <div class="el78-big-corner el78-big-tr">8</div>
+        <div class="el78-big-symbol">Cr</div>
+        <div class="el78-big-corner el78-big-bl">2012</div>
+        <div class="el78-big-corner el78-big-br">Керамика</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-Fs" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big">
+        <div class="el78-big-corner el78-big-tl">3 / 5.03</div>
+        <div class="el78-big-corner el78-big-tr">9</div>
+        <div class="el78-big-symbol">Fs</div>
+        <div class="el78-big-corner el78-big-bl">2008</div>
+        <div class="el78-big-corner el78-big-br">Фешн</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-Tx" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big">
+        <div class="el78-big-corner el78-big-tl">3 / 4.18</div>
+        <div class="el78-big-corner el78-big-tr">10</div>
+        <div class="el78-big-symbol">Tx</div>
+        <div class="el78-big-corner el78-big-bl">2022</div>
+        <div class="el78-big-corner el78-big-br">Текстиль</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-Pm" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big">
+        <div class="el78-big-corner el78-big-tl">2 / 4.02</div>
+        <div class="el78-big-corner el78-big-tr">11</div>
+        <div class="el78-big-symbol">Pm</div>
+        <div class="el78-big-corner el78-big-bl">2012</div>
+        <div class="el78-big-corner el78-big-br">Руч.печать</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-Ga" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big">
+        <div class="el78-big-corner el78-big-tl">3 / 4.00</div>
+        <div class="el78-big-corner el78-big-tr">12</div>
+        <div class="el78-big-symbol">Ga</div>
+        <div class="el78-big-corner el78-big-bl">2026</div>
+        <div class="el78-big-corner el78-big-br">Галерея</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-Uc" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big ghost">
+        <div class="el78-big-corner el78-big-tl">X / X.XX</div>
+        <div class="el78-big-corner el78-big-tr">13</div>
+        <div class="el78-big-symbol">Uc</div>
+        <div class="el78-big-corner el78-big-bl">2020</div>
+        <div class="el78-big-corner el78-big-br">UCampus</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-Ch" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big ghost">
+        <div class="el78-big-corner el78-big-tl">X / X.XX</div>
+        <div class="el78-big-corner el78-big-tr">14</div>
+        <div class="el78-big-symbol">Ch</div>
+        <div class="el78-big-corner el78-big-bl">2030</div>
+        <div class="el78-big-corner el78-big-br">Кинозал</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-Fp" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big ghost">
+        <div class="el78-big-corner el78-big-tl">X / X.XX</div>
+        <div class="el78-big-corner el78-big-tr">15</div>
+        <div class="el78-big-symbol">Fp</div>
+        <div class="el78-big-corner el78-big-bl">2030</div>
+        <div class="el78-big-corner el78-big-br">Кинопавильон</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-Ar" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big ghost">
+        <div class="el78-big-corner el78-big-tl">X / X.XX</div>
+        <div class="el78-big-corner el78-big-tr">16</div>
+        <div class="el78-big-symbol">Ar</div>
+        <div class="el78-big-corner el78-big-bl">2030</div>
+        <div class="el78-big-corner el78-big-br">Арт мастерские</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-Au" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big ghost">
+        <div class="el78-big-corner el78-big-tl">X / X.XX</div>
+        <div class="el78-big-corner el78-big-tr">17</div>
+        <div class="el78-big-symbol">Au</div>
+        <div class="el78-big-corner el78-big-bl">2028</div>
+        <div class="el78-big-corner el78-big-br">Звукозапись</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-Gl" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big ghost">
+        <div class="el78-big-corner el78-big-tl">X / X.XX</div>
+        <div class="el78-big-corner el78-big-tr">18</div>
+        <div class="el78-big-symbol">Gl</div>
+        <div class="el78-big-corner el78-big-bl">2030</div>
+        <div class="el78-big-corner el78-big-br">Стеклодувная</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-Vr" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big ghost">
+        <div class="el78-big-corner el78-big-tl">X / X.XX</div>
+        <div class="el78-big-corner el78-big-tr">19</div>
+        <div class="el78-big-symbol">Vr</div>
+        <div class="el78-big-corner el78-big-bl">2030</div>
+        <div class="el78-big-corner el78-big-br">VR</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-Fd" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big ghost">
+        <div class="el78-big-corner el78-big-tl">X / X.XX</div>
+        <div class="el78-big-corner el78-big-tr">20</div>
+        <div class="el78-big-symbol">Fd</div>
+        <div class="el78-big-corner el78-big-bl">2030</div>
+        <div class="el78-big-corner el78-big-br">Кухня</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-Al" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big ghost">
+        <div class="el78-big-corner el78-big-tl">X / X.XX</div>
+        <div class="el78-big-corner el78-big-tr">21</div>
+        <div class="el78-big-symbol">Al</div>
+        <div class="el78-big-corner el78-big-bl">2030</div>
+        <div class="el78-big-corner el78-big-br">Клуб выпускников</div>
+      </div>
+    </div>
+  </div>
+  <div id="el78-m-Ai" class="el78-modal">
+    <a href="#" class="el78-modal-bg" aria-label="Закрыть"></a>
+    <div class="el78-modal-inner">
+      <a href="#" class="el78-close">&#10005;</a>
+      <div class="el78-big ghost">
+        <div class="el78-big-corner el78-big-tl">X / X.XX</div>
+        <div class="el78-big-corner el78-big-tr">22</div>
+        <div class="el78-big-symbol">Ai</div>
+        <div class="el78-big-corner el78-big-bl">2030</div>
+        <div class="el78-big-corner el78-big-br">Лаборатория ИИ</div>
+      </div>
+    </div>
+  </div>
+
