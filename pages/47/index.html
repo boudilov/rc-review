@@ -2,19 +2,8 @@
 <style>
   .ws47-wrap { width: 100%; max-width: 1600px; padding: 0 60px; }
   .ws47-title { font-size: 28px; font-weight: 700; color: rgba(255,255,255,0.96); margin-bottom: 22px; }
-  .ws47-scan { width: 100%; height: 520px; background: #000; overflow: hidden; margin-bottom: 28px; position: relative; }
-  .ws47-zoom-toggle { display: none; }
-  .ws47-scan-frame { position: relative; width: 100%; height: 100%; }
-  .ws47-scan-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
-  .ws47-scan-overlay { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: flex-end; padding: 14px; cursor: zoom-in; }
-  .ws47-scan-hint { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.7); background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.25); padding: 6px 10px; opacity: 0; transition: opacity 0.15s ease; }
-  .ws47-scan-frame:hover .ws47-scan-hint { opacity: 1; }
-  .ws47-lightbox { display: none; position: fixed; inset: 0; z-index: 200; }
-  .ws47-zoom-toggle:checked ~ .ws47-lightbox { display: block; }
-  .ws47-lightbox-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.94); cursor: zoom-out; }
-  .ws47-lightbox-panel { position: absolute; top: 5vh; left: 5vw; width: 90vw; height: 90vh; background: #000; }
-  .ws47-lightbox-panel iframe { width: 100%; height: 100%; border: 0; display: block; }
-  .ws47-lightbox-close { position: absolute; top: -34px; right: 0; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; cursor: pointer; }
+  .ws47-scan { width: 100%; height: 260px; border: 1px dashed rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; margin-bottom: 28px; }
+  .ws47-scan-label { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(230,230,240,0.35); }
   .ws47-legend { display: flex; gap: 24px; margin-bottom: 18px; }
   .ws47-legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(230,230,240,0.6); }
   .ws47-legend-swatch { width: 16px; height: 2px; }
@@ -36,20 +25,7 @@
 </style>
 <div class="ws47-wrap">
   <div class="ws47-title">Принт-офис</div>
-  <div class="ws47-scan">
-    <input type="checkbox" id="ws47-zoom" class="ws47-zoom-toggle">
-    <div class="ws47-scan-frame">
-      <iframe data-restart-on-show src="http://localhost:8937/room_view.html?file=принтофис.glb" title="3D-скан «Принт-офис»"></iframe>
-      <label for="ws47-zoom" class="ws47-scan-overlay"><span class="ws47-scan-hint">⤢ Развернуть</span></label>
-    </div>
-    <div class="ws47-lightbox">
-      <label for="ws47-zoom" class="ws47-lightbox-backdrop"></label>
-      <div class="ws47-lightbox-panel">
-        <label for="ws47-zoom" class="ws47-lightbox-close">✕ Закрыть</label>
-        <iframe src="http://localhost:8937/room_view.html?file=принтофис.glb&interactive=1" title="3D-скан «Принт-офис» · крупно"></iframe>
-      </div>
-    </div>
-  </div>
+  <div class="ws47-scan"><span class="ws47-scan-label">Скан мастерской «Принт-офис» · ожидает фото</span></div>
   <div class="ws47-legend">
     <div class="ws47-legend-item"><span class="ws47-legend-swatch" style="background: rgba(255,255,255,0.35);"></span>2024/25</div>
     <div class="ws47-legend-item"><span class="ws47-legend-swatch" style="background: rgba(255,255,255,0.92);"></span>2025/26</div>
