@@ -1,59 +1,118 @@
 <!-- Страница 15 -->
+<style>
+  .el15-mx-grid { display: grid; grid-template-columns: 230px repeat(23, 1fr); }
+  .el15-mx-col-head { display: flex; align-items: flex-end; justify-content: center; height: 130px; padding-bottom: 8px; }
+  .el15-mx-col-head span { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 10px; font-weight: 600; letter-spacing: 0.04em; color: rgba(230, 230, 240, 0.55); white-space: nowrap; }
+  .el15-mx-row { display: contents; }
+  .el15-mx-label { display: flex; align-items: center; font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.85); padding: 7px 10px 7px 0; border-top: 1px solid rgba(255, 255, 255, 0.08); white-space: nowrap; }
+  .el15-mx-row.uu .el15-mx-label { color: #fff; font-weight: 700; }
+  .el15-mx-cell { display: flex; align-items: center; justify-content: center; border-top: 1px solid rgba(255, 255, 255, 0.08); border-left: 1px solid rgba(255, 255, 255, 0.06); font-size: 12px; color: rgba(230, 230, 240, 0.15); min-height: 30px; }
+  .el15-mx-cell.yes { color: rgba(140, 230, 160, 0.9); font-weight: 700; }
+  .el15-mx-cell.yes.uu { color: #fff; background: rgba(255, 255, 255, 0.1); }
+
+  .el15-modal { display: none; position: fixed; inset: 0; z-index: 1000; align-items: center; justify-content: center; }
+  .el15-modal:target { display: flex; }
+  .el15-modal-bg { position: absolute; inset: 0; background: rgba(0,0,0,0.86); }
+  .el15-modal-panel { position: relative; width: min(1500px, 94vw); max-height: 88vh; overflow: auto; background: #0a0a0a; border: 1px solid rgba(255,255,255,0.14); border-radius: 14px; padding: 40px 44px 28px; box-shadow: 0 30px 60px rgba(0,0,0,0.55); }
+  .el15-modal-title { font-size: 18px; font-weight: 700; color: rgba(255,255,255,0.96); margin-bottom: 4px; }
+  .el15-modal-sub { font-size: 11px; color: rgba(230,230,240,0.4); margin-bottom: 22px; }
+  .el15-close { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; color: rgba(230,230,240,0.75); text-decoration: none; }
+  .el15-close:hover { color: rgba(255,255,255,0.95); }
+</style>
+
 <div style="width: 100%; max-width: 1200px; padding: 0 50px;">
-  <div style="font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(230, 230, 240, 0.5); margin-bottom: 6px;">Топ-5 конкурентов · Москва и Санкт-Петербург</div>
-  <div style="font-size: 11px; color: rgba(230, 230, 240, 0.4); margin-bottom: 24px;">число мастерских из 24 типов, посчитанных по матрице конкурентов</div>
+  <div style="font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(230, 230, 240, 0.5); margin-bottom: 6px;">Топ-10 конкурентов · Москва и Санкт-Петербург</div>
+  <div style="font-size: 11px; color: rgba(230, 230, 240, 0.4); margin-bottom: 24px;">число мастерских из 24 типов, посчитанных по матрице конкурентов · нажмите на список, чтобы увидеть полную матрицу</div>
 
-  <div class="accent-group" style="display: flex; flex-direction: column; gap: 14px;">
+  <div class="accent-group" style="display: flex; flex-direction: column; gap: 11px;">
 
-    <!-- UU — эталон -->
-    <div class="accent-item" style="display: flex; align-items: center; gap: 16px;">
+    <a href="#el15-matrix" class="accent-item" style="display: flex; align-items: center; gap: 16px; text-decoration: none; cursor: pointer;">
       <div style="flex: 1.5; font-size: 15px; font-weight: 700; color: #fff;">Universal University <span style="font-weight: 400; color: rgba(230, 230, 240, 0.45); font-size: 11px;">· эталон</span></div>
       <div style="flex: 2; position: relative; height: 8px; background: rgba(255, 255, 255, 0.08);">
         <div style="position: absolute; inset: 0; width: 79.2%; background: rgba(255, 255, 255, 0.85);"></div>
       </div>
       <div style="width: 60px; text-align: right; font-size: 15px; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums;">19/24</div>
-    </div>
+    </a>
 
-    <!-- Top 5 -->
-    <div class="accent-item" style="display: flex; align-items: center; gap: 16px;">
-      <div style="flex: 1.5; font-size: 14px; color: rgba(255, 255, 255, 0.88);">№1 · Школа дизайна НИУ ВШЭ <span style="color: rgba(230, 230, 240, 0.4); font-size: 11px;">· Москва и СПб</span></div>
+    <a href="#el15-matrix" class="accent-item" style="display: flex; align-items: center; gap: 16px; text-decoration: none; cursor: pointer;">
+      <div style="flex: 1.5; font-size: 14px; font-weight: 400; color: rgba(255, 255, 255, 0.88);">№1 · Школа дизайна НИУ ВШЭ <span style="font-weight: 400; color: rgba(230, 230, 240, 0.45); font-size: 11px;">· Москва и СПб</span></div>
       <div style="flex: 2; position: relative; height: 8px; background: rgba(255, 255, 255, 0.08);">
         <div style="position: absolute; inset: 0; width: 58.3%; background: rgba(255, 255, 255, 0.5);"></div>
       </div>
       <div style="width: 60px; text-align: right; font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.9); font-variant-numeric: tabular-nums;">14/24</div>
-    </div>
+    </a>
 
-    <div class="accent-item" style="display: flex; align-items: center; gap: 16px;">
-      <div style="flex: 1.5; font-size: 14px; color: rgba(255, 255, 255, 0.88);">№2 · Русская Академия Ремёсел <span style="color: rgba(230, 230, 240, 0.4); font-size: 11px;">· Москва</span></div>
+    <a href="#el15-matrix" class="accent-item" style="display: flex; align-items: center; gap: 16px; text-decoration: none; cursor: pointer;">
+      <div style="flex: 1.5; font-size: 14px; font-weight: 400; color: rgba(255, 255, 255, 0.88);">№2–3 · Русская Академия Ремёсел <span style="font-weight: 400; color: rgba(230, 230, 240, 0.45); font-size: 11px;">· Москва</span></div>
       <div style="flex: 2; position: relative; height: 8px; background: rgba(255, 255, 255, 0.08);">
         <div style="position: absolute; inset: 0; width: 41.7%; background: rgba(255, 255, 255, 0.5);"></div>
       </div>
       <div style="width: 60px; text-align: right; font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.9); font-variant-numeric: tabular-nums;">10/24</div>
-    </div>
+    </a>
 
-    <div class="accent-item" style="display: flex; align-items: center; gap: 16px;">
-      <div style="flex: 1.5; font-size: 14px; color: rgba(255, 255, 255, 0.88);">№3 · МГХПА им. С.Г. Строганова <span style="color: rgba(230, 230, 240, 0.4); font-size: 11px;">· Москва</span></div>
+    <a href="#el15-matrix" class="accent-item" style="display: flex; align-items: center; gap: 16px; text-decoration: none; cursor: pointer;">
+      <div style="flex: 1.5; font-size: 14px; font-weight: 400; color: rgba(255, 255, 255, 0.88);">№2–3 · МГХПА им. С.Г. Строганова <span style="font-weight: 400; color: rgba(230, 230, 240, 0.45); font-size: 11px;">· Москва</span></div>
       <div style="flex: 2; position: relative; height: 8px; background: rgba(255, 255, 255, 0.08);">
         <div style="position: absolute; inset: 0; width: 41.7%; background: rgba(255, 255, 255, 0.5);"></div>
       </div>
       <div style="width: 60px; text-align: right; font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.9); font-variant-numeric: tabular-nums;">10/24</div>
-    </div>
+    </a>
 
-    <div class="accent-item" style="display: flex; align-items: center; gap: 16px;">
-      <div style="flex: 1.5; font-size: 14px; color: rgba(255, 255, 255, 0.88);">№4 · СПГХПА им. А.Л. Штиглица <span style="color: rgba(230, 230, 240, 0.4); font-size: 11px;">· СПб</span></div>
+    <a href="#el15-matrix" class="accent-item" style="display: flex; align-items: center; gap: 16px; text-decoration: none; cursor: pointer;">
+      <div style="flex: 1.5; font-size: 14px; font-weight: 400; color: rgba(255, 255, 255, 0.88);">№4–5 · СПГХПА им. А.Л. Штиглица <span style="font-weight: 400; color: rgba(230, 230, 240, 0.45); font-size: 11px;">· СПб</span></div>
       <div style="flex: 2; position: relative; height: 8px; background: rgba(255, 255, 255, 0.08);">
         <div style="position: absolute; inset: 0; width: 37.5%; background: rgba(255, 255, 255, 0.5);"></div>
       </div>
       <div style="width: 60px; text-align: right; font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.9); font-variant-numeric: tabular-nums;">9/24</div>
-    </div>
+    </a>
 
-    <div class="accent-item" style="display: flex; align-items: center; gap: 16px;">
-      <div style="flex: 1.5; font-size: 14px; color: rgba(255, 255, 255, 0.88);">№5 · ВГИК + Учебная киностудия <span style="color: rgba(230, 230, 240, 0.4); font-size: 11px;">· Москва</span></div>
+    <a href="#el15-matrix" class="accent-item" style="display: flex; align-items: center; gap: 16px; text-decoration: none; cursor: pointer;">
+      <div style="flex: 1.5; font-size: 14px; font-weight: 400; color: rgba(255, 255, 255, 0.88);">№4–5 · ВГИК + Учебная киностудия <span style="font-weight: 400; color: rgba(230, 230, 240, 0.45); font-size: 11px;">· Москва</span></div>
       <div style="flex: 2; position: relative; height: 8px; background: rgba(255, 255, 255, 0.08);">
         <div style="position: absolute; inset: 0; width: 37.5%; background: rgba(255, 255, 255, 0.5);"></div>
       </div>
       <div style="width: 60px; text-align: right; font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.9); font-variant-numeric: tabular-nums;">9/24</div>
-    </div>
+    </a>
+
+    <a href="#el15-matrix" class="accent-item" style="display: flex; align-items: center; gap: 16px; text-decoration: none; cursor: pointer;">
+      <div style="flex: 1.5; font-size: 14px; font-weight: 400; color: rgba(255, 255, 255, 0.88);">№6–7 · СПбГУПТД <span style="font-weight: 400; color: rgba(230, 230, 240, 0.45); font-size: 11px;">· СПб</span></div>
+      <div style="flex: 2; position: relative; height: 8px; background: rgba(255, 255, 255, 0.08);">
+        <div style="position: absolute; inset: 0; width: 33.3%; background: rgba(255, 255, 255, 0.5);"></div>
+      </div>
+      <div style="width: 60px; text-align: right; font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.9); font-variant-numeric: tabular-nums;">8/24</div>
+    </a>
+
+    <a href="#el15-matrix" class="accent-item" style="display: flex; align-items: center; gap: 16px; text-decoration: none; cursor: pointer;">
+      <div style="flex: 1.5; font-size: 14px; font-weight: 400; color: rgba(255, 255, 255, 0.88);">№6–7 · СПбГИКиТ + Учебная киностудия <span style="font-weight: 400; color: rgba(230, 230, 240, 0.45); font-size: 11px;">· СПб</span></div>
+      <div style="flex: 2; position: relative; height: 8px; background: rgba(255, 255, 255, 0.08);">
+        <div style="position: absolute; inset: 0; width: 33.3%; background: rgba(255, 255, 255, 0.5);"></div>
+      </div>
+      <div style="width: 60px; text-align: right; font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.9); font-variant-numeric: tabular-nums;">8/24</div>
+    </a>
+
+    <a href="#el15-matrix" class="accent-item" style="display: flex; align-items: center; gap: 16px; text-decoration: none; cursor: pointer;">
+      <div style="flex: 1.5; font-size: 14px; font-weight: 400; color: rgba(255, 255, 255, 0.88);">№8–9 · РГУ им. А.Н. Косыгина <span style="font-weight: 400; color: rgba(230, 230, 240, 0.45); font-size: 11px;">· Москва</span></div>
+      <div style="flex: 2; position: relative; height: 8px; background: rgba(255, 255, 255, 0.08);">
+        <div style="position: absolute; inset: 0; width: 25.0%; background: rgba(255, 255, 255, 0.5);"></div>
+      </div>
+      <div style="width: 60px; text-align: right; font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.9); font-variant-numeric: tabular-nums;">6/24</div>
+    </a>
+
+    <a href="#el15-matrix" class="accent-item" style="display: flex; align-items: center; gap: 16px; text-decoration: none; cursor: pointer;">
+      <div style="flex: 1.5; font-size: 14px; font-weight: 400; color: rgba(255, 255, 255, 0.88);">№8–9 · Академия художеств им. И.Е. Репина <span style="font-weight: 400; color: rgba(230, 230, 240, 0.45); font-size: 11px;">· СПб</span></div>
+      <div style="flex: 2; position: relative; height: 8px; background: rgba(255, 255, 255, 0.08);">
+        <div style="position: absolute; inset: 0; width: 25.0%; background: rgba(255, 255, 255, 0.5);"></div>
+      </div>
+      <div style="width: 60px; text-align: right; font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.9); font-variant-numeric: tabular-nums;">6/24</div>
+    </a>
+
+    <a href="#el15-matrix" class="accent-item" style="display: flex; align-items: center; gap: 16px; text-decoration: none; cursor: pointer;">
+      <div style="flex: 1.5; font-size: 14px; font-weight: 400; color: rgba(255, 255, 255, 0.88);">№10 · МГАХИ им. В.И. Сурикова <span style="font-weight: 400; color: rgba(230, 230, 240, 0.45); font-size: 11px;">· Москва</span></div>
+      <div style="flex: 2; position: relative; height: 8px; background: rgba(255, 255, 255, 0.08);">
+        <div style="position: absolute; inset: 0; width: 20.8%; background: rgba(255, 255, 255, 0.5);"></div>
+      </div>
+      <div style="width: 60px; text-align: right; font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.9); font-variant-numeric: tabular-nums;">5/24</div>
+    </a>
 
   </div>
 
@@ -78,6 +137,52 @@
     <div class="accent-item" style="display: flex; align-items: baseline; gap: 10px; font-size: 16px; color: rgba(255, 255, 255, 0.9);">
       <span style="color: rgba(255, 255, 255, 0.5); font-weight: 600;">&gt;</span>
       мультидисциплинарность
+    </div>
+  </div>
+</div>
+
+<div id="el15-matrix" class="el15-modal">
+  <a href="#" class="el15-modal-bg" aria-label="Закрыть"></a>
+  <div class="el15-modal-panel">
+    <a href="#" class="el15-close">&#10005;</a>
+    <div class="el15-modal-title">Матрица покрытия — UU и топ-10 конкурентов</div>
+    <div class="el15-modal-sub">Галка — у организации есть мастерская этого типа (без учёта качества/масштаба)</div>
+    <div class="el15-mx-grid">
+      <div></div>
+      <div class="el15-mx-col-head"><span>ГАЛЕРЕЯ</span></div>
+      <div class="el15-mx-col-head"><span>ФОТОСТУДИЯ</span></div>
+      <div class="el15-mx-col-head"><span>ПРОКАТ</span></div>
+      <div class="el15-mx-col-head"><span>ЦИФ.ПЕЧАТЬ</span></div>
+      <div class="el15-mx-col-head"><span>ДАРКРУМ</span></div>
+      <div class="el15-mx-col-head"><span>ШВЕЙНАЯ</span></div>
+      <div class="el15-mx-col-head"><span>ТЕКСТИЛЬНАЯ</span></div>
+      <div class="el15-mx-col-head"><span>ШЕЛКОГРАФИЯ</span></div>
+      <div class="el15-mx-col-head"><span>БИБЛИОТЕКА</span></div>
+      <div class="el15-mx-col-head"><span>VR</span></div>
+      <div class="el15-mx-col-head"><span>3D</span></div>
+      <div class="el15-mx-col-head"><span>ЮВЕЛИРКА</span></div>
+      <div class="el15-mx-col-head"><span>КЕРАМИКА</span></div>
+      <div class="el15-mx-col-head"><span>МЕЙКАП</span></div>
+      <div class="el15-mx-col-head"><span>КИНОЗАЛ</span></div>
+      <div class="el15-mx-col-head"><span>КИНОПАВИЛЬОН</span></div>
+      <div class="el15-mx-col-head"><span>ТЕАТРАЛЬНАЯ</span></div>
+      <div class="el15-mx-col-head"><span>СТЕКЛО</span></div>
+      <div class="el15-mx-col-head"><span>МЕТАЛЛ</span></div>
+      <div class="el15-mx-col-head"><span>ЗВУК</span></div>
+      <div class="el15-mx-col-head"><span>РЕСТАВРАЦИЯ</span></div>
+      <div class="el15-mx-col-head"><span>КОЖА</span></div>
+      <div class="el15-mx-col-head"><span>СКУЛЬПТУРА</span></div>
+      <div class="el15-mx-row uu"><div class="el15-mx-label">Universal University</div><div class="el15-mx-cell yes uu">&#10003;</div><div class="el15-mx-cell yes uu">&#10003;</div><div class="el15-mx-cell yes uu">&#10003;</div><div class="el15-mx-cell yes uu">&#10003;</div><div class="el15-mx-cell yes uu">&#10003;</div><div class="el15-mx-cell yes uu">&#10003;</div><div class="el15-mx-cell yes uu">&#10003;</div><div class="el15-mx-cell yes uu">&#10003;</div><div class="el15-mx-cell yes uu">&#10003;</div><div class="el15-mx-cell yes uu">&#10003;</div><div class="el15-mx-cell yes uu">&#10003;</div><div class="el15-mx-cell yes uu">&#10003;</div><div class="el15-mx-cell yes uu">&#10003;</div><div class="el15-mx-cell yes uu">&#10003;</div><div class="el15-mx-cell yes uu">&#10003;</div><div class="el15-mx-cell yes uu">&#10003;</div><div class="el15-mx-cell yes uu">&#10003;</div><div class="el15-mx-cell uu"></div><div class="el15-mx-cell uu"></div><div class="el15-mx-cell yes uu">&#10003;</div><div class="el15-mx-cell uu"></div><div class="el15-mx-cell uu"></div><div class="el15-mx-cell yes uu">&#10003;</div></div>
+      <div class="el15-mx-row"><div class="el15-mx-label">№1 · ВШЭ</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div></div>
+      <div class="el15-mx-row"><div class="el15-mx-label">№2–3 · Рус. Академия Ремёсел</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div></div>
+      <div class="el15-mx-row"><div class="el15-mx-label">№2–3 · Строгановка</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div></div>
+      <div class="el15-mx-row"><div class="el15-mx-label">№4–5 · Штиглица</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div></div>
+      <div class="el15-mx-row"><div class="el15-mx-label">№4–5 · ВГИК</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div></div>
+      <div class="el15-mx-row"><div class="el15-mx-label">№6–7 · СПбГУПТД</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div></div>
+      <div class="el15-mx-row"><div class="el15-mx-label">№6–7 · СПбГИКиТ</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div></div>
+      <div class="el15-mx-row"><div class="el15-mx-label">№8–9 · Косыгина</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div></div>
+      <div class="el15-mx-row"><div class="el15-mx-label">№8–9 · Репина</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div></div>
+      <div class="el15-mx-row"><div class="el15-mx-label">№10 · Суриков</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div><div class="el15-mx-cell"></div><div class="el15-mx-cell yes">&#10003;</div></div>
     </div>
   </div>
 </div>
