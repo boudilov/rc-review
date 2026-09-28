@@ -1,28 +1,80 @@
-<!-- Страница 26 — Центр информационных ресурсов -->
+<!-- Страница 26 — Центр информационных ресурсов: посещения и разбивка АНО / ООО / сотрудники / МКТ -->
 <style>
   .ws26-wrap { width: 100%; max-width: 1600px; padding: 0 60px; }
   .ws26-title { font-size: 28px; font-weight: 700; color: rgba(255,255,255,0.96); margin-bottom: 22px; }
-  .ws26-scan { width: 100%; height: 260px; border: 1px dashed rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; margin-bottom: 32px; }
+  .ws26-scan { width: 100%; height: 260px; border: 1px dashed rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; margin-bottom: 40px; }
   .ws26-scan-label { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(230,230,240,0.35); }
-  .ws26-stats { display: flex; gap: 48px; }
+  .ws26-stats { display: flex; gap: 90px; align-items: flex-start; }
   .ws26-stat { flex: 1; min-width: 0; }
-  .ws26-stat-kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(230,230,240,0.55); margin-bottom: 14px; }
-  .ws26-stat-number { font-size: 64px; font-weight: 700; line-height: 1; color: rgba(230,230,240,0.18); margin-bottom: 12px; }
-  .ws26-stat-caption { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(230,230,240,0.45); }
+  .ws26-stat-kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(230,230,240,0.55); margin-bottom: 18px; }
+
+  .ws26-compare { display: flex; align-items: flex-start; gap: 24px; }
+  .ws26-col { display: flex; flex-direction: column; gap: 10px; }
+  .ws26-val { font-size: 72px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .ws26-val.prev { color: rgba(230,230,240,0.4); }
+  .ws26-val.last { color: rgba(255,255,255,0.95); }
+  .ws26-year { font-size: 11px; font-variant-numeric: tabular-nums; color: rgba(230,230,240,0.45); }
+  .ws26-year.last { color: rgba(255,255,255,0.85); font-weight: 600; }
+  .ws26-arrow { font-size: 40px; line-height: 1; color: rgba(230,230,240,0.3); margin-top: 14px; }
+  .ws26-delta { font-size: 18px; font-weight: 700; margin-top: 6px; white-space: nowrap; color: rgba(120, 220, 140, 0.95); }
+
+  .ws26-legend { display: flex; gap: 22px; margin-bottom: 16px; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(230,230,240,0.6); }
+  .ws26-legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .ws26-legend i { width: 14px; height: 10px; border-radius: 2px; display: inline-block; }
+  .ws26-row { display: grid; grid-template-columns: 64px 1fr 74px; align-items: center; gap: 16px; margin-bottom: 14px; }
+  .ws26-out { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; color: rgba(255,255,255,0.9); white-space: nowrap; }
+  .ws26-out small { font-size: 10px; font-weight: 500; color: rgba(230,230,240,0.55); margin-left: 4px; }
+  .ws26-row-year { font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; color: rgba(230,230,240,0.6); }
+  .ws26-row.last .ws26-row-year { color: #fff; }
+  .ws26-bar { display: flex; gap: 2px; height: 34px; border-radius: 4px; overflow: hidden; }
+  .ws26-seg { display: flex; align-items: center; padding: 0 12px; font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .ws26-seg.ano { background: rgba(255,255,255,0.9); color: #0a0a0a; }
+  .ws26-seg.ooo { background: rgba(255,255,255,0.5); color: #0a0a0a; }
+  .ws26-seg.staff { background: rgba(255,255,255,0.2); color: rgba(255,255,255,0.95); }
+  .ws26-seg.mkt { background: repeating-linear-gradient(45deg, rgba(255,255,255,0.75) 0 2px, rgba(255,255,255,0.12) 2px 5px); padding: 0; }
+  .ws26-seg small { font-size: 11px; font-weight: 500; margin-left: 6px; opacity: 0.65; }
 </style>
 <div class="ws26-wrap">
   <div class="ws26-title">Центр информационных ресурсов</div>
   <div class="ws26-scan"><span class="ws26-scan-label">Скан мастерской «Центр информационных ресурсов» · ожидает фото</span></div>
-  <div class="ws26-stats">
-    <div class="ws26-stat">
-      <div class="ws26-stat-kicker">Выдача книг</div>
-      <div class="ws26-stat-number">—</div>
-      <div class="ws26-stat-caption">статистика выдачи · ожидает данных</div>
+  <div class="ws26-stats accent-group">
+    <div class="ws26-stat accent-item">
+      <div class="ws26-stat-kicker">Посещения за учебный год</div>
+      <div class="ws26-compare">
+        <div class="ws26-col">
+          <div class="ws26-val prev">3&nbsp;296</div>
+          <div class="ws26-year">2024/25</div>
+        </div>
+        <div class="ws26-arrow">&rarr;</div>
+        <div class="ws26-col">
+          <div class="ws26-val last">4&nbsp;651</div>
+          <div class="ws26-year last">2025/26</div>
+        </div>
+        <div class="ws26-delta">▲ 41%</div>
+      </div>
     </div>
-    <div class="ws26-stat">
-      <div class="ws26-stat-kicker">Посещения</div>
-      <div class="ws26-stat-number">—</div>
-      <div class="ws26-stat-caption">статистика посещений · ожидает данных</div>
+    <div class="ws26-stat accent-item">
+      <div class="ws26-stat-kicker">Разбивка посещений · АНО / ООО / сотрудники / МКТ</div>
+      <div class="ws26-legend"><span><i style="background: rgba(255,255,255,0.9);"></i>АНО</span><span><i style="background: rgba(255,255,255,0.5);"></i>ООО</span><span><i style="background: rgba(255,255,255,0.2);"></i>Сотрудники</span><span><i style="background: repeating-linear-gradient(45deg, rgba(255,255,255,0.75) 0 2px, rgba(255,255,255,0.12) 2px 5px);"></i>Студенты МКТ</span></div>
+      <div class="ws26-row">
+        <div class="ws26-row-year">2024/25</div>
+        <div class="ws26-bar">
+          <div class="ws26-seg ano" style="flex: 628 1 0;">19%<small>628</small></div>
+          <div class="ws26-seg ooo" style="flex: 2272 1 0;">69%<small>2&nbsp;272</small></div>
+          <div class="ws26-seg staff" style="flex: 396 1 0;">12%<small>396</small></div>
+        </div>
+        <div></div>
+      </div>
+      <div class="ws26-row last">
+        <div class="ws26-row-year">2025/26</div>
+        <div class="ws26-bar">
+          <div class="ws26-seg ano" style="flex: 1121 1 0;">24%<small>1&nbsp;121</small></div>
+          <div class="ws26-seg ooo" style="flex: 2240 1 0;">48%<small>2&nbsp;240</small></div>
+          <div class="ws26-seg staff" style="flex: 1181 1 0;">25%<small>1&nbsp;181</small></div>
+          <div class="ws26-seg mkt" style="flex: 109 1 0;" title="Студенты МКТ · 109"></div>
+        </div>
+        <div class="ws26-out">МКТ 2%<small>109</small></div>
+      </div>
     </div>
   </div>
 </div>
