@@ -9,7 +9,7 @@ let historyAnimSteps = [];
 let historyBoardEl = null;
 
 async function loadHistoryData() {
-  const res = await fetch(HISTORY_DATA_URL);
+  const res = await fetch(HISTORY_DATA_URL, { cache: "no-store" });
   if (!res.ok) throw new Error(`Не удалось загрузить ${HISTORY_DATA_URL}`);
   return res.json();
 }

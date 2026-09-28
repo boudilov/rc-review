@@ -7,7 +7,7 @@ const DATA_URL = "./structure.json";
 let viz = null;
 
 async function loadDefaultData() {
-  const res = await fetch(DATA_URL);
+  const res = await fetch(DATA_URL, { cache: "no-store" });
   if (!res.ok) throw new Error(`Не удалось загрузить ${DATA_URL}`);
   return res.json();
 }
