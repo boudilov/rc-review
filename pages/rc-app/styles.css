@@ -1628,3 +1628,17 @@ body {
   fill: var(--bg);
   stroke: var(--node-dim-stroke);
 }
+
+/* Таймлайн истории (стр. 21) крупнее — для проектора.
+   Высоту строк не трогаем: все годы — по 30px, шаг между точками одинаковый. */
+.history-board {
+  width: min(1100px, 100%);
+}
+.history-label,
+.history-year {
+  font-size: 18px;
+}
+.history-dot {
+  width: 6px;
+  height: 6px;
+}
