@@ -77,17 +77,32 @@ function renderHistoryWorkspace(container) {
 
   applyHistoryAnimStep(board);
   layoutHistoryTrunkSpine(board);
+  fitHistoryBoard();
 }
+
+// Полностью раскрытый таймлайн должен влезать по высоте. Высота строк фиксирована,
+// а окно iframe «сжимается» при крупном масштабе презентации — тогда уменьшаем
+// весь таймлайн (высота доски не меняется по ходу раскрытия: строки скрыты через opacity).
+function fitHistoryBoard() {
+  const board = historyBoardEl;
+  if (!board) return;
+  board.style.zoom = "";
+  const stage = board.parentElement; // #workspace-content: под шапкой приложения, overflow hidden
+  const avail = (stage ? stage.clientHeight : document.documentElement.clientHeight) - 16;
+  const need = board.offsetHeight;
+  if (need > avail && avail > 0) board.style.zoom = String(avail / need);
+}
+
+window.addEventListener("resize", fitHistoryBoard);
 
 function layoutHistoryTrunkSpine(board) {
   const rowsWrap = board.querySelector(".history-rows");
   const spine = board.querySelector(".history-trunk-spine");
   if (!rowsWrap || !spine) return;
 
-  const boardRect = board.getBoundingClientRect();
-  const rowsRect = rowsWrap.getBoundingClientRect();
-  const spineH = rowsRect.height;
-  const spineTop = rowsRect.top - boardRect.top;
+  // offset*, а не getBoundingClientRect: не зависят от zoom, который ставит fitHistoryBoard
+  const spineH = rowsWrap.offsetHeight;
+  const spineTop = rowsWrap.offsetTop;
 
   board.style.setProperty("--spine-h", `${spineH}px`);
   board.style.setProperty("--spine-top", `${spineTop}px`);
@@ -248,9 +263,8 @@ async function boot() {
   renderHistoryWorkspace(content);
 }
 
+// ←/→, масштаб и проекторный режим слушает сама презентация (index.html → hookFrame)
 document.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowRight") window.parent?.rcNavigate?.(1);
-  if (e.key === "ArrowLeft") window.parent?.rcNavigate?.(-1);
   if (e.key === " " || e.code === "Space") {
     e.preventDefault();
     if (e.ctrlKey) retreatHistoryStep();

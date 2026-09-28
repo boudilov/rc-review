@@ -252,19 +252,6 @@ export class StructureViz {
     this.render();
   }
 
-  openRcMosaic() {
-    if (!this.diagramExpanded) {
-      this.expandDiagram();
-      return;
-    }
-    this.focusId = "rc";
-    this.hoverId = null;
-    this.hoverRing = null;
-    this.closeWorkshopModal();
-    this.showRcMosaicModal();
-    this.render();
-  }
-
   selectNode(nodeId) {
     if (!nodeId) {
       this.focusId = null;
@@ -281,11 +268,7 @@ export class StructureViz {
       return;
     }
     if (nodeId === "rc") {
-      if (!this.diagramExpanded) {
-        this.expandDiagram();
-        return;
-      }
-      this.openRcMosaic();
+      if (!this.diagramExpanded) this.expandDiagram();
       return;
     }
 
@@ -602,76 +585,6 @@ export class StructureViz {
     return { x: screen.x, y: screen.y };
   }
 
-  showRcMosaicModal() {
-    const overlay = document.getElementById("rc-mosaic-overlay");
-    const grid = overlay?.querySelector("[data-rc-mosaic]");
-    if (!overlay || !grid) return;
-    if (overlay.classList.contains("open")) return;
-
-    const people = this.nodes.filter((n) => n.type === "person");
-    grid.innerHTML = "";
-
-    for (const person of people) {
-      const cell = document.createElement("div");
-      cell.className = "rc-mosaic-cell";
-
-      if (person.photo) {
-        const img = document.createElement("img");
-        img.className = "rc-mosaic-photo";
-        img.src = person.photo;
-        img.alt = "";
-        img.loading = "eager";
-        bindPhotoZoom(img);
-        cell.appendChild(img);
-      } else {
-        const placeholder = document.createElement("span");
-        placeholder.className = "rc-mosaic-photo rc-mosaic-photo-placeholder";
-        placeholder.setAttribute("aria-hidden", "true");
-        cell.appendChild(placeholder);
-      }
-
-      grid.appendChild(cell);
-    }
-
-    const cols = this.layoutMosaicGrid(grid, people.length);
-    grid.querySelectorAll(".rc-mosaic-cell").forEach((cell, index) => {
-      const row = Math.floor(index / cols);
-      const col = index % cols;
-      const centerCol = (cols - 1) / 2;
-      const centerRow = (Math.min(people.length, 4) - 1) / 2;
-      const dist = Math.hypot(col - centerCol, row - centerRow);
-      cell.style.setProperty("--cell-delay", `${220 + dist * 42}ms`);
-    });
-
-    const origin = this.getRcScreenPoint();
-    overlay.style.setProperty("--rc-origin-x", `${origin.x}px`);
-    overlay.style.setProperty("--rc-origin-y", `${origin.y}px`);
-    overlay.classList.remove("rc-mosaic-closing", "rc-mosaic-opening");
-    overlay.classList.add("open", "rc-mosaic-from-rc");
-    overlay.setAttribute("aria-hidden", "false");
-    this.rcMosaicClosing = false;
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        overlay.classList.add("rc-mosaic-opening");
-      });
-    });
-  }
-
-  layoutMosaicGrid(grid, count) {
-    const rows = 4;
-    if (!count) {
-      grid.style.gridTemplateColumns = "";
-      grid.style.gridTemplateRows = "";
-      return 1;
-    }
-
-    const cols = Math.max(1, Math.ceil(count / rows));
-    grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-    grid.style.gridTemplateRows = `repeat(${rows}, auto)`;
-    return cols;
-  }
-
   showWorkshopModal(node) {
     const overlay = document.getElementById("workshop-overlay");
     if (!overlay) return;
@@ -828,11 +741,8 @@ export class StructureViz {
     if (this.suppressClick) return;
     e?.stopPropagation?.();
     if (node.type === "root") {
-      if (!this.diagramExpanded) {
-        this.expandDiagram();
-        return;
-      }
-      this.openRcMosaic();
+      // в раскрытом виде клик по РЦ ничего не делает (мозаику фото сотрудников убрали)
+      if (!this.diagramExpanded) this.expandDiagram();
       return;
     }
     if (node.type === "workshop") {

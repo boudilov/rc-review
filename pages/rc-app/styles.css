@@ -1616,3 +1616,15 @@ body {
   gap: 6px;
   align-items: center;
 }
+
+/* Круг «РЦ» в центре — чёрный внутри, как кольца групп (подсветка при наведении — прежняя) */
+.structure-node.structure-node-root .structure-node-fill {
+  fill: var(--bg);
+  stroke: var(--border);
+  stroke-width: 1.2;
+}
+
+.structure-node.dim.structure-node-root .structure-node-fill {
+  fill: var(--bg);
+  stroke: var(--node-dim-stroke);
+}

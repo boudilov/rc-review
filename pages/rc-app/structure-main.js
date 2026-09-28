@@ -1,6 +1,7 @@
 import { initShell } from "./app.js";
 import { parseRows } from "./parser.js";
-import { StructureViz } from "./viz.js";
+// viz.js берём с тем же ?_=…, с которым загружен этот файл: статический import брался бы из кэша
+const { StructureViz } = await import("./viz.js" + new URL(import.meta.url).search);
 
 const DATA_URL = "./structure.json";
 
@@ -48,9 +49,8 @@ async function boot() {
   }
 }
 
+// ←/→, масштаб и проекторный режим слушает сама презентация (index.html → hookFrame)
 document.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowRight") window.parent?.rcNavigate?.(1);
-  if (e.key === "ArrowLeft") window.parent?.rcNavigate?.(-1);
   if (e.key === "ArrowUp") viz?.expandDiagram();
   if (e.key === "ArrowDown") viz?.collapseDiagram();
 });
