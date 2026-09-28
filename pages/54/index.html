@@ -1,18 +1,33 @@
-<!-- Страница 54 — Общие выводы по мастерским -->
+<!-- Страница 54 — Общие выводы по мастерским (тезисы раскрываются по клику, <details> без JS) -->
 <style>
-  .ws54-wrap { max-width: 1000px; padding: 0 60px; }
-  .ws54-title { font-size: 32px; font-weight: 700; color: rgba(255,255,255,0.96); margin-bottom: 40px; }
-  .ws54-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 22px; }
-  .ws54-item { display: flex; align-items: baseline; gap: 16px; font-size: 22px; line-height: 1.5; color: rgba(230, 230, 240, 0.35); }
-  .ws54-item .ws54-mark { color: rgba(230, 230, 240, 0.3); font-weight: 600; }
-  .ws54-item .ws54-tag { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(230, 230, 240, 0.3); margin-left: 8px; }
+  .ws54-wrap { width: 100%; max-width: 1300px; padding: 0 70px; }
+  .ws54-title { font-size: 46px; font-weight: 700; color: rgba(255,255,255,0.96); margin-bottom: 44px; }
+  .ws54-list { display: flex; flex-direction: column; gap: 22px; }
+  .ws54-item summary { list-style: none; display: flex; align-items: baseline; gap: 18px; font-size: 27px; line-height: 1.45; color: rgba(255, 255, 255, 0.92); }
+  .ws54-item summary::-webkit-details-marker { display: none; }
+  .ws54-mark { display: inline-block; color: rgba(230, 230, 240, 0.4); font-weight: 600; transition: transform 0.2s; }
+  .ws54-item[open] .ws54-mark { transform: rotate(90deg); color: rgba(255, 255, 255, 0.8); }
+  .ws54-item summary:hover .ws54-mark { color: rgba(255, 255, 255, 0.8); }
+  .ws54-body { margin: 10px 0 4px 34px; max-width: 1000px; font-size: 18px; line-height: 1.6; color: rgba(230, 230, 240, 0.65); }
 </style>
 <div class="ws54-wrap">
   <div class="ws54-title">Общие выводы по мастерским</div>
-  <ul class="ws54-list">
-    <li class="ws54-item"><span class="ws54-mark">&gt;</span> вывод 1 <span class="ws54-tag">ожидает данных</span></li>
-    <li class="ws54-item"><span class="ws54-mark">&gt;</span> вывод 2 <span class="ws54-tag">ожидает данных</span></li>
-    <li class="ws54-item"><span class="ws54-mark">&gt;</span> вывод 3 <span class="ws54-tag">ожидает данных</span></li>
-    <li class="ws54-item"><span class="ws54-mark">&gt;</span> вывод 4 <span class="ws54-tag">ожидает данных</span></li>
-  </ul>
+  <div class="ws54-list accent-group">
+    <details class="ws54-item accent-item">
+      <summary><span class="ws54-mark">&gt;</span>Мастерские всё глубже встроены в учебный процесс</summary>
+      <div class="ws54-body">Часы учебных занятий (CLASS) выросли на 17%: с 8&nbsp;319 до 9&nbsp;728. Сильнее всего — в Текстиле (+83%), Керамике (+69%) и Ручной печати (+41%). Снизились только в Принт-офисе и Тёмной комнате.</div>
+    </details>
+    <details class="ws54-item accent-item">
+      <summary><span class="ws54-mark">&gt;</span>Самостоятельная работа студентов в мастерских снизилась</summary>
+      <div class="ws54-body">Часы самостоятельной работы (SELF) снизились на 14%: с 34&nbsp;438 до 29&nbsp;754. Почти всё падение дают четыре мастерские — Тёмная комната (−61%), Ручная печать (−43%), Принт-офис (−39%) и Керамика (−35%). Рост учебных занятий его не перекрыл: всего практики стало на 8% меньше (42&nbsp;757 → 39&nbsp;482&nbsp;ч).</div>
+    </details>
+    <details class="ws54-item accent-item">
+      <summary><span class="ws54-mark">&gt;</span>Рост ограничивает график работы, а не спрос: новые ресурсы сразу находят пользователей</summary>
+      <div class="ws54-body">Мастерские используют 38% возможного времени (10:00–22:00 без праздников) — резерв около 25 тыс. часов в год. Принт-офис, 3D и Артплей заполнены на 88–94% открытого времени, но открыты лишь на 41–67% от максимума: больше часов работы — сразу больше загрузки. Новые ресурсы загружаются с первых месяцев: Фабрика за 9 месяцев набрала 1&nbsp;900&nbsp;ч при 75% заполненности открытого времени, парк проката вырос на 62%, а его использование — на 22%.</div>
+    </details>
+    <details class="ws54-item accent-item">
+      <summary><span class="ws54-mark">&gt;</span>Главные точки роста — Текстиль и Тёмная комната</summary>
+      <div class="ws54-body">Обе заняты лишь на 13–15% от максимума: мало открыты и мало востребованы. У Тёмной комнаты график сократили почти вдвое, и занятые часы упали на 46%. Здесь нужны решения по продвижению и формату, а не только по расписанию.</div>
+    </details>
+  </div>
 </div>
