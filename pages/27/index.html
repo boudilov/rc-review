@@ -7,7 +7,7 @@
   .ws27-legend { display: flex; gap: 24px; margin-bottom: 18px; }
   .ws27-legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(230,230,240,0.6); }
   .ws27-legend-swatch { width: 16px; height: 2px; }
-  .ws27-charts { display: flex; gap: 48px; }
+  .ws27-charts { display: flex; flex-direction: column; gap: 26px; }
   .wsChart { flex: 1; min-width: 0; }
   .wsChart-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
   .wsChart-kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(230,230,240,0.55); }
@@ -20,8 +20,8 @@
   .wsChart-delta-up { color: rgba(120, 220, 140, 0.95); }
   .wsChart-delta-down { color: rgba(255, 120, 120, 0.9); }
   .wsChart-delta-new { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(230,230,240,0.5); }
-  .wsChart-svg { display: block; }
-  .wsChart-months { display: flex; justify-content: space-between; margin-top: 6px; font-size: 9px; letter-spacing: 0.06em; color: rgba(230,230,240,0.35); }
+  .wsChart-svg { display: block; width: 92.121%; margin-left: 3.940%; }
+  .wsChart-months { margin-top: 6px; }
   .ws27-ys { width: 100%; margin-bottom: 28px; }
   .ws27-ys-head { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(230,230,240,0.55); }
   .ws27-ys-key { display: inline-block; width: 3px; height: 10px; margin: 0 8px 0 18px; vertical-align: -1px; }
@@ -65,12 +65,12 @@
           <span class="wsChart-total wsChart-total-old">1 740,8 ч</span>
         </span>
       </div>
-      <svg viewBox="0 0 600 150" width="100%" height="150" preserveAspectRatio="none" class="wsChart-svg">
+      <svg viewBox="0 0 600 150" width="100%" height="120" preserveAspectRatio="none" class="wsChart-svg">
         <line x1="0" y1="148" x2="600" y2="148" stroke="rgba(255,255,255,0.12)" stroke-width="1" vector-effect="non-scaling-stroke"/>
         <path d="M 2.0,140.4 C 11.0,131.7 38.1,93.3 56.2,88.4 C 74.2,83.5 92.3,114.1 110.4,111.0 C 128.4,107.8 146.5,70.9 164.5,69.5 C 182.6,68.1 200.7,90.9 218.7,102.3 C 236.8,113.8 254.8,135.6 272.9,138.0 C 291.0,140.3 309.0,116.0 327.1,116.5 C 345.2,117.1 363.2,139.3 381.3,141.4 C 399.3,143.5 417.4,129.1 435.5,129.0 C 453.5,128.9 471.6,150.0 489.6,140.7 C 507.7,127.5 525.8,61.2 543.8,49.7 C 561.9,38.3 589.0,68.4 598.0,72.2" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2.5" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
         <path d="M 2.0,148.0 C 11.0,133.8 38.1,68.3 56.2,62.6 C 74.2,56.8 92.3,106.3 110.4,113.3 C 128.4,120.4 146.5,103.2 164.5,104.8 C 182.6,106.5 200.7,118.7 218.7,123.3 C 236.8,128.0 254.8,132.3 272.9,132.8 C 291.0,133.3 309.0,128.3 327.1,126.5 C 345.2,124.6 363.2,124.0 381.3,121.7 C 399.3,119.4 417.4,115.7 435.5,112.5 C 453.5,109.3 471.6,119.1 489.6,102.4 C 507.7,85.6 525.8,12.6 543.8,12.0 C 561.9,11.4 589.0,84.3 598.0,98.8" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="2.5" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
       </svg>
-      <div class="wsChart-months"><span>АВГ</span><span>СЕН</span><span>ОКТ</span><span>НОЯ</span><span>ДЕК</span><span>ЯНВ</span><span>ФЕВ</span><span>МАР</span><span>АПР</span><span>МАЙ</span><span>ИЮН</span><span>ИЮЛ</span></div>
+      <div class="ws27-ys-months wsChart-months"><span style="left:0.000%;width:8.493%">АВГ</span><span style="left:8.493%;width:8.219%">СЕН</span><span style="left:16.712%;width:8.493%">ОКТ</span><span style="left:25.205%;width:8.219%">НОЯ</span><span style="left:33.425%;width:8.493%">ДЕК</span><span style="left:41.918%;width:8.493%">ЯНВ</span><span style="left:50.411%;width:7.671%">ФЕВ</span><span style="left:58.082%;width:8.493%">МАР</span><span style="left:66.575%;width:8.219%">АПР</span><span style="left:74.795%;width:8.493%">МАЙ</span><span style="left:83.288%;width:8.219%">ИЮН</span><span style="left:91.507%;width:8.493%">ИЮЛ</span></div>
     </div>
     
     
@@ -85,12 +85,12 @@
           <span class="wsChart-total wsChart-total-old">3 346,7 ч</span>
         </span>
       </div>
-      <svg viewBox="0 0 600 150" width="100%" height="150" preserveAspectRatio="none" class="wsChart-svg">
+      <svg viewBox="0 0 600 150" width="100%" height="120" preserveAspectRatio="none" class="wsChart-svg">
         <line x1="0" y1="148" x2="600" y2="148" stroke="rgba(255,255,255,0.12)" stroke-width="1" vector-effect="non-scaling-stroke"/>
         <path d="M 2.0,144.7 C 11.0,140.2 38.1,136.3 56.2,117.8 C 74.2,99.2 92.3,44.8 110.4,33.4 C 128.4,22.1 146.5,46.6 164.5,49.8 C 182.6,53.0 200.7,41.0 218.7,52.5 C 236.8,64.1 254.8,121.6 272.9,119.1 C 291.0,116.6 309.0,55.3 327.1,37.5 C 345.2,19.6 363.2,13.8 381.3,12.0 C 399.3,10.2 417.4,24.1 435.5,26.8 C 453.5,29.5 471.6,14.8 489.6,28.1 C 507.7,41.4 525.8,87.8 543.8,106.5 C 561.9,125.2 589.0,134.5 598.0,140.1" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2.5" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
         <path d="M 2.0,148.0 C 11.0,145.6 38.1,149.1 56.2,133.5 C 74.2,117.9 92.3,69.6 110.4,54.6 C 128.4,39.6 146.5,48.7 164.5,43.6 C 182.6,38.5 200.7,21.6 218.7,23.9 C 236.8,26.3 254.8,55.4 272.9,57.7 C 291.0,60.0 309.0,43.2 327.1,37.9 C 345.2,32.6 363.2,28.8 381.3,26.1 C 399.3,23.4 417.4,14.8 435.5,21.6 C 453.5,28.4 471.6,54.2 489.6,66.8 C 507.7,79.3 525.8,84.5 543.8,96.9 C 561.9,109.2 589.0,133.6 598.0,140.9" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="2.5" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
       </svg>
-      <div class="wsChart-months"><span>АВГ</span><span>СЕН</span><span>ОКТ</span><span>НОЯ</span><span>ДЕК</span><span>ЯНВ</span><span>ФЕВ</span><span>МАР</span><span>АПР</span><span>МАЙ</span><span>ИЮН</span><span>ИЮЛ</span></div>
+      <div class="ws27-ys-months wsChart-months"><span style="left:0.000%;width:8.493%">АВГ</span><span style="left:8.493%;width:8.219%">СЕН</span><span style="left:16.712%;width:8.493%">ОКТ</span><span style="left:25.205%;width:8.219%">НОЯ</span><span style="left:33.425%;width:8.493%">ДЕК</span><span style="left:41.918%;width:8.493%">ЯНВ</span><span style="left:50.411%;width:7.671%">ФЕВ</span><span style="left:58.082%;width:8.493%">МАР</span><span style="left:66.575%;width:8.219%">АПР</span><span style="left:74.795%;width:8.493%">МАЙ</span><span style="left:83.288%;width:8.219%">ИЮН</span><span style="left:91.507%;width:8.493%">ИЮЛ</span></div>
     </div>
     
   </div>
