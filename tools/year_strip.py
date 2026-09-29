@@ -22,7 +22,7 @@ H0, H1 = 10 * 60, 22 * 60
 TICK = 12  # высота засечки, минут
 BIN = 10  # шаг тепловой карты density, минут
 LEVELS = 12  # градаций яркости density
-DENSITY_SKIP = {'16', '28', '15', '22', '12'}  # прокаты (многодневные выдачи), ЦИР (посещения отдельно), тестовые
+DENSITY_SKIP = {'16', '28', '15', '25', '22', '12'}  # прокаты (многодневные выдачи), ЦИР (посещения отдельно), WellBeing (не мастерская), тестовые
 
 # страница: (workshop_id, режим)
 PAGES = {
@@ -152,7 +152,7 @@ def build(page, ws_id, mode, rows):
     <div class="{prefix}-ys-plot">
       <span class="{prefix}-ys-h {prefix}-ys-h0">22:00</span><span class="{prefix}-ys-h {prefix}-ys-h1">10:00</span>
       <svg viewBox="0 0 {ndays} 720" preserveAspectRatio="none" width="100%" height="100%" shape-rendering="crispEdges">
-        <g fill="rgba(255,255,255,0.06)">{bg}</g>
+        <g fill="rgba(255,255,255,{0.02 if mode == 'density' else 0.06})">{bg}</g>
         <g fill="rgba(255,255,255,0.4)">{"".join(rects_in)}</g>
         <g fill="rgba(255,255,255,{0.55 if mode == 'spans' else 0.9})">{"".join(rects)}</g>
       </svg>
