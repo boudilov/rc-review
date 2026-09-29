@@ -807,12 +807,36 @@
     if (e.key === 'ArrowLeft') window.rcNavigate(-1);
   }
 
+  // Клавиши, которые презентация сама не обрабатывает (пробел на 21, ↑/↓ на 22,
+  // буквы визуализации кампуса), передаём встроенному приложению активного слайда —
+  // иначе они работают только после клика внутрь iframe. keyup тоже: орг-структура
+  // держит пробел нажатым для перетаскивания схемы.
+  function forwardToFrame(e) {
+    if (modalOverlay.classList.contains('visible')) return;
+    var page = currentActivePage && pageEl(currentActivePage);
+    var frame = page && page.querySelector(':scope > iframe');
+    if (!frame) return;
+    try {
+      var w = frame.contentWindow;
+      w.document.dispatchEvent(new w.KeyboardEvent(e.type, {
+        key: e.key, code: e.code, repeat: e.repeat,
+        ctrlKey: e.ctrlKey, shiftKey: e.shiftKey, altKey: e.altKey, metaKey: e.metaKey,
+        bubbles: true, cancelable: true
+      }));
+      // пробел и стрелки не должны прокручивать страницу или «нажимать» кнопку в фокусе
+      if (e.key === ' ' || e.key.indexOf('Arrow') === 0) e.preventDefault();
+    } catch (err) {}
+  }
+
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { toggleModal(false); return; }
+    if (e.key === 'Escape' && modalOverlay.classList.contains('visible')) { toggleModal(false); return; }
     if (e.key === 'i' || e.key === 'I') { toggleModal(); return; }
     if (handleViewKey(e)) return;
-    handleNavKey(e);
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { handleNavKey(e); return; }
+    forwardToFrame(e);
   });
+
+  document.addEventListener('keyup', forwardToFrame);
 
   // Встроенные приложения (слайды 2, 21, 22, 60) забирают фокус после клика —
   // их клавиши до этого документа не доходят. Слушаем их документы напрямую
