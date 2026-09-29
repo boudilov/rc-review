@@ -1,7 +1,22 @@
-<!-- Страница 68 -->
+<!-- Страница 68 — UCampus: Контроль рисков (риск → механизм, которым он закрывается) -->
+<style>
+  .p68-table { display: flex; flex-direction: column; }
+  .p68-head, .p68-row { display: grid; grid-template-columns: 34px minmax(0, 1fr) minmax(0, 1.55fr); gap: 32px; align-items: baseline; }
+  .p68-head { padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.18); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(230,230,240,0.5); }
+  .p68-row { padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .p68-num { font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; color: rgba(230,230,240,0.45); }
+  .p68-risk { font-size: 22px; font-weight: 600; line-height: 1.3; color: rgba(255,255,255,0.95); }
+  .p68-fix { font-size: 16px; line-height: 1.5; color: rgba(230,230,240,0.72); }
+</style>
 <div style="width: 100%; max-width: 1500px; padding: 0 70px; height: 100%; display: flex; flex-direction: column; justify-content: center;">
   <div style="font-size: 46px; font-weight: 700; color: rgba(255, 255, 255, 0.96); margin-bottom: 32px;">Контроль рисков</div>
-  <div style="width: 100%; height: 480px; border: 1px dashed rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center;">
-    <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(230,230,240,0.35);">Скриншот «Контроль рисков» · ожидает скриншота</span>
+  <div class="p68-table accent-group">
+    <div class="p68-head"><span></span><span>Риск</span><span>Чем закрывается в UCampus</span></div>
+    <div class="p68-row accent-item"><span class="p68-num">01</span><div class="p68-risk">Травма или поломка из-за неумения</div><div class="p68-fix">Допуск только после инструктажа и теста — к мастерской и к отдельному оборудованию</div></div>
+    <div class="p68-row accent-item"><span class="p68-num">02</span><div class="p68-risk">Человек не пришёл, слот пропал</div><div class="p68-fix">Подтверждение прихода, отмена не позже чем за 12–24 часа, бан на 1–3 месяца за неявку без предупреждения</div></div>
+    <div class="p68-row accent-item"><span class="p68-num">03</span><div class="p68-risk">Техника не вернулась</div><div class="p68-fix">Выдача и возврат фиксируются, срок до 96 часов, пауза 24 часа перед повторной выдачей, инвентарные номера</div></div>
+    <div class="p68-row accent-item"><span class="p68-num">04</span><div class="p68-risk">Посторонний в мастерской</div><div class="p68-fix">Вход по учётной записи, обязательное фото в профиле, ограничения по роли и программе обучения</div></div>
+    <div class="p68-row accent-item"><span class="p68-num">05</span><div class="p68-risk">Несовершеннолетние на опасном оборудовании</div><div class="p68-fix">Возрастной порог 18+ (16+ в мастерской ручной печати)</div></div>
+    <div class="p68-row accent-item"><span class="p68-num">06</span><div class="p68-risk">Накладки с занятиями</div><div class="p68-fix">Администратор блокирует время под занятия и ремонт</div></div>
   </div>
 </div>

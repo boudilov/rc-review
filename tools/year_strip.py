@@ -6,7 +6,8 @@
 #
 # Режимы: spans  — брони целиком (многодневные рисуются на каждом дне);
 #         ticks  — засечки выдачи (start) и возврата (end), для Проката;
-#         visits — засечки входа из отчёта посещений ЦИР (xlsx), число в подписи берётся из итога отчёта.
+#         visits — засечки входа из отчёта посещений ЦИР (xlsx), число в подписи берётся из итога отчёта;
+#         density — все мастерские сразу (кроме DENSITY_SKIP): яркость = число одновременных броней в 10-минутном отрезке.
 # Повторный запуск заменяет ранее вставленную полосу и её стили.
 import re, sys, datetime as dt
 from pathlib import Path
@@ -19,6 +20,9 @@ VISITS_TOTAL = 4651  # «Итого» из отчёта посещений (ст
 Y0, Y1 = dt.date(2025, 8, 1), dt.date(2026, 8, 1)
 H0, H1 = 10 * 60, 22 * 60
 TICK = 12  # высота засечки, минут
+BIN = 10  # шаг тепловой карты density, минут
+LEVELS = 12  # градаций яркости density
+DENSITY_SKIP = {'16', '28', '15', '22', '12'}  # прокаты (многодневные выдачи), ЦИР (посещения отдельно), тестовые
 
 # страница: (workshop_id, режим)
 PAGES = {
@@ -35,6 +39,7 @@ PAGES = {
     '47': ('13', 'spans'),   # Принт-офис
     '50': ('7', 'spans'),    # Тёмная комната
     '52': ('27', 'spans'),   # Галерея
+    '67': ('*', 'density'),  # Аналитика: все мастерские
 }
 
 
@@ -81,6 +86,31 @@ def build(page, ws_id, mode, rows):
     if mode == 'visits':
         for when in load_visits():
             n += tick(when, True)
+    elif mode == 'density':
+        nb = 720 // BIN
+        cnt = [[0] * nb for _ in range(ndays)]
+        for r in rows:
+            if r['workshop_id'] in DENSITY_SKIP or r['block'] == 'true': continue
+            s = dt.datetime.fromisoformat(r['start_at'][:19]); e = dt.datetime.fromisoformat(r['end_at'][:19])
+            if e <= s or s.date() != e.date(): continue
+            d = (s.date() - Y0).days
+            if not 0 <= d < ndays: continue
+            a = max(H0, s.hour * 60 + s.minute) - H0; b = min(H1, e.hour * 60 + e.minute) - H0
+            if b <= a: continue
+            n += 1
+            for k in range(a // BIN, (b - 1) // BIN + 1): cnt[d][k] += 1
+        peak = max(max(c) for c in cnt)
+        for lv in range(1, LEVELS + 1):  # по группе на градацию, соседние отрезки одной градации склеены
+            out = []
+            for d, col in enumerate(cnt):
+                k = 0
+                while k < nb:
+                    q = -(-col[k] * LEVELS // peak)
+                    if q != lv: k += 1; continue
+                    j = k
+                    while j < nb and -(-col[j] * LEVELS // peak) == lv: j += 1
+                    out.append(rect(d, k * BIN, j * BIN)); k = j
+            rects_in.append(f'<g fill="rgba(255,255,255,{0.06 + 0.9 * lv / LEVELS:.3f})">{"".join(out)}</g>')
     else:
         for r in rows:
             if r['workshop_id'] != ws_id or r['block'] == 'true': continue
@@ -114,6 +144,9 @@ def build(page, ws_id, mode, rows):
               f'<i class="{prefix}-ys-key" style="background:rgba(255,255,255,0.4)"></i>возврат<b class="{prefix}-ys-sep"></b>') if mode == 'ticks' else ''
     shown = VISITS_TOTAL if mode == 'visits' else n
     what, unit = ('Посещения', 'посещений') if mode == 'visits' else ('Брони', 'броней')
+    if mode == 'density':
+        what = 'Брони всех мастерских'
+        legend = f'<span class="{prefix}-ys-scale"></span>до {peak} одновременно<b class="{prefix}-ys-sep"></b>'
     html = f'''<div class="{prefix}-ys">
     <div class="{prefix}-ys-head"><span>{what} за 2025/26 · каждая полоска — день, 10:00 ↑ 22:00</span><span>{legend}{f'{shown:,}'.replace(',', ' ')} {unit}</span></div>
     <div class="{prefix}-ys-plot">
@@ -129,6 +162,7 @@ def build(page, ws_id, mode, rows):
     css = f'''  .{prefix}-ys {{ width: 100%; margin-bottom: 28px; }}
   .{prefix}-ys-head {{ display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(230,230,240,0.55); }}
   .{prefix}-ys-key {{ display: inline-block; width: 3px; height: 10px; margin: 0 8px 0 18px; vertical-align: -1px; }}
+  .{prefix}-ys-scale {{ display: inline-block; width: 60px; height: 8px; margin-right: 10px; vertical-align: 0; background: linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0.96)); }}
   .{prefix}-ys-sep {{ display: inline-block; width: 28px; }}
   .{prefix}-ys-plot {{ position: relative; width: 100%; height: 236px; }}
   .{prefix}-ys-plot svg {{ display: block; }}
