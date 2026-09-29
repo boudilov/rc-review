@@ -1,7 +1,23 @@
-<!-- Страница 64 -->
+<!-- Страница 64 — UCampus: Доступ (уровни контроля доступа) -->
+<style>
+  .p64-list { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .p64-item { display: flex; gap: 22px; align-items: baseline; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .p64-item:first-child { border-top: 1px solid rgba(255,255,255,0.18); }
+  .p64-num { width: 28px; flex: none; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; color: rgba(230,230,240,0.45); }
+  .p64-title { font-size: 24px; font-weight: 600; color: rgba(255,255,255,0.95); }
+  .p64-note { margin-top: 5px; font-size: 13px; line-height: 1.45; color: rgba(230,230,240,0.55); }
+</style>
 <div style="width: 100%; max-width: 1500px; padding: 0 70px; height: 100%; display: flex; flex-direction: column; justify-content: center;">
   <div style="font-size: 46px; font-weight: 700; color: rgba(255, 255, 255, 0.96); margin-bottom: 32px;">Доступ</div>
-  <div style="width: 100%; height: 480px; border: 1px dashed rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center;">
-    <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(230,230,240,0.35);">Скриншот «Доступ» · ожидает скриншота</span>
+  <div style="display: flex; max-width: 900px;">
+    <div class="p64-list accent-group">
+      <div class="p64-item accent-item"><span class="p64-num">01</span><div><div class="p64-title">Вход</div><div class="p64-note">Университетская учётная запись, пропуск</div></div></div>
+      <div class="p64-item accent-item"><span class="p64-num">02</span><div><div class="p64-title">Роль</div><div class="p64-note">Студент, координатор, администратор мастерской — разная видимость и права</div></div></div>
+      <div class="p64-item accent-item"><span class="p64-num">03</span><div><div class="p64-title">Программа обучения</div><div class="p64-note">Мастерская или занятие открыты только для своих программ</div></div></div>
+      <div class="p64-item accent-item"><span class="p64-num">04</span><div><div class="p64-title">Наличие фотографии</div><div class="p64-note">Без фото в профиле бронь не создать</div></div></div>
+      <div class="p64-item accent-item"><span class="p64-num">05</span><div><div class="p64-title">Допуск через инструктаж</div><div class="p64-note">К мастерской и к отдельному оборудованию, с тестом</div></div></div>
+      <div class="p64-item accent-item"><span class="p64-num">06</span><div><div class="p64-title">Правила бронирования</div><div class="p64-note">Возраст, лимиты, сроки брони, отмены и выдачи</div></div></div>
+      <div class="p64-item accent-item"><span class="p64-num">07</span><div><div class="p64-title">Система банов</div><div class="p64-note">Блокировка бронирования за неявки без предупреждения</div></div></div>
+    </div>
   </div>
 </div>
