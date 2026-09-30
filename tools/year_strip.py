@@ -22,7 +22,11 @@ H0, H1 = 10 * 60, 22 * 60
 TICK = 12  # высота засечки, минут
 BIN = 10  # шаг тепловой карты density, минут
 LEVELS = 12  # градаций яркости density
-LUNCH_WORK = {'135'}  # обеденный перерыв Проката 14:00–15:00, заведён бронями сотрудников без флага block
+# служебные брони сотрудников без флага block — на полосах не показываем
+LUNCH_WORK = {
+    '135',  # Прокат: обеденный перерыв 14:00–15:00
+    '88',   # Тёмная комната: обед 13:30–14:30, закрытие 18:00–19:00, техокна
+}
 DENSITY_SKIP = {'16', '28', '15', '25', '22', '12'}  # прокаты (многодневные выдачи), ЦИР (посещения отдельно), WellBeing (не мастерская), тестовые
 
 # страница: (workshop_id, режим)
@@ -91,7 +95,7 @@ def build(page, ws_id, mode, rows):
         nb = 720 // BIN
         cnt = [[0] * nb for _ in range(ndays)]
         for r in rows:
-            if r['workshop_id'] in DENSITY_SKIP or r['block'] == 'true': continue
+            if r['workshop_id'] in DENSITY_SKIP or r['block'] == 'true' or r['work_id'] in LUNCH_WORK: continue
             s = dt.datetime.fromisoformat(r['start_at'][:19]); e = dt.datetime.fromisoformat(r['end_at'][:19])
             if e <= s or s.date() != e.date(): continue
             d = (s.date() - Y0).days
