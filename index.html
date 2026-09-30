@@ -146,6 +146,20 @@
   html.projector {
     filter: brightness(1.45);
   }
+  /* Светлая тема — клавиша I: инвертируем весь документ, hue-rotate возвращает оттенки
+     (зелёный/красный остаются зелёным/красным). Фото и скриншоты инвертируем обратно;
+     .theme-invert — картинки, которые должны перекрашиваться вместе с темой (белый логотип). */
+  html.light {
+    filter: invert(1) hue-rotate(180deg);
+    /* фон холста окна фильтр не затрагивает — задаём уже инвертированный цвет фона body */
+    background: #f7f7f7;
+  }
+  html.light.projector {
+    filter: invert(1) hue-rotate(180deg) contrast(1.2);
+  }
+  html.light img:not(.theme-invert) {
+    filter: invert(1) hue-rotate(180deg);
+  }
 
   /* ---------- Modal ---------- */
 
@@ -418,7 +432,8 @@
       <tr><td>+ / &minus;</td><td>крупнее / мельче (весь слайд, 80–150%)</td></tr>
       <tr><td>0</td><td>масштаб 100%</td></tr>
       <tr><td>P</td><td>проекторный режим: ярче серый текст</td></tr>
-      <tr><td>I</td><td>показать/скрыть это окно</td></tr>
+      <tr><td>I</td><td>светлая / тёмная тема</td></tr>
+      <tr><td>H</td><td>показать/скрыть это окно</td></tr>
       <tr><td>Esc</td><td>закрыть это окно</td></tr>
     </table>
   </div>
@@ -695,6 +710,7 @@
   // ---------- Масштаб слайдов и проекторный режим ----------
   var ZOOM_KEY = 'rc-review-zoom';
   var PROJECTOR_KEY = 'rc-review-projector';
+  var LIGHT_KEY = 'rc-review-light';
   var ZOOMS = [0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5];
   var deckStatus = document.getElementById('deckStatus');
 
@@ -708,6 +724,7 @@
   var zoom = parseFloat(storeGet(ZOOM_KEY));
   if (ZOOMS.indexOf(zoom) < 0) zoom = 1;
   var projector = storeGet(PROJECTOR_KEY) === '1';
+  var light = storeGet(LIGHT_KEY) === '1';
 
   var fittedZoom = null; // масштаб, до которого автоподгонка уменьшила текущий слайд
 
@@ -717,12 +734,14 @@
       parts.push(Math.round(zoom * 100) + '%' + (fittedZoom ? ' → ' + Math.round(fittedZoom * 100) + '%' : ''));
     }
     if (projector) parts.push('проектор');
+    if (light) parts.push('светлая');
     deckStatus.textContent = parts.join(' · ');
   }
 
   function applyView() {
     document.documentElement.style.setProperty('--deck-zoom', String(zoom));
     document.documentElement.classList.toggle('projector', projector);
+    document.documentElement.classList.toggle('light', light);
     fitActive();
     renderStatus();
   }
@@ -798,6 +817,9 @@
     if (e.code === 'KeyP' || k === 'p' || k === 'P' || k === 'з' || k === 'З') {
       projector = !projector; storeSet(PROJECTOR_KEY, projector ? '1' : '0'); applyView(); return true;
     }
+    if (e.code === 'KeyI' || k === 'i' || k === 'I' || k === 'ш' || k === 'Ш') {
+      light = !light; storeSet(LIGHT_KEY, light ? '1' : '0'); applyView(); return true;
+    }
     return false;
   }
 
@@ -830,7 +852,8 @@
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && modalOverlay.classList.contains('visible')) { toggleModal(false); return; }
-    if (e.key === 'i' || e.key === 'I') { toggleModal(); return; }
+    if (!e.ctrlKey && !e.metaKey && !e.altKey &&
+        (e.code === 'KeyH' || e.key === 'h' || e.key === 'H' || e.key === 'р' || e.key === 'Р')) { toggleModal(); return; }
     if (handleViewKey(e)) return;
     if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { handleNavKey(e); return; }
     forwardToFrame(e);
