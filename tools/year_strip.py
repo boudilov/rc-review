@@ -22,6 +22,7 @@ H0, H1 = 10 * 60, 22 * 60
 TICK = 12  # высота засечки, минут
 BIN = 10  # шаг тепловой карты density, минут
 LEVELS = 12  # градаций яркости density
+LUNCH_WORK = {'135'}  # обеденный перерыв Проката 14:00–15:00, заведён бронями сотрудников без флага block
 DENSITY_SKIP = {'16', '28', '15', '25', '22', '12'}  # прокаты (многодневные выдачи), ЦИР (посещения отдельно), WellBeing (не мастерская), тестовые
 
 # страница: (workshop_id, режим)
@@ -113,7 +114,7 @@ def build(page, ws_id, mode, rows):
             rects_in.append(f'<g fill="rgba(255,255,255,{0.06 + 0.9 * lv / LEVELS:.3f})">{"".join(out)}</g>')
     else:
         for r in rows:
-            if r['workshop_id'] != ws_id or r['block'] == 'true': continue
+            if r['workshop_id'] != ws_id or r['block'] == 'true' or r['work_id'] in LUNCH_WORK: continue
             s = dt.datetime.fromisoformat(r['start_at'][:19]); e = dt.datetime.fromisoformat(r['end_at'][:19])
             if e <= s: continue
             if mode == 'ticks':
