@@ -1,5 +1,5 @@
 # Годовая полоса броней на страницах мастерских (вместо заглушки «скан мастерской»).
-# Каждый день учебного года — тонкая вертикальная полоска, 10:00 снизу, 22:00 сверху.
+# Каждый день учебного года — тонкая вертикальная полоска, 10:00 сверху, 22:00 снизу.
 #
 #   python tools/year_strip.py            — пересобрать все страницы из PAGES
 #   python tools/year_strip.py 39         — только страницу 39
@@ -80,7 +80,7 @@ def build(page, ws_id, mode, rows):
     rects, rects_in, n = [], [], 0
 
     def rect(d, m0, m1):
-        return f'<rect x="{d + 0.2:.1f}" y="{720 - m1}" width="0.6" height="{m1 - m0}"/>'
+        return f'<rect x="{d + 0.2:.1f}" y="{m0}" width="0.6" height="{m1 - m0}"/>'
 
     def tick(when, out):
         d = (when.date() - Y0).days
@@ -155,9 +155,9 @@ def build(page, ws_id, mode, rows):
         what = 'Брони всех мастерских'
         legend = f'<span class="{prefix}-ys-scale"></span>до {peak} одновременно<b class="{prefix}-ys-sep"></b>'
     html = f'''<div class="{prefix}-ys">
-    <div class="{prefix}-ys-head"><span>{what} за 2025/26 · каждая полоска — день, 10:00 ↑ 22:00</span><span>{legend}{f'{shown:,}'.replace(',', ' ')} {unit}</span></div>
+    <div class="{prefix}-ys-head"><span>{what} за 2025/26 · каждая полоска — день, 10:00 ↓ 22:00</span><span>{legend}{f'{shown:,}'.replace(',', ' ')} {unit}</span></div>
     <div class="{prefix}-ys-plot">
-      <span class="{prefix}-ys-h {prefix}-ys-h0">22:00</span><span class="{prefix}-ys-h {prefix}-ys-h1">10:00</span>
+      <span class="{prefix}-ys-h {prefix}-ys-h0">10:00</span><span class="{prefix}-ys-h {prefix}-ys-h1">22:00</span>
       <svg viewBox="0 0 {ndays} 720" preserveAspectRatio="none" width="100%" height="100%" shape-rendering="crispEdges">
         <g fill="rgba(255,255,255,{0.02 if mode == 'density' else 0.06})">{bg}</g>
         <g fill="rgba(255,255,255,0.4)">{"".join(rects_in)}</g>
