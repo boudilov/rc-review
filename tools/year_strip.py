@@ -14,7 +14,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 RESERVATIONS = Path(r'C:/DATA/UU/UCampus/Stats 2026/reservations_202609291235.md')  # выгрузка reservations из UCampus
-VISITS = Path(r'C:/Users/user/Downloads/Общая статистика (студики + сотрудники)_2526.xlsx')  # отчёт посещений ЦИР
+VISITS = Path(r'C:/DATA/UU/UCampus/Stats 2026/ЦИР_посещения_2025-26.xlsx')  # отчёт посещений ЦИР
 VISITS_TOTAL = 4651  # «Итого» из отчёта посещений (строк с отметками в нём 4 700)
 
 Y0, Y1 = dt.date(2025, 8, 1), dt.date(2026, 8, 1)

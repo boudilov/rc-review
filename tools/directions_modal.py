@@ -228,34 +228,39 @@ CSS = '''  /* wsdir:start — модалка «Помесячно по напр�
   /* wsdir:end */
 '''
 
-for page in sys.argv[1:] or list(PAGES):
-    prefix = PAGES[page]
-    p = ROOT / 'pages' / page / 'index.html'
-    t = p.read_text(encoding='utf-8')
-    # убрать результат прошлого запуска
-    t = re.sub(r'\n?<!-- wsdir:start -->.*?<!-- wsdir:end -->\n?', '\n', t, flags=re.S)
-    t = re.sub(r'  /\* wsdir:start.*?/\* wsdir:end \*/\n', '', t, flags=re.S)
-    t = re.sub(r'<div class="wsdir-head">(<div class="ws\d+-title">.*?</div>)<a [^>]*class="wsdir-btn"[^>]*>.*?</a></div>', r'\1', t)
+def main(pages):
+    for page in pages:
+        prefix = PAGES[page]
+        p = ROOT / 'pages' / page / 'index.html'
+        t = p.read_text(encoding='utf-8')
+        # убрать результат прошлого запуска
+        t = re.sub(r'\n?<!-- wsdir:start -->.*?<!-- wsdir:end -->\n?', '\n', t, flags=re.S)
+        t = re.sub(r'  /\* wsdir:start.*?/\* wsdir:end \*/\n', '', t, flags=re.S)
+        t = re.sub(r'<div class="wsdir-head">(<div class="ws\d+-title">.*?</div>)<a [^>]*class="wsdir-btn"[^>]*>.*?</a></div>', r'\1', t)
 
-    title_m = re.search(rf'<div class="ws{page}-title">(.*?)</div>', t)
-    name = title_m.group(1)
-    mid = f'ws{page}-dir'
-    t = t.replace(title_m.group(0), f'<div class="wsdir-head">{title_m.group(0)}<a href="#{mid}" class="wsdir-btn">Помесячно по направлениям</a></div>', 1)
+        title_m = re.search(rf'<div class="ws{page}-title">(.*?)</div>', t)
+        name = title_m.group(1)
+        mid = f'ws{page}-dir'
+        t = t.replace(title_m.group(0), f'<div class="wsdir-head">{title_m.group(0)}<a href="#{mid}" class="wsdir-btn">Помесячно по направлениям</a></div>', 1)
 
-    body, cards = [], []
-    for kind in ('SELF', 'CLASS'):
-        data, progs = load(prefix, kind)
-        body.append(f'<div class="wsdir-kind">{kind}<span>часы в месяц</span></div>{chart(page, kind, data)}{legend(data)}')
-        cards.append(details(page, kind, data, progs))
-    body.append('\n    ' + ''.join(cards))
-    modal = (f'<!-- wsdir:start -->\n<div id="{mid}" class="wsdir-modal">\n  <a href="#" class="wsdir-bg" aria-label="Закрыть"></a>\n'
-             f'  <div class="wsdir-panel">\n    <a href="#" class="wsdir-close">&#10005;</a>\n'
-             f'    <div class="wsdir-h">{name} · часы по направлениям помесячно</div>\n'
-             f'    <div class="wsdir-sub">Август 2024 — июль 2026. Столбик — сумма часов за месяц, сегменты — группы; наведите на месяц, чтобы увидеть часы, кликните — топ-10 программ месяца. '
-             f'Под графиком — итог учебного года и доля группы. '
-             f'<b>ВО</b> — {GROUP_NOTE["vo"]}; <b>ДПО</b> — {GROUP_NOTE["dpo"]}; <b>Uteens</b> — {GROUP_NOTE["teens"]}; <b>СПО</b> — {GROUP_NOTE["spo"]}.</div>\n'
-             f'    {"".join(body)}\n  </div>\n</div>\n<!-- wsdir:end -->\n')
-    t = t.rstrip('\n') + '\n\n' + modal
-    t = t.replace('</style>', CSS + '</style>', 1)
-    p.write_text(t, encoding='utf-8', newline='\n')
-    print(f'page {page}: ok')
+        body, cards = [], []
+        for kind in ('SELF', 'CLASS'):
+            data, progs = load(prefix, kind)
+            body.append(f'<div class="wsdir-kind">{kind}<span>часы в месяц</span></div>{chart(page, kind, data)}{legend(data)}')
+            cards.append(details(page, kind, data, progs))
+        body.append('\n    ' + ''.join(cards))
+        modal = (f'<!-- wsdir:start -->\n<div id="{mid}" class="wsdir-modal">\n  <a href="#" class="wsdir-bg" aria-label="Закрыть"></a>\n'
+                 f'  <div class="wsdir-panel">\n    <a href="#" class="wsdir-close">&#10005;</a>\n'
+                 f'    <div class="wsdir-h">{name} · часы по направлениям помесячно</div>\n'
+                 f'    <div class="wsdir-sub">Август 2024 — июль 2026. Столбик — сумма часов за месяц, сегменты — группы; наведите на месяц, чтобы увидеть часы, кликните — топ-10 программ месяца. '
+                 f'Под графиком — итог учебного года и доля группы. '
+                 f'<b>ВО</b> — {GROUP_NOTE["vo"]}; <b>ДПО</b> — {GROUP_NOTE["dpo"]}; <b>Uteens</b> — {GROUP_NOTE["teens"]}; <b>СПО</b> — {GROUP_NOTE["spo"]}.</div>\n'
+                 f'    {"".join(body)}\n  </div>\n</div>\n<!-- wsdir:end -->\n')
+        t = t.rstrip('\n') + '\n\n' + modal
+        t = t.replace('</style>', CSS + '</style>', 1)
+        p.write_text(t, encoding='utf-8', newline='\n')
+        print(f'page {page}: ok')
+
+
+if __name__ == '__main__':
+    main(sys.argv[1:] or list(PAGES))
